@@ -3,7 +3,7 @@
 **Onchain Amex** is a fee-free, open-source, crypto-native POS terminal designed for merchants to accept stablecoin payments (USDC, USDT, DAI, etc.) directly on-chain — no banks, no cards, no TradFi.
 
 Inspired by FreePay and built for decentralized commerce.
-
+https://x.com/timjrobinson/status/1940331404627411261?s=46
 ---
 
 ## 🚀 Features
