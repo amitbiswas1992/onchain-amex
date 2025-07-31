@@ -1,0 +1,2 @@
+C:/Users/saifu/Downloads/adviify/android/app/.cxx/Debug/z5u245u5/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/saifu/Downloads/adviify/android/app/.cxx/Debug/z5u245u5/armeabi-v7a/CMakeFiles/rebuild_cache.dir
