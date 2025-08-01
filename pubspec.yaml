@@ -70,32 +70,30 @@ flutter:
     - assets/app_icons/app_icon_2.png
 
   fonts:
-    - family: SFProText
+    - family: Segoe Pro
       fonts:
-        - asset: fonts/sfpro/SF-Pro-Text-Thin.otf
-          weight: 100
-        - asset: fonts/sfpro/SF-Pro-Text-Light.otf
+        - asset: fonts/segoe_pro/SegoePro-Light.ttf
           weight: 300
-        - asset: fonts/sfpro/SF-Pro-Text-Regular.otf
+        - asset: fonts/segoe_pro/SegoePro-Regular.ttf
           weight: 400
-        - asset: fonts/sfpro/SF-Pro-Text-Medium.otf
-          weight: 500
-        - asset: fonts/sfpro/SF-Pro-Text-Semibold.otf
+        - asset: fonts/segoe_pro/SegoePro-Semibold.ttf
           weight: 600
-        - asset: fonts/sfpro/SF-Pro-Text-Bold.otf
+        - asset: fonts/segoe_pro/SegoePro-Bold.ttf
           weight: 700
-        - asset: fonts/sfpro/SF-Pro-Text-Heavy.otf
+        - asset: fonts/segoe_pro/SegoePro-Black.ttf
           weight: 800
 
-    - family: Arial
+    - family: Inter
       fonts:
-        - asset: fonts/arial.ttf
+        - asset: fonts/inter/Inter-Light-BETA.otf
+          weight: 300 # Light
+        - asset: fonts/inter/Inter-Regular.otf
           weight: 400 # Regular
-        - asset: fonts/arialbd.ttf
+        - asset: fonts/inter/Inter-Medium.otf
+          weight: 500
+        - asset: fonts/inter/Inter-SemiBold.otf
+          weight: 600 # SemiBold
+        - asset: fonts/inter/Inter-Bold.otf
+          weight: 700 # Bold
+        - asset: fonts/inter/Inter-Black.otf
           weight: 800
-        - asset: fonts/arblk.ttf
-          weight: 900
-        - asset: fonts/arialceb.ttf
-          weight: 700
-        - asset: fonts/arialmdm.ttf
-          weight: 600
