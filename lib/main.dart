@@ -4,15 +4,11 @@ import 'core/resources/app_strings.dart';
 import 'infrastructure/error/app_error_handler.dart';
 import 'infrastructure/navigation/app_nav.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'core/themes/app_themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
   setupGetIt();
 
   /// Handle errors
@@ -32,6 +28,7 @@ class MyApp extends StatelessWidget {
       title: AppStrings.appTitle,
       themeMode: ThemeMode.light,
       theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
       routerConfig: AppNav.goRouter,
       scaffoldMessengerKey: AppNav.scaffoldMessengerKey,
       // builder: (context, child) {
@@ -45,6 +42,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-/// Build runner command
-/// flutter pub run build_runner build --delete-conflicting-outputs

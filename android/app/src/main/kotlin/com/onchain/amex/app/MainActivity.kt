@@ -1,4 +1,4 @@
-package com.advisify.app
+package com.onchain.amex.app
 
 import io.flutter.embedding.android.FlutterActivity
 
