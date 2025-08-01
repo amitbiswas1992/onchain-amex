@@ -61,13 +61,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/logos/
-    - assets/ellipse/
     - assets/icons/
-    - assets/icons/payments/
     - assets/images/
     - assets/dummy/
-    - assets/nav_icons/
-    - assets/app_icons/app_icon_2.png
 
   fonts:
     - family: Segoe Pro
