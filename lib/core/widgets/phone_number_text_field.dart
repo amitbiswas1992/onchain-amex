@@ -1,7 +1,5 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import '../resources/app_colors.dart';
 import '../resources/app_values.dart';
@@ -94,9 +92,9 @@ class PhoneNumberTextField extends StatelessWidget {
             headerText: 'Select Code',
             showDropDownButton: true,
             hideSearch: false,
-            boxDecoration: const BoxDecoration(
-              color: AppColors.whiteSmoke,
-              borderRadius: BorderRadius.only(
+            boxDecoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(AppValues.borderRadiusLarge),
                 topRight: Radius.circular(AppValues.borderRadiusLarge),
                 bottomLeft: Radius.circular(AppValues.borderRadiusLarge),

@@ -79,7 +79,7 @@ Future<void> statusDialogBase({
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.whiteSmoke,
+            // color: AppColors.whiteSmoke,
             borderRadius: BorderRadius.circular(AppValues.borderRadiusLarge),
           ),
           padding: const EdgeInsets.all(
@@ -115,13 +115,11 @@ Future<void> statusDialogBase({
               AppButton(
                 title: 'Done',
                 color: AppColors.primaryLight,
-                titleColor: AppColors.yellowGreen,
                 verticalPadding: AppValues.paddingMedium - 4,
                 radius: 15,
                 titleStyle: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.yellowGreen,
                 ),
                 onTap: () {
                   onDone?.call();
@@ -154,7 +152,7 @@ Future<bool> showPermissionDialog({
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.whiteSmoke,
+            // color: AppColors.whiteSmoke,
             borderRadius: BorderRadius.circular(AppValues.borderRadiusLarge),
           ),
           padding: const EdgeInsets.all(AppValues.paddingLarge),
@@ -194,7 +192,7 @@ Future<bool> showPermissionDialog({
                   Expanded(
                     child: AppButton(
                       title: 'Cancel',
-                      color: AppColors.yellowGreen,
+                      // color: AppColors.yellowGreen,
                       verticalPadding: AppValues.paddingMedium - 4,
                       radius: 15,
                       titleStyle: const TextStyle(
@@ -217,7 +215,7 @@ Future<bool> showPermissionDialog({
                       titleStyle: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.yellowGreen,
+                        // color: AppColors.yellowGreen,
                       ),
                       onTap: () async {
                         AppNav.goRouter.pop(true);
@@ -253,7 +251,7 @@ Future<void> showLoadingDialog({
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.whiteSmoke,
+            // color: AppColors.whiteSmoke,
             borderRadius: BorderRadius.circular(AppValues.borderRadiusLarge),
           ),
           padding: const EdgeInsets.all(AppValues.paddingMedium),

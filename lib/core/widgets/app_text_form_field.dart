@@ -58,6 +58,8 @@ class AppTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SizedBox(
       // height: height ?? (maxLines == null ? AppValues.defaultInputBoxHeight : null),
       // decoration: decoration ??
@@ -86,8 +88,8 @@ class AppTextFormField extends StatelessWidget {
           isDense: true,
           hintText: hintText,
           hintStyle: hintStyle ??
-              const TextStyle(
-                color: AppColors.hintColor,
+              TextStyle(
+                color: theme.colorScheme.onSurface,
               ),
           filled: true,
           fillColor: bgColor ?? Colors.white,
@@ -99,7 +101,7 @@ class AppTextFormField extends StatelessWidget {
                 vertical: 12,
               ),
           errorStyle: TextStyle(
-            color: errorColor ?? AppColors.yellowGreen,
+            color: errorColor ?? theme.colorScheme.error,
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),

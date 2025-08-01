@@ -58,7 +58,7 @@ class AppFilePickerButton extends StatelessWidget {
           onTap: () async {
             showModalBottomSheet(
               context: context,
-              backgroundColor: AppColors.whiteSmoke,
+              // backgroundColor: AppColors.whiteSmoke,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               ),
@@ -116,7 +116,7 @@ class AppFilePickerButton extends StatelessWidget {
                   child: Text(
                     'Pick',
                     style: TextStyle(
-                      color: AppColors.hintColor,
+                      // color: AppColors.hintColor,
                       fontSize: 14,
                     ),
                   ),
@@ -176,7 +176,7 @@ class AppFilePickerButton extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: sfPro14W500.copyWith(
-                          color: AppColors.whiteSmoke,
+                          // color: AppColors.whiteSmoke,
                         ),
                       ),
                     ),
@@ -187,7 +187,7 @@ class AppFilePickerButton extends StatelessWidget {
                       },
                       child: const Icon(
                         CupertinoIcons.multiply,
-                        color: AppColors.yellowGreen,
+                        // color: AppColors.yellowGreen,
                       ),
                     ),
                   ],

@@ -16,6 +16,8 @@ class ImageCapturePickSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 32),
@@ -29,7 +31,7 @@ class ImageCapturePickSheet extends StatelessWidget {
                   icon: const Icon(
                     Icons.camera_alt,
                     size: 32,
-                    color: AppColors.deemGray,
+                    // color: theme.iconTheme.color,
                   ),
                   onPressed: onCaptureTap,
                 ),
@@ -44,7 +46,7 @@ class ImageCapturePickSheet extends StatelessWidget {
                   icon: const Icon(
                     Icons.photo_library,
                     size: 32,
-                    color: AppColors.deemGray,
+                    // color: theme.iconTheme.color,
                   ),
                   onPressed: onPickTap,
                 ),
@@ -60,7 +62,7 @@ class ImageCapturePickSheet extends StatelessWidget {
                     icon: const Icon(
                       Icons.folder,
                       size: 32,
-                      color: AppColors.deemGray,
+                      // color: theme.iconTheme.color,
                     ),
                     onPressed: onFilePickTap,
                   ),
