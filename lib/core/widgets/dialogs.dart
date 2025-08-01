@@ -6,7 +6,7 @@ import '../../infrastructure/navigation/app_nav.dart';
 import '../resources/app_colors.dart';
 import '../resources/app_values.dart';
 import '../utils/sizebox_util.dart';
-import 'app_button.dart';
+import 'buttons/app_button.dart';
 import 'texts/title_text.dart';
 
 Future<void> showSuccessDialog({

@@ -175,9 +175,6 @@ class AppFilePickerButton extends StatelessWidget {
                         fileName,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: sfPro14W500.copyWith(
-                          // color: AppColors.whiteSmoke,
-                        ),
                       ),
                     ),
                     const HorizontalSpace(AppValues.paddingSmall),

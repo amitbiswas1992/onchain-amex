@@ -36,6 +36,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   cached_network_image: ^3.4.1
   photo_view: ^0.15.0
+  smooth_page_indicator: ^1.2.1
 
   # Utility
   phone_numbers_parser: ^9.0.3
@@ -63,6 +64,7 @@ flutter:
     - assets/logos/
     - assets/icons/
     - assets/images/
+    - assets/images/onboard/
     - assets/dummy/
 
   fonts:

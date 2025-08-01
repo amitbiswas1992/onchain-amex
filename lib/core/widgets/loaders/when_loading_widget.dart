@@ -37,9 +37,6 @@ class WhenLoadingWidget extends StatelessWidget {
           if (message != null)
             Text(
               message!,
-              style: sfPro14W500.copyWith(
-                color: color ?? AppColors.primaryLight,
-              ),
             ),
         ],
       ),

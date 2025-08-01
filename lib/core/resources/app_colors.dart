@@ -18,18 +18,25 @@ class AppColors {
   static const onErrorLight = Color(0xFFFFFFFF);
 
   // Dark theme colors
-  static const Color primaryDark = Color(0xFF393E46);
-  static const Color primaryVariantDark = Color(0xFF222831);
-  static const Color secondaryDark = Color(0xFF948979);
-  static const Color secondaryVariantDark = Color(0xFFDFD0B8);
-  static const Color backgroundDark = Color(0xFF222831);
-  static const Color surfaceDark = Color(0xFF393E46);
-  static const Color errorDark = Color(0xFFCF6679);
-  static const Color onPrimaryDark = Color(0xFFFFFFFF);
-  static const Color onSecondaryDark = Color(0xFF222831);
-  static const Color onBackgroundDark = Color(0xFFFFFFFF);
-  static const Color onSurfaceDark = Color(0xFFBDBDBD);
-  static const Color onErrorDark = Color(0xFF000000);
+  static const primaryDark = Color(0xFF393E46);
+  static const primaryVariantDark = Color(0xFF222831);
+  static const secondaryDark = Color(0xFF948979);
+  static const secondaryVariantDark = Color(0xFFDFD0B8);
+  static const backgroundDark = Color(0xFF222831);
+  static const surfaceDark = Color(0xFF393E46);
+  static const errorDark = Color(0xFFCF6679);
+  static const onPrimaryDark = Color(0xFFFFFFFF);
+  static const onSecondaryDark = Color(0xFF222831);
+  static const onBackgroundDark = Color(0xFFFFFFFF);
+  static const onSurfaceDark = Color(0xFFBDBDBD);
+  static const onErrorDark = Color(0xFF000000);
 
-
+  /// Other colors
+  static const c757575 = Color(0xFF757575);
+  static const c424242 = Color(0xFF424242);
+  static const c616161 = Color(0xFF616161);
+  static const c212121 = Color(0xFF212121);
+  static const c455468 = Color(0xFF455468);
+  static const cF2F2F2 = Color(0xFFF2F2F2);
+  static const softGreen = Color(0xFFEBF4E6);
 }

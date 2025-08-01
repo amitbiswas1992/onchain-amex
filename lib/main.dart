@@ -31,14 +31,14 @@ class MyApp extends StatelessWidget {
       darkTheme: AppThemes.darkTheme,
       routerConfig: AppNav.goRouter,
       scaffoldMessengerKey: AppNav.scaffoldMessengerKey,
-      // builder: (context, child) {
-      //   return MediaQuery(
-      //     data: MediaQuery.of(context).copyWith(
-      //       textScaler: const TextScaler.linear(1.9),
-      //     ),
-      //     child: child!,
-      //   );
-      // },
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: const TextScaler.linear(1),
+          ),
+          child: child!,
+        );
+      },
     );
   }
 }

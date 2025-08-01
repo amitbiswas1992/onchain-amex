@@ -1,7 +1,7 @@
+import '../../../../core/widgets/texts/text_styles.dart';
 import '../controllers/splash_controller.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/resources/app_colors.dart';
-import '../widgets/splash_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,9 +22,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: AppColors.primaryLight,
-      body: SplashWidget(),
+    return Scaffold(
+      backgroundColor: AppColors.softGreen,
+      body: Center(
+        child: Text(
+          'Amex',
+          style: s32W600(context).copyWith(
+            color: AppColors.primaryLight,
+            fontSize: 56,
+          ),
+        ),
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../modules/onboard/presentation/screens/onboard_screen.dart';
 import '../../modules/splash/presentation/screens/nowhere_screen.dart';
 import '../../modules/splash/presentation/screens/splash_screen.dart';
 import 'rt_nm.dart';
@@ -57,11 +58,19 @@ class AppNav {
     ),
     GoRoute(
       path: RtNm.splashScreen,
-      // builder: (_, __) => const SplashScreen(),
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         const SplashScreen(),
         state,
       ),
     ),
+    GoRoute(
+      path: RtNm.onboardingScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const OnboardScreen(),
+        state,
+      ),
+    ),
+
+
   ];
 }

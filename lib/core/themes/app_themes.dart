@@ -2,19 +2,54 @@ import 'package:flutter/material.dart';
 
 import '../../core/resources/app_colors.dart';
 import '../../core/resources/app_values.dart';
+import '../widgets/texts/text_styles.dart';
 
 class AppThemes {
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
-    fontFamily: 'Segoe Pro',
+    fontFamily: segoeProFontFamily,
     primaryColor: AppColors.primaryLight,
     primaryColorDark: AppColors.primaryVariantLight,
     scaffoldBackgroundColor: AppColors.backgroundLight,
-
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: AppColors.onBackgroundLight),
-      bodyMedium: TextStyle(color: AppColors.onBackgroundLight),
-      bodySmall: TextStyle(color: AppColors.onBackgroundLight),
+      bodyLarge: TextStyle(
+        color: AppColors.onBackgroundLight,
+        letterSpacing: 0,
+        height: 1,
+      ),
+      bodyMedium: TextStyle(
+        color: AppColors.onBackgroundLight,
+        letterSpacing: 0,
+        height: 1,
+      ),
+      bodySmall: TextStyle(
+        color: Colors.grey,
+        letterSpacing: 0,
+        height: 1,
+        fontWeight: FontWeight.w400,
+        fontSize: 11,
+      ),
+      titleLarge: TextStyle(
+        color: AppColors.onBackgroundLight,
+        fontSize: 28,
+        fontWeight: FontWeight.w600,
+        height: 1,
+        letterSpacing: 0,
+      ),
+      titleMedium: TextStyle(
+        color: AppColors.onBackgroundLight,
+        fontSize: 24,
+        fontWeight: FontWeight.w500,
+        height: 1,
+        letterSpacing: 0,
+      ),
+      titleSmall: TextStyle(
+        color: AppColors.onBackgroundLight,
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+        height: 1,
+        letterSpacing: 0,
+      ),
       // displayLarge: TextStyle(letterSpacing: 0, height: 1),
       // displayMedium: TextStyle(letterSpacing: 0, height: 1),
       // displaySmall: TextStyle(letterSpacing: 0, height: 1),
@@ -30,7 +65,7 @@ class AppThemes {
     ),
     appBarTheme: const AppBarTheme(
       color: AppColors.primaryLight,
-      titleTextStyle:  TextStyle(color: AppColors.onPrimaryLight, fontSize: 20),
+      titleTextStyle: TextStyle(color: AppColors.onPrimaryLight, fontSize: 20),
     ),
     buttonTheme: ButtonThemeData(
       buttonColor: AppColors.primaryLight,
@@ -68,7 +103,7 @@ class AppThemes {
   );
 
   static final ThemeData darkTheme = ThemeData(
-    fontFamily: 'Inter',
+    fontFamily: segoeProFontFamily,
     brightness: Brightness.dark,
     primaryColor: AppColors.primaryDark,
     primaryColorDark: AppColors.primaryVariantDark,
@@ -80,7 +115,7 @@ class AppThemes {
     ),
     appBarTheme: const AppBarTheme(
       color: AppColors.primaryDark,
-      titleTextStyle:  TextStyle(color: AppColors.onPrimaryDark, fontSize: 20),
+      titleTextStyle: TextStyle(color: AppColors.onPrimaryDark, fontSize: 20),
     ),
     buttonTheme: ButtonThemeData(
       buttonColor: AppColors.primaryDark,

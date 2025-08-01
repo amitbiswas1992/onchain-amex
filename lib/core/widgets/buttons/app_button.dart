@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../resources/app_values.dart';
-import '../utils/sizebox_util.dart';
+import '../../resources/app_values.dart';
+import '../../utils/sizebox_util.dart';
 
 class AppButton extends StatelessWidget {
   final String title;

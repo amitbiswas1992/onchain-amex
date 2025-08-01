@@ -33,7 +33,6 @@ class WhenErrorWidget extends StatelessWidget {
             Text(
               error?.toString() ?? message ?? 'Something went wrong.',
               textAlign: TextAlign.center,
-              style: sfPro14W500.copyWith(color: color ?? AppColors.primaryLight),
             ),
           ],
         ),
