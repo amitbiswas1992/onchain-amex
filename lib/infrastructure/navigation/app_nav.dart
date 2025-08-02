@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../modules/onboard/presentation/screens/onboard_screen.dart';
+import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_email_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_phone_screen.dart';
 import '../../modules/splash/presentation/screens/nowhere_screen.dart';
@@ -83,6 +84,13 @@ class AppNav {
       path: RtNm.signInWithPhoneScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         const SignInWithPhoneScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.signInLoadingScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const SignInLoadingScreen(),
         state,
       ),
     ),

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../infrastructure/navigation/app_nav.dart';
 import '../../resources/app_colors.dart';
+import '../../utils/functions.dart';
 
 const interFontFamily = 'Inter';
 const segoeProFontFamily = 'Segoe Pro';
-
-bool isLightTheme(BuildContext context) =>
-    Theme.of(context).brightness == Brightness.light;
 
 // Theme aware text styles
 TextStyle s28W600(BuildContext context, {String? fontFamily}) {
