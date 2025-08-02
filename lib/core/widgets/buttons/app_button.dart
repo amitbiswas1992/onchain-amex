@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../resources/app_colors.dart';
 import '../../resources/app_values.dart';
 import '../../utils/sizebox_util.dart';
+import '../texts/text_styles.dart';
 
 class AppButton extends StatelessWidget {
   final String title;
@@ -49,8 +51,8 @@ class AppButton extends StatelessWidget {
               ),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: color ?? Colors.white,
-          borderRadius: BorderRadius.circular(radius ?? 20),
+          color: AppColors.primaryLight,
+          borderRadius: BorderRadius.circular(radius ?? 8),
         ),
         child: Text(
           title,
@@ -58,11 +60,7 @@ class AppButton extends StatelessWidget {
           // overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
           style: titleStyle ??
-              TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-                color: titleColor,
-              ),
+              s16W500(context).copyWith(color: AppColors.backgroundLight),
         ),
       ),
     );

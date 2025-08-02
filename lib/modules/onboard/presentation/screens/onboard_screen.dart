@@ -6,8 +6,10 @@ import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
+import '../../../../core/widgets/buttons/app_button.dart';
 import '../../../../core/widgets/buttons/app_text_utton.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../../splash/presentation/providers/onboard_providers.dart';
 import '../../../splash/presentation/resources/onboard_strings.dart';
 import '../../../splash/presentation/widgets/onboard_content.dart';
 
@@ -46,7 +48,9 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
               flex: 4,
               child: PageView(
                 controller: _pageController,
-                onPageChanged: (page) {},
+                onPageChanged: (page) {
+                  ref.read(onboardPageProvider.notifier).state = page;
+                },
                 children: const [
                   OnboardContent(
                     assetPath: 'assets/images/onboard/onboard1.svg',
@@ -82,15 +86,30 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
               children: [
                 const HorizontalSpace(AppValues.paddingMedium),
                 Expanded(
-                  child: AppTextButton(
-                    text: next,
-                    onPressed: () {
-                      _pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
+                  child: Consumer(
+                    builder: (context, ref, _) {
+                      final page = ref.watch(onboardPageProvider);
+
+                      if (page == 2) {
+                        return AppButton(
+                          title: getStarted,
+                          onTap: () {
+                            // navigate to login screen
+                          },
+                        );
+                      }
+
+                      return AppTextButton(
+                        text: next,
+                        onPressed: () {
+                          _pageController.nextPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        textStyle: s16W500(context),
                       );
                     },
-                    textStyle: s16W500(context),
                   ),
                 ),
                 const HorizontalSpace(AppValues.paddingMedium),

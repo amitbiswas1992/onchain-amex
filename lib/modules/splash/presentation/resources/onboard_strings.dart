@@ -5,3 +5,4 @@ const noBankJustSmartContracts = 'No banks, just smart contracts';
 const yourWallet = 'Your Wallet';
 const connectAnyWeb3Wallet = 'Connect any Web3 wallet';
 const next = 'Next';
+const getStarted = 'Get Started';

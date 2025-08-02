@@ -39,4 +39,5 @@ class AppColors {
   static const c455468 = Color(0xFF455468);
   static const cF2F2F2 = Color(0xFFF2F2F2);
   static const softGreen = Color(0xFFEBF4E6);
+  static const borderColor = Color(0x0E0F1129);
 }
