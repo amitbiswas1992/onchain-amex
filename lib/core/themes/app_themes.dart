@@ -98,7 +98,7 @@ class AppThemes {
       onError: AppColors.onErrorLight,
     ),
     iconTheme: const IconThemeData(
-      color: AppColors.primaryLight,
+      color: AppColors.c212121,
     ),
   );
 
@@ -108,6 +108,9 @@ class AppThemes {
     primaryColor: AppColors.primaryDark,
     primaryColorDark: AppColors.primaryVariantDark,
     scaffoldBackgroundColor: AppColors.backgroundDark,
+    iconTheme: const IconThemeData(
+      color: AppColors.secondaryVariantDark,
+    ),
     textTheme: const TextTheme(
       bodyLarge: TextStyle(color: AppColors.onBackgroundDark),
       bodyMedium: TextStyle(color: AppColors.onBackgroundDark),

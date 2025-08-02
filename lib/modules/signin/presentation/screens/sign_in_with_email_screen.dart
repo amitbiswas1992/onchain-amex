@@ -7,13 +7,15 @@ import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
-import '../../../../core/widgets/buttons/app_button.dart';
+import '../../../../core/widgets/buttons/app_primary_button.dart';
+import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../resources/signin_strings.dart';
 import '../widgets/amex_text_app_bar.dart';
+import '../widgets/user_consent_text.dart';
 
 class SignInWithEmailScreen extends ConsumerStatefulWidget {
   const SignInWithEmailScreen({super.key});
@@ -25,9 +27,6 @@ class SignInWithEmailScreen extends ConsumerStatefulWidget {
 class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final padding = MediaQuery.of(context).padding;
-
     return GestureDetector(
       onTap: () => unFocus(context),
       child: Scaffold(
@@ -59,17 +58,17 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                 const VerticalSpace(32),
                 Row(
                   children: [
-                    const Expanded(
-                      child: AppButton(
+                    Expanded(
+                      child: AppSecondaryButton(
                         title: SignInStrings.usePhone,
-                        color: AppColors.cF5F5F5,
-                        titleColor: AppColors.onBackgroundLight,
-                        showBorder: true,
+                        onTap: () {
+                          AppNav.goRouter.pushReplacement(RtNm.signInWithPhoneScreen);
+                        },
                       ),
                     ),
                     const HorizontalSpace(AppValues.paddingMedium),
                     Expanded(
-                      child: AppButton(
+                      child: AppPrimaryButton(
                         title: SignInStrings.continuee,
                         onTap: () async {
                           AppNav.goRouter.push(RtNm.signInLoadingScreen);
@@ -81,62 +80,7 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                   ],
                 ),
                 const VerticalSpace(82),
-                RichText(
-                  text: TextSpan(
-                    style: s12W400(context),
-                    children: [
-                      const TextSpan(text: 'By tapping “Continue” you agree to the '),
-                      TextSpan(
-                        text: 'Terms and Conditions',
-                        style: s12W400(context).copyWith(
-                          color: isLightTheme(context)
-                              ? AppColors.onBackgroundLight
-                              : AppColors.onBackgroundDark,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // Handle Terms and Conditions tap
-                            print('Tapped Terms and Conditions');
-                          },
-                      ),
-                      const TextSpan(text: ', '),
-                      TextSpan(
-                        text: 'E-Consents',
-                        style: s12W400(context).copyWith(
-                          color: isLightTheme(context)
-                              ? AppColors.onBackgroundLight
-                              : AppColors.onBackgroundDark,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // Handle E-Consents tap
-                            print('Tapped E-Consents');
-                          },
-                      ),
-                      TextSpan(
-                        text: ' and ',
-                        style: s12W400(context),
-                      ),
-                      TextSpan(
-                        text: 'Privacy Policy',
-                        style: s12W400(context).copyWith(
-                          color: isLightTheme(context)
-                              ? AppColors.onBackgroundLight
-                              : AppColors.onBackgroundDark,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // Handle Privacy Policy tap
-                            print('Tapped Privacy Policy');
-                          },
-                      ),
-                      TextSpan(
-                        text: ' of Amex On Chain.',
-                        style: s12W400(context),
-                      ),
-                    ],
-                  ),
-                ),
+                const UserConsentText(),
                 const VerticalSpace(40),
               ],
             ),

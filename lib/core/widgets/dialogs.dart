@@ -6,7 +6,7 @@ import '../../infrastructure/navigation/app_nav.dart';
 import '../resources/app_colors.dart';
 import '../resources/app_values.dart';
 import '../utils/sizebox_util.dart';
-import 'buttons/app_button.dart';
+import 'buttons/app_primary_button.dart';
 import 'texts/title_text.dart';
 
 Future<void> showSuccessDialog({
@@ -112,7 +112,7 @@ Future<void> statusDialogBase({
                 ],
               ),
               const VerticalSpace(AppValues.paddingLarge + AppValues.paddingMedium),
-              AppButton(
+              AppPrimaryButton(
                 title: 'Done',
                 color: AppColors.primaryLight,
                 verticalPadding: AppValues.paddingMedium - 4,
@@ -190,7 +190,7 @@ Future<bool> showPermissionDialog({
               Row(
                 children: [
                   Expanded(
-                    child: AppButton(
+                    child: AppPrimaryButton(
                       title: 'Cancel',
                       // color: AppColors.yellowGreen,
                       verticalPadding: AppValues.paddingMedium - 4,
@@ -207,7 +207,7 @@ Future<bool> showPermissionDialog({
                   ),
                   const HorizontalSpace(AppValues.paddingSmall),
                   Expanded(
-                    child: AppButton(
+                    child: AppPrimaryButton(
                       title: 'Yes',
                       color: AppColors.primaryLight,
                       verticalPadding: AppValues.paddingMedium - 4,

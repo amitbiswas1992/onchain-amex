@@ -5,7 +5,7 @@ import '../../resources/app_values.dart';
 import '../../utils/sizebox_util.dart';
 import '../texts/text_styles.dart';
 
-class AppButton extends StatelessWidget {
+class AppPrimaryButton extends StatelessWidget {
   final String title;
   final Color? color;
   final Function()? onTap;
@@ -18,7 +18,7 @@ class AppButton extends StatelessWidget {
   final double? verticalPadding;
   final bool? showBorder;
 
-  const AppButton({
+  const AppPrimaryButton({
     super.key,
     required this.title,
     this.color,
@@ -44,7 +44,7 @@ class AppButton extends StatelessWidget {
             ? EdgeInsets.symmetric(vertical: verticalPadding ?? AppValues.buttonVerticalPadding)
             : EdgeInsets.symmetric(
                 horizontal: 24,
-                vertical: verticalPadding ?? AppValues.buttonVerticalPadding,
+                vertical: (verticalPadding ?? AppValues.buttonVerticalPadding) - (showBorder == true ? 2 : 0),
               ),
         margin: horizontalMargin == null
             ? EdgeInsets.zero
@@ -55,7 +55,7 @@ class AppButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: color ?? AppColors.primaryLight,
           borderRadius: BorderRadius.circular(radius ?? 8),
-          border: showBorder == true ? Border.all(color: AppColors.borderColor) : null,
+          border: showBorder == true ? Border.all(color: AppColors.borderColor, width: 1) : null,
         ),
         child: Text(
           title,
@@ -126,6 +126,7 @@ class AppIconButton extends StatelessWidget {
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
                     color: titleColor,
+                    fontFamily: interFontFamily,
                   ),
             ),
           ],

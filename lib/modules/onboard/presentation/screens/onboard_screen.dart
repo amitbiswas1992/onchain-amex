@@ -6,7 +6,7 @@ import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
-import '../../../../core/widgets/buttons/app_button.dart';
+import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/app_text_utton.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
@@ -95,7 +95,7 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                       final page = ref.watch(onboardPageProvider);
 
                       if (page == 2) {
-                        return AppButton(
+                        return AppPrimaryButton(
                           title: getStarted,
                           onTap: () {
                             AppNav.goRouter.go(RtNm.signInWithEmailScreen);
