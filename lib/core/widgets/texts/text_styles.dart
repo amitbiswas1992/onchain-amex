@@ -102,7 +102,7 @@ TextStyle s24W500(BuildContext context, {String? fontFamily}) {
     fontFamily: fontFamily ?? segoeProFontFamily,
     fontSize: 24,
     fontWeight: FontWeight.w500,
-    color: isLightTheme(context) ? AppColors.onSurfaceLight : AppColors.onSurfaceDark,
+    color: isLightTheme(context) ? AppColors.onBackgroundLight : AppColors.onBackgroundDark,
     letterSpacing: 0,
     height: 1,
   );

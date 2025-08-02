@@ -14,7 +14,7 @@ class AppValues {
 
   static const chartBarWidth = 9.0;
 
-  static const buttonVerticalPadding = 14.0;
+  static const buttonVerticalPadding = 15.0;
 
   static const maxAllowedFileCount = 5;
 }

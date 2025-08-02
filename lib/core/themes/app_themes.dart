@@ -94,7 +94,7 @@ class AppThemes {
       error: AppColors.errorLight,
       onPrimary: AppColors.onPrimaryLight,
       onSecondary: AppColors.onSecondaryLight,
-      onSurface: AppColors.onSurfaceLight,
+      onSurface: AppColors.onBackgroundLight,
       onError: AppColors.onErrorLight,
     ),
     iconTheme: const IconThemeData(
@@ -144,7 +144,7 @@ class AppThemes {
       error: AppColors.errorDark,
       onPrimary: AppColors.onPrimaryDark,
       onSecondary: AppColors.onSecondaryDark,
-      onSurface: AppColors.onSurfaceDark,
+      onSurface: AppColors.onBackgroundDark,
       onError: AppColors.onErrorDark,
     ),
   );

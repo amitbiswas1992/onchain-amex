@@ -9,6 +9,8 @@ import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/buttons/app_button.dart';
 import '../../../../core/widgets/buttons/app_text_utton.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../splash/presentation/providers/onboard_providers.dart';
 import '../../../splash/presentation/resources/onboard_strings.dart';
 import '../../../splash/presentation/widgets/onboard_content.dart';
@@ -40,7 +42,9 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                 child: AppTextButton(
                   text: 'SKIP',
                   textStyle: s14W600(context),
-                  onPressed: () {},
+                  onPressed: () {
+                    AppNav.goRouter.go(RtNm.signInWithEmailScreen);
+                  },
                 ),
               ),
             ),
@@ -94,7 +98,7 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                         return AppButton(
                           title: getStarted,
                           onTap: () {
-                            // navigate to login screen
+                            AppNav.goRouter.go(RtNm.signInWithEmailScreen);
                           },
                         );
                       }

@@ -16,6 +16,7 @@ class AppButton extends StatelessWidget {
   final bool? isExpanded;
   final double? horizontalMargin;
   final double? verticalPadding;
+  final bool? showBorder;
 
   const AppButton({
     super.key,
@@ -29,6 +30,7 @@ class AppButton extends StatelessWidget {
     this.isExpanded,
     this.horizontalMargin,
     this.verticalPadding,
+    this.showBorder,
   });
 
   @override
@@ -51,8 +53,9 @@ class AppButton extends StatelessWidget {
               ),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: AppColors.primaryLight,
+          color: color ?? AppColors.primaryLight,
           borderRadius: BorderRadius.circular(radius ?? 8),
+          border: showBorder == true ? Border.all(color: AppColors.borderColor) : null,
         ),
         child: Text(
           title,
@@ -60,7 +63,7 @@ class AppButton extends StatelessWidget {
           // overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
           style: titleStyle ??
-              s16W500(context).copyWith(color: AppColors.backgroundLight),
+              s16W500(context).copyWith(color: titleColor ?? AppColors.backgroundLight),
         ),
       ),
     );

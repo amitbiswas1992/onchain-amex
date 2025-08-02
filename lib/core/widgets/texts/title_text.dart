@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 
+import 'text_styles.dart';
+
 class TitleText extends StatelessWidget {
   final String text;
   final Color? color;
   final TextAlign? textAlign;
-  final bool? infiniteMaxLen;
+  final int? maxLine;
+  final TextOverflow? textOverflow;
 
   const TitleText({
     super.key,
     required this.text,
     this.color,
     this.textAlign,
-    this.infiniteMaxLen,
+    this.maxLine,
+    this.textOverflow,
   });
 
   @override
@@ -19,13 +23,9 @@ class TitleText extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign,
-      maxLines: infiniteMaxLen == true ? null : 1,
-      overflow: infiniteMaxLen == true ? null : TextOverflow.ellipsis,
-      style: TextStyle(
-        color: color,
-        fontSize: 24,
-        fontWeight: FontWeight.w700,
-      ),
+      maxLines: maxLine,
+      overflow: textOverflow,
+      style: s24W500(context).copyWith(color: color),
     );
   }
 }
