@@ -74,7 +74,7 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                         onTap: () async {
                           AppNav.goRouter.push(RtNm.signInLoadingScreen);
                           await Future.delayed(const Duration(seconds: 5));
-                          // AppNav.navKey.currentState?.pop();
+                          AppNav.navKey.currentState?.pop();
                         },
                       ),
                     ),

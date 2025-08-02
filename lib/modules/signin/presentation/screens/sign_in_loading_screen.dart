@@ -10,21 +10,24 @@ class SignInLoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
-        children: [
-          AmexTextAppBar(),
-          // VerticalSpace(68),
-          Expanded(
-            child: Center(
-              child: SpinKitFadingCube(
-                color: AppColors.primaryVariantLight,
-                size: 24,
-                duration: const Duration(milliseconds: 300),
+    return const PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: Column(
+          children: [
+            AmexTextAppBar(),
+            // VerticalSpace(68),
+            Expanded(
+              child: Center(
+                child: SpinKitFadingCube(
+                  color: AppColors.primaryVariantLight,
+                  size: 24,
+                  duration: Duration(seconds: 1),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
