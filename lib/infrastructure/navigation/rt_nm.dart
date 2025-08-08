@@ -10,4 +10,5 @@ class RtNm {
   static const signInLoadingScreen = '/sign-in-loading-screen';
   static const inviteFriendScreen = '/invite-friend-screen';
   static const inviteCodeInputScreen = '/invite-code-input-screen';
+  static const invitationSuccessScreen = '/invitation-success-screen';
 }

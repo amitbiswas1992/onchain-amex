@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../modules/invite_friend/presentation/screens/invite_code_input_screen.dart';
+import '../../modules/invite_friend/presentation/screens/invitation_code_input_screen.dart';
+import '../../modules/invite_friend/presentation/screens/invitation_success_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invite_friend_screen.dart';
 import '../../modules/onboard/presentation/screens/onboard_screen.dart';
 import '../../modules/signin/presentation/screens/otp_input_screen.dart';
@@ -127,7 +128,14 @@ class AppNav {
     GoRoute(
       path: RtNm.inviteCodeInputScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const InviteCodeInputScreen(),
+        const InvitationCodeInputScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.invitationSuccessScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const InvitationSuccessScreen(),
         state,
       ),
     ),
