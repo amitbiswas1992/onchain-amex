@@ -11,4 +11,11 @@ class RtNm {
   static const inviteFriendScreen = '/invite-friend-screen';
   static const inviteCodeInputScreen = '/invite-code-input-screen';
   static const invitationSuccessScreen = '/invitation-success-screen';
+
+  static const homeScreen = '/home-screen';
+  static const cardsScreen = '/cards-screen';
+  static const spendScreen = '/spend-screen';
+  static const transactionsScreen = '/transactions-screen';
+  static const moreScreen = '/more-screen';
+
 }

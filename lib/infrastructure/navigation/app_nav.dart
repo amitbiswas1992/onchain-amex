@@ -49,8 +49,8 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    // initialLocation: RtNm.splashScreen,
-    initialLocation: RtNm.inviteFriendScreen,
+    initialLocation: RtNm.splashScreen,
+    // initialLocation: RtNm.inviteFriendScreen,
     routes: [
       ..._authRoutes,
       ...inviteFriendRoutes,
