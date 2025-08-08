@@ -99,7 +99,7 @@ class AppTextFormField extends StatelessWidget {
           contentPadding: contentPadding ??
               const EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: 12,
+                vertical: 16,
               ),
           errorStyle: TextStyle(
             color: errorColor ?? theme.colorScheme.error,

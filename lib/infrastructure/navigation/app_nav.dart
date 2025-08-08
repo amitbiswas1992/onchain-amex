@@ -2,10 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../modules/invite_friend/presentation/screens/invite_code_input_screen.dart';
+import '../../modules/invite_friend/presentation/screens/invite_friend_screen.dart';
 import '../../modules/onboard/presentation/screens/onboard_screen.dart';
+import '../../modules/signin/presentation/screens/otp_input_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_email_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_phone_screen.dart';
+import '../../modules/signin/presentation/screens/user_info_input_screen.dart';
 import '../../modules/splash/presentation/screens/nowhere_screen.dart';
 import '../../modules/splash/presentation/screens/splash_screen.dart';
 import 'rt_nm.dart';
@@ -44,9 +48,11 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation: RtNm.splashScreen,
+    // initialLocation: RtNm.splashScreen,
+    initialLocation: RtNm.inviteFriendScreen,
     routes: [
       ..._authRoutes,
+      ...inviteFriendRoutes,
     ],
   );
 
@@ -94,6 +100,36 @@ class AppNav {
         state,
       ),
     ),
+    GoRoute(
+      path: RtNm.otpInputScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const OtpInputScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.userInfoInputScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const UserInfoInputScreen(),
+        state,
+      ),
+    ),
+  ];
 
+  static final inviteFriendRoutes = [
+    GoRoute(
+      path: RtNm.inviteFriendScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const InviteFriendScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.inviteCodeInputScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const InviteCodeInputScreen(),
+        state,
+      ),
+    ),
   ];
 }

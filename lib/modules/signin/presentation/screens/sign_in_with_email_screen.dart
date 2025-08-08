@@ -13,6 +13,7 @@ import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../controllers/sign_in_controller.dart';
 import '../resources/signin_strings.dart';
 import '../widgets/amex_text_app_bar.dart';
 import '../widgets/user_consent_text.dart';
@@ -25,6 +26,15 @@ class SignInWithEmailScreen extends ConsumerStatefulWidget {
 }
 
 class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
+
+  late final SignInController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = SignInController(context: context, ref: ref);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -71,9 +81,7 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                       child: AppPrimaryButton(
                         title: SignInStrings.continuee,
                         onTap: () async {
-                          AppNav.goRouter.push(RtNm.signInLoadingScreen);
-                          await Future.delayed(const Duration(seconds: 5));
-                          AppNav.navKey.currentState?.pop();
+                          _controller.signIn();
                         },
                       ),
                     ),

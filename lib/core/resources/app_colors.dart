@@ -42,4 +42,5 @@ class AppColors {
   static const borderColor = Color(0x290E0F11);
   static const cAFBACA = Color(0xFFAFBACA);
   static const cF5F5F5 = Color(0xFFF5F5F5);
+  static const jungleGreen = Color(0xFF11A75C);
 }

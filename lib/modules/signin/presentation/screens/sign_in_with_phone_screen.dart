@@ -16,6 +16,7 @@ import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../controllers/sign_in_controller.dart';
 import '../providers/sign_in_providers.dart';
 import '../resources/signin_strings.dart';
 import '../widgets/amex_text_app_bar.dart';
@@ -29,6 +30,15 @@ class SignInWithPhoneScreen extends ConsumerStatefulWidget {
 }
 
 class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
+
+  late final SignInController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = SignInController(context: context, ref: ref);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -82,9 +92,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                       child: AppPrimaryButton(
                         title: SignInStrings.continuee,
                         onTap: () async {
-                          AppNav.goRouter.push(RtNm.signInLoadingScreen);
-                          await Future.delayed(const Duration(seconds: 5));
-                          AppNav.navKey.currentState?.pop();
+                          _controller.signIn();
                         },
                       ),
                     ),
