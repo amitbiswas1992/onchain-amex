@@ -9,6 +9,8 @@ import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/image_title_subtitle_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../signin/presentation/resources/signin_strings.dart';
 import '../resources/invite_strings.dart';
 
@@ -33,7 +35,9 @@ class _InvitationSuccessScreenState extends ConsumerState<InvitationSuccessScree
           title: InviteStrings.congratulations,
           subTitle: InviteStrings.willBeAddedToYourAccountShortly,
           buttonTitle: SignInStrings.continuee,
-          onButtonTap: () {},
+          onButtonTap: () {
+            AppNav.goRouter.go(RtNm.homeScreen);
+          },
         ),
       ),
     );

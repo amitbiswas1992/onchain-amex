@@ -118,3 +118,12 @@ TextStyle s17W400(BuildContext context, {String? fontFamily}) {
     color: isLightTheme(context) ? AppColors.onBackgroundLight : AppColors.onBackgroundDark,
   );
 }
+
+TextStyle s11W700(BuildContext context, {String? fontFamily}) {
+  return TextStyle(
+    fontFamily: fontFamily ?? segoeProFontFamily,
+    fontSize: 11,
+    fontWeight: FontWeight.w700,
+    color: isLightTheme(context) ? AppColors.onBackgroundLight : AppColors.onBackgroundDark,
+  );
+}

@@ -2,17 +2,24 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path/path.dart';
+import '../../modules/cards/presentation/screens/cards_screen.dart';
+import '../../modules/home/presentation/screens/home_screen.dart';
+import '../../modules/home/presentation/screens/shell_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_code_input_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_success_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invite_friend_screen.dart';
+import '../../modules/more/presentation/screens/more_screen.dart';
 import '../../modules/onboard/presentation/screens/onboard_screen.dart';
 import '../../modules/signin/presentation/screens/otp_input_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_email_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/user_info_input_screen.dart';
+import '../../modules/spends/presentation/screens/spends_screen.dart';
 import '../../modules/splash/presentation/screens/nowhere_screen.dart';
 import '../../modules/splash/presentation/screens/splash_screen.dart';
+import '../../modules/transactions/presentation/screens/transactions_screen.dart';
 import 'rt_nm.dart';
 
 class AppNav {
@@ -49,9 +56,9 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation: RtNm.splashScreen,
-    // initialLocation: RtNm.inviteFriendScreen,
+    initialLocation: RtNm.homeScreen,
     routes: [
+      _shellRoutes,
       ..._authRoutes,
       ...inviteFriendRoutes,
     ],
@@ -140,4 +147,53 @@ class AppNav {
       ),
     ),
   ];
+
+  static final _shellRoutes = ShellRoute(
+    navigatorKey: shellNavKey,
+    builder: (context, state, child) {
+      return ShellScreen(child: child);
+    },
+    routes: [
+      GoRoute(
+        path: RtNm.homeScreen,
+        // builder: (_, __) => const HomeScreen(),
+        pageBuilder: (context, state) => fadeTransitionPageBuilder(
+          const HomeScreen(),
+          state,
+        ),
+      ),
+      GoRoute(
+        path: RtNm.cardsScreen,
+        // builder: (_, __) => const EssentialsScreen(),
+        pageBuilder: (context, state) => fadeTransitionPageBuilder(
+          const CardsScreen(),
+          state,
+        ),
+      ),
+      GoRoute(
+        path: RtNm.spendScreen,
+        // builder: (_, __) => const InboxScreen(),
+        pageBuilder: (context, state) => fadeTransitionPageBuilder(
+          const SpendsScreen(),
+          state,
+        ),
+      ),
+      GoRoute(
+        path: RtNm.transactionsScreen,
+        // builder: (_, __) => const ActivityScreen(),
+        pageBuilder: (context, state) => fadeTransitionPageBuilder(
+          const TransactionsScreen(),
+          state,
+        ),
+      ),
+      GoRoute(
+        path: RtNm.moreScreen,
+        // builder: (_, __) => const SettingsScreen(),
+        pageBuilder: (context, state) => fadeTransitionPageBuilder(
+          const MoreScreen(),
+          state,
+        ),
+      ),
+    ],
+  );
 }

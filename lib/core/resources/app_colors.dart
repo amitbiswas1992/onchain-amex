@@ -14,7 +14,7 @@ class AppColors {
   static const onPrimaryLight = Color(0xFFFFFFFF);
   static const onSecondaryLight = Color(0xFF000000);
   static const onBackgroundLight = Color(0xFF000000);
-  static const onSurfaceLight = Color(0xFF2B2B2B);
+  static const onSurfaceLight = Color(0xFF000000);
   static const onErrorLight = Color(0xFFFFFFFF);
 
   // Dark theme colors
