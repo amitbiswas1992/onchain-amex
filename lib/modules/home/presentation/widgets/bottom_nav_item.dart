@@ -49,6 +49,8 @@ class BottomNavItem extends StatelessWidget {
           const VerticalSpace(AppValues.paddingSmall),
           Text(
             label,
+            maxLines: 1,
+            textAlign: TextAlign.center,
             style: s11W700(context).copyWith(
               color: isLightThem
                   ? (isSelected ? Colors.black : AppColors.c757575)

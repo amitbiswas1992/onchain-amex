@@ -61,46 +61,56 @@ class _ShellScreenState extends ConsumerState<ShellScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                BottomNavItem(
-                  label: 'Home',
-                  svgPath: 'assets/icons/bottom_nav/home.svg',
-                  isSelected: selectedIndex == 0,
-                  onItemTap: () {
-                    _onItemTapped(0);
-                  },
+                Expanded(
+                  child: BottomNavItem(
+                    label: 'Home',
+                    svgPath: 'assets/icons/bottom_nav/home.svg',
+                    isSelected: selectedIndex == 0,
+                    onItemTap: () {
+                      _onItemTapped(0);
+                    },
+                  ),
                 ),
-                BottomNavItem(
-                  label: 'Cards',
-                  svgPath: 'assets/icons/bottom_nav/cards.svg',
-                  isSelected: selectedIndex == 1,
-                  onItemTap: () {
-                    _onItemTapped(1);
-                  },
+                Expanded(
+                  child: BottomNavItem(
+                    label: 'Cards',
+                    svgPath: 'assets/icons/bottom_nav/cards.svg',
+                    isSelected: selectedIndex == 1,
+                    onItemTap: () {
+                      _onItemTapped(1);
+                    },
+                  ),
                 ),
-                BottomNavItem(
-                  label: 'Spends',
-                  svgPath: 'assets/icons/bottom_nav/spends.svg',
-                  isSelected: selectedIndex == 2,
-                  largeIcon: true,
-                  onItemTap: () {
-                    _onItemTapped(2);
-                  },
+                Expanded(
+                  child: BottomNavItem(
+                    label: 'Spends',
+                    svgPath: 'assets/icons/bottom_nav/spends.svg',
+                    isSelected: selectedIndex == 2,
+                    largeIcon: true,
+                    onItemTap: () {
+                      _onItemTapped(2);
+                    },
+                  ),
                 ),
-                BottomNavItem(
-                  label: 'Transactions',
-                  svgPath: 'assets/icons/bottom_nav/transactions.svg',
-                  isSelected: selectedIndex == 3,
-                  onItemTap: () {
-                    _onItemTapped(3);
-                  },
+                Expanded(
+                  child: BottomNavItem(
+                    label: 'Transactions',
+                    svgPath: 'assets/icons/bottom_nav/transactions.svg',
+                    isSelected: selectedIndex == 3,
+                    onItemTap: () {
+                      _onItemTapped(3);
+                    },
+                  ),
                 ),
-                BottomNavItem(
-                  label: 'More',
-                  svgPath: 'assets/icons/bottom_nav/more.svg',
-                  isSelected: selectedIndex == 4,
-                  onItemTap: () {
-                    _onItemTapped(4);
-                  },
+                Expanded(
+                  child: BottomNavItem(
+                    label: 'More',
+                    svgPath: 'assets/icons/bottom_nav/more.svg',
+                    isSelected: selectedIndex == 4,
+                    onItemTap: () {
+                      _onItemTapped(4);
+                    },
+                  ),
                 ),
               ],
             ),
