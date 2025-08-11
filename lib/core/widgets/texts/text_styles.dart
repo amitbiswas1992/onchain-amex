@@ -128,6 +128,15 @@ TextStyle s11W700(BuildContext context, {String? fontFamily}) {
   );
 }
 
+TextStyle s11W600(BuildContext context, {String? fontFamily}) {
+  return TextStyle(
+    fontFamily: fontFamily ?? segoeProFontFamily,
+    fontSize: 11,
+    fontWeight: FontWeight.w700,
+    color: isLightTheme(context) ? AppColors.c757575 : AppColors.onBackgroundDark,
+  );
+}
+
 // s54w600
 TextStyle s54w600(BuildContext context, {String? fontFamily}) {
   return TextStyle(

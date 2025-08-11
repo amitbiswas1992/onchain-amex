@@ -54,7 +54,7 @@ class LatestTransactionTile extends StatelessWidget {
                 const VerticalSpace(6),
                 Text(
                   latestTransaction.date ?? '',
-                  style: s11W700(context),
+                  style: s11W600(context),
                 ),
               ],
             ),
