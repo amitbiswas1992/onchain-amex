@@ -5,12 +5,9 @@ import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
-import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/containers/app_card.dart';
-import '../../../../core/widgets/texts/large_number_text.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
-import '../../../invite_friend/presentation/resources/invite_strings.dart';
 import '../../data/models/latest_transaction.dart';
 import '../resources/home_strings.dart';
 import '../widgets/home_app_bar.dart';
@@ -118,7 +115,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             decorationColor: AppColors.primaryVariantLight,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   const VerticalSpace(20),

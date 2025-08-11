@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../../core/resources/app_colors.dart';
-import '../../../../core/utils/sizebox_util.dart';
 import '../widgets/amex_text_app_bar.dart';
 
 class SignInLoadingScreen extends StatelessWidget {

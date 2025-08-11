@@ -33,7 +33,7 @@ class PrimaryAppBar extends StatelessWidget implements PreferredSizeWidget {
             onTap: onLeadingPressed ?? () {
               AppNav.goRouter.pop();
             },
-            child: Container(
+            child: SizedBox(
               height: double.infinity,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,

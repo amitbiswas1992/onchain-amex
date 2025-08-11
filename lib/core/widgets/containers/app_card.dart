@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../resources/app_values.dart';
 
 class AppCard extends StatelessWidget {
   final Widget child;

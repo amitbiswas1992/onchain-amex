@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../modules/invite_friend/presentation/resources/invite_strings.dart';
-import '../../modules/signin/presentation/resources/signin_strings.dart';
 import '../resources/app_values.dart';
 import '../utils/sizebox_util.dart';
 import 'buttons/app_primary_button.dart';

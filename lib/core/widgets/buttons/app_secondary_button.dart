@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../resources/app_colors.dart';
 import '../../resources/app_values.dart';
 import '../../utils/functions.dart';
-import '../../utils/sizebox_util.dart';
 import '../texts/text_styles.dart';
 
 class AppSecondaryButton extends StatelessWidget {

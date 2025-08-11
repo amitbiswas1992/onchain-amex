@@ -35,7 +35,7 @@ class _SpendsScreenState extends ConsumerState<SpendsScreen> with TickerProvider
         children: [
           VerticalSpace(padding.top),
           const VerticalSpace(AppValues.paddingMedium),
-          TabBar(
+          const TabBar(
             tabs: [
               Tab(
                 text: "",

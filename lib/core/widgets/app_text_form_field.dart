@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../resources/app_colors.dart';
-import '../resources/app_values.dart';
-import '../utils/sizebox_util.dart';
 import 'texts/text_styles.dart';
 
 class AppTextFormField extends StatelessWidget {

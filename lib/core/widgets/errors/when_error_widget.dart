@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../resources/app_colors.dart';
 import '../../resources/app_values.dart';
 import '../../utils/sizebox_util.dart';
-import '../texts/text_styles.dart';
 
 class WhenErrorWidget extends StatelessWidget {
   final Object? error;

@@ -25,7 +25,7 @@ class UserConsentText extends StatelessWidget {
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 // Handle Terms and Conditions tap
-                print('Tapped Terms and Conditions');
+                // print('Tapped Terms and Conditions');
               },
           ),
           const TextSpan(text: ', '),
@@ -39,7 +39,7 @@ class UserConsentText extends StatelessWidget {
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 // Handle E-Consents tap
-                print('Tapped E-Consents');
+                // print('Tapped E-Consents');
               },
           ),
           TextSpan(
@@ -56,7 +56,7 @@ class UserConsentText extends StatelessWidget {
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 // Handle Privacy Policy tap
-                print('Tapped Privacy Policy');
+                // print('Tapped Privacy Policy');
               },
           ),
           TextSpan(

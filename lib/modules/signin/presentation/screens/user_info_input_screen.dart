@@ -24,8 +24,8 @@ class _UserInfoInputScreenState extends ConsumerState<UserInfoInputScreen> {
 
   final _firstNameNode = FocusNode();
   final _lastNameNode = FocusNode();
-  String _firstName = '';
-  String _lastName = '';
+  final String _firstName = '';
+  final String _lastName = '';
 
 
   @override

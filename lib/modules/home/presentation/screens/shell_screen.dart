@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 
-import '../../../../core/resources/app_colors.dart';
-import '../../../../core/resources/app_values.dart';
-import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
-import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../providers/home_providers.dart';

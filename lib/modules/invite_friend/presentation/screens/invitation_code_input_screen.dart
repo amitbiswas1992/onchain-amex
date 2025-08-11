@@ -25,7 +25,7 @@ class _InviteCodeInputScreenState extends ConsumerState<InvitationCodeInputScree
 
   final _formKey = GlobalKey<FormState>();
   final _codeNode = FocusNode();
-  String _code = '';
+  final String _code = '';
 
   @override
   void dispose() {

@@ -44,7 +44,7 @@ class BottomNavItem extends StatelessWidget {
                     isLightThem
                         ? (isSelected ? Colors.black : AppColors.c757575)
                         : (isSelected ? Colors.white : AppColors.cAFBACA),
-                    BlendMode.srcIn),
+                    BlendMode.srcIn,),
           ),
           const VerticalSpace(AppValues.paddingSmall),
           Text(

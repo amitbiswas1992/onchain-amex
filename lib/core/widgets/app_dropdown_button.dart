@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../resources/app_colors.dart';
-import '../resources/app_values.dart';
 
 class AppDropDownButton<T> extends StatelessWidget {
   final List<T> items;

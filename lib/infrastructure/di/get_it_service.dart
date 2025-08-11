@@ -1,4 +1,3 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../core/services/secured_storage_service.dart';
 import 'package:get_it/get_it.dart';

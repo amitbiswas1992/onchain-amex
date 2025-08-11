@@ -5,7 +5,7 @@ import 'package:photo_view/photo_view.dart';
 class PhotoViewScreen extends StatelessWidget {
   final File file;
 
-  const PhotoViewScreen({Key? key, required this.file}) : super(key: key);
+  const PhotoViewScreen({super.key, required this.file});
 
   @override
   Widget build(BuildContext context) {
