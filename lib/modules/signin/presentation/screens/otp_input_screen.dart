@@ -48,24 +48,24 @@ class _OtpInputScreenState extends State<OtpInputScreen> {
                 const AmexTextAppBar(),
                 const VerticalSpace(68),
                 const TitleText(
-                  text: SignInStrings.enterTheCode,
+                  text: enterTheCode,
                   textAlign: TextAlign.start,
                 ),
                 const VerticalSpace(AppValues.paddingMedium),
                 Text(
-                  SignInStrings.weHaveSentACodeTo,
+                  weHaveSentACodeTo,
                   style: s14W400(context),
                 ),
                 const VerticalSpace(AppValues.paddingMedium),
                 AppTextFormField(
                   focusNode: _otpNode,
                   controller: _otpController,
-                  hintText: SignInStrings.confirmationCode,
+                  hintText: confirmationCode,
                 ),
                 const Expanded(child: SizedBox()),
                 SafeArea(
                   child: AppPrimaryButton(
-                    title: SignInStrings.continuee,
+                    title: continuee,
                     onTap: () {
                       AppNav.goRouter.pop(_otpController.text);
                     },

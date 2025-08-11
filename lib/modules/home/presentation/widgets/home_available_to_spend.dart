@@ -20,7 +20,7 @@ class HomeAvailableToSpend extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(HomeStrings.availableToSPend),
+          const Text(availableToSPend),
           const VerticalSpace(AppValues.paddingSmall),
           const LargeNumberText(text: '475.65', fontSize: 34),
           const VerticalSpace(AppValues.paddingMedium),
@@ -28,7 +28,7 @@ class HomeAvailableToSpend extends StatelessWidget {
             children: [
               Expanded(
                 child: AppSecondaryButton(
-                  title: HomeStrings.add,
+                  title: add,
                   showBorder: false,
                   deepColor: true,
                   rounded: true,
@@ -38,7 +38,7 @@ class HomeAvailableToSpend extends StatelessWidget {
               const HorizontalSpace(AppValues.paddingMedium),
               Expanded(
                 child: AppSecondaryButton(
-                  title: HomeStrings.repay,
+                  title: repay,
                   showBorder: false,
                   deepColor: true,
                   rounded: true,

@@ -51,7 +51,7 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                 const AmexTextAppBar(),
                 const VerticalSpace(68),
                 const TitleText(
-                  text: SignInStrings.letsGetYpuSignedIn,
+                  text: letsGetYpuSignedIn,
                   textAlign: TextAlign.start,
                 ),
                 const VerticalSpace(AppValues.paddingMedium),
@@ -60,7 +60,7 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                     Icons.email_outlined,
                     size: 20,
                   ),
-                  hintText: SignInStrings.yourEmailAddress,
+                  hintText: yourEmailAddress,
                   maxLines: 1,
                   keyboardType: TextInputType.emailAddress,
                   autoFocus: true,
@@ -70,7 +70,7 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                   children: [
                     Expanded(
                       child: AppSecondaryButton(
-                        title: SignInStrings.usePhone,
+                        title: usePhone,
                         onTap: () {
                           AppNav.goRouter.pushReplacement(RtNm.signInWithPhoneScreen);
                         },
@@ -79,7 +79,7 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                     const HorizontalSpace(AppValues.paddingMedium),
                     Expanded(
                       child: AppPrimaryButton(
-                        title: SignInStrings.continuee,
+                        title: continuee,
                         onTap: () async {
                           _controller.signIn();
                         },

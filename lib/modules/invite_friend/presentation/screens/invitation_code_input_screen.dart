@@ -50,20 +50,20 @@ class _InviteCodeInputScreenState extends ConsumerState<InvitationCodeInputScree
               children: [
                 const VerticalSpace(20),
                 const TitleText(
-                  text: InviteStrings.enterTheValidationCode,
+                  text: enterTheValidationCode,
                 ),
                 const VerticalSpace(AppValues.paddingMedium),
                 Text(
-                  InviteStrings.youWillGetAsInvitationGift,
+                  youWillGetAsInvitationGift,
                   style: s14W400(context),
                 ),
                 const VerticalSpace(AppValues.paddingMedium),
                 AppTextFormField(
                   focusNode: _codeNode,
-                  hintText: InviteStrings.invitationCode,
+                  hintText: invitationCode,
                 ),
                 const Expanded(child: SizedBox()),
-                AppPrimaryButton(title: SignInStrings.continuee, onTap: () {
+                AppPrimaryButton(title: continuee, onTap: () {
                   AppNav.goRouter.push(RtNm.invitationSuccessScreen);
                 },),
                 const VerticalSpace(AppValues.paddingLarge),

@@ -26,7 +26,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  final latestTransactions = [
+  final _latestTransactions = [
     LatestTransaction(
       title: 'Starbucks',
       address: '0xuywet7687y8jhw876hhbtxa3456',
@@ -74,7 +74,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
+              padding: const EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
               child: Column(
                 children: [
                   VerticalSpace(padding.top),
@@ -103,12 +103,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   const VerticalSpace(20),
                   Row(
                     children: [
-                      const TitleText(text: HomeStrings.latestTransactions),
+                      const TitleText(text:  latestTransactions),
                       const Spacer(),
                       InkResponse(
                         onTap: () {},
                         child: Text(
-                          HomeStrings.seeAll,
+                           seeAll,
                           style: s14W600(
                             context,
                             fontFamily: interFontFamily,
@@ -129,7 +129,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       return LatestTransactionTile(
-                        latestTransaction: latestTransactions[index],
+                        latestTransaction: _latestTransactions[index],
                       );
                     },
                   ),

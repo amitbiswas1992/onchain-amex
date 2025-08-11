@@ -17,7 +17,7 @@ class AmexTextAppBar extends StatelessWidget {
         VerticalSpace(padding.top + AppValues.paddingLarge + AppValues.paddingMedium),
         Center(
           child: Text(
-            SignInStrings.amex,
+            amex,
             textAlign: TextAlign.center,
             style: s32W600(context).copyWith(color: AppColors.primaryVariantLight),
           ),

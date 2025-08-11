@@ -56,28 +56,28 @@ class _UserInfoInputScreenState extends ConsumerState<UserInfoInputScreen> {
               const AmexTextAppBar(),
               const VerticalSpace(68),
               const TitleText(
-                text: SignInStrings.whatShouldICallYou,
+                text: whatShouldICallYou,
                 textAlign: TextAlign.start,
               ),
               const VerticalSpace(AppValues.paddingMedium),
               Text(
-                SignInStrings.enterYourNameWeWillCompleteKYClater,
+                enterYourNameWeWillCompleteKYClater,
                 style: s14W400(context),
               ),
               const VerticalSpace(AppValues.paddingMedium),
               AppTextFormField(
                 focusNode: _firstNameNode,
-                hintText: SignInStrings.firstName,
+                hintText: firstName,
               ),
               const VerticalSpace(AppValues.paddingMedium),
               AppTextFormField(
                 focusNode: _lastNameNode,
-                hintText: SignInStrings.lastName,
+                hintText: lastName,
               ),
               const Expanded(child: SizedBox()),
               SafeArea(
                 child: AppPrimaryButton(
-                  title: SignInStrings.continuee,
+                  title: continuee,
                   onTap: () {
                     unFocus(context);
                     AppNav.goRouter.push(RtNm.inviteFriendScreen);

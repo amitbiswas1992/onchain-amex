@@ -31,7 +31,7 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
                 SvgPicture.asset('assets/icons/usd_with_bg.svg'),
                 const VerticalSpace(AppValues.paddingSmall),
                 Text(
-                  HomeStrings.creditScore,
+                  creditScore,
                   style: s14W500(
                     context,
                     fontFamily: interFontFamily,
@@ -57,7 +57,7 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
                 SvgPicture.asset('assets/icons/star_with_bg.svg'),
                 const VerticalSpace(AppValues.paddingSmall),
                 Text(
-                  HomeStrings.xpPoints,
+                  xpPoints,
                   style: s14W500(
                     context,
                     fontFamily: interFontFamily,

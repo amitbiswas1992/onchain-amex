@@ -32,9 +32,9 @@ class _InvitationSuccessScreenState extends ConsumerState<InvitationSuccessScree
         ),
         child: ImageTitleSubtitleButton(
           assetPath: 'assets/images/invitation_success.png',
-          title: InviteStrings.congratulations,
-          subTitle: InviteStrings.willBeAddedToYourAccountShortly,
-          buttonTitle: SignInStrings.continuee,
+          title: congratulations,
+          subTitle: willBeAddedToYourAccountShortly,
+          buttonTitle: continuee,
           onButtonTap: () {
             AppNav.goRouter.go(RtNm.spendScreen);
           },

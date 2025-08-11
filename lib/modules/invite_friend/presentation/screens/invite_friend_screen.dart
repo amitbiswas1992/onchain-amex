@@ -49,7 +49,7 @@ class _InviteFriendScreenState extends ConsumerState<InviteFriendScreen> {
                     height: 24,
                     alignment: Alignment.centerRight,
                     child: Text(
-                      InviteStrings.haveAnInvitation,
+                      haveAnInvitation,
                       style: s14W500(
                         context,
                         fontFamily: interFontFamily,
@@ -69,10 +69,10 @@ class _InviteFriendScreenState extends ConsumerState<InviteFriendScreen> {
                 width: 44,
               ),
               const VerticalSpace(16),
-              const TitleText(text: InviteStrings.inviteYourFriendAndGet),
+              const TitleText(text: inviteYourFriendAndGet),
               const VerticalSpace(AppValues.paddingMedium),
               Text(
-                InviteStrings.alternativelyYouCanUseYour,
+                alternativelyYouCanUseYour,
                 style: s14W400(context),
               ),
               const VerticalSpace(AppValues.paddingSmall),
@@ -109,14 +109,14 @@ class _InviteFriendScreenState extends ConsumerState<InviteFriendScreen> {
               ),
               const Expanded(child: SizedBox()),
               AppPrimaryButton(
-                title: InviteStrings.shareLink,
+                title: shareLink,
                 onTap: () {
                   AppNav.goRouter.push(RtNm.inviteCodeInputScreen);
                 },
               ),
               const VerticalSpace(20),
               AppSecondaryButton(
-                title: InviteStrings.skip,
+                title: skip,
                 onTap: () {
                   AppNav.goRouter.push(RtNm.inviteCodeInputScreen);
                 },
