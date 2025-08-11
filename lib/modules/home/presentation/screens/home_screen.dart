@@ -120,7 +120,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   const VerticalSpace(20),
                   ListView.builder(
-                    itemCount: latestTransactions.length,
+                    itemCount: _latestTransactions.length,
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
