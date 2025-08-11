@@ -4,4 +4,6 @@ class HomeStrings {
   static const availableToSPend = 'Available to spend';
   static const add = 'Add';
   static const repay = 'Repay';
+  static const creditScore = 'Credit Score';
+  static const xpPoints = 'XP Points';
 }

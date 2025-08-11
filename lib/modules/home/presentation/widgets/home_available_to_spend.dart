@@ -1,0 +1,54 @@
+import 'package:flutter/material.dart';
+
+import '../../../../core/resources/app_values.dart';
+import '../../../../core/utils/sizebox_util.dart';
+import '../../../../core/widgets/buttons/app_secondary_button.dart';
+import '../../../../core/widgets/containers/app_card.dart';
+import '../../../../core/widgets/texts/large_number_text.dart';
+import '../resources/home_strings.dart';
+
+class HomeAvailableToSpend extends StatelessWidget {
+  const HomeAvailableToSpend({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCard(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppValues.paddingMedium,
+        vertical: 20,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(HomeStrings.availableToSPend),
+          const VerticalSpace(AppValues.paddingSmall),
+          const LargeNumberText(text: '475.65', fontSize: 34),
+          const VerticalSpace(AppValues.paddingMedium),
+          Row(
+            children: [
+              Expanded(
+                child: AppSecondaryButton(
+                  title: HomeStrings.add,
+                  showBorder: false,
+                  deepColor: true,
+                  rounded: true,
+                  onTap: () {},
+                ),
+              ),
+              const HorizontalSpace(AppValues.paddingMedium),
+              Expanded(
+                child: AppSecondaryButton(
+                  title: HomeStrings.repay,
+                  showBorder: false,
+                  deepColor: true,
+                  rounded: true,
+                  onTap: () {},
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}

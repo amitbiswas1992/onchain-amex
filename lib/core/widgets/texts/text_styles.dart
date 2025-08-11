@@ -56,7 +56,7 @@ TextStyle s14W500(BuildContext context, {String? fontFamily}) {
     fontFamily: fontFamily ?? segoeProFontFamily,
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: AppColors.c455468,
+    color: isLightTheme(context) ? AppColors.c424242 : AppColors.c757575,
     // same color for both themes
     letterSpacing: 0,
     height: 1,
