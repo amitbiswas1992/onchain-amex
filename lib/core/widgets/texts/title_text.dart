@@ -55,7 +55,7 @@ class SubTitleText extends StatelessWidget {
       style: TextStyle(
         color: color,
         fontSize: 16,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         overflow: overflow,
       ),
     );

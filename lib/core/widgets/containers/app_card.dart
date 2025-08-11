@@ -7,6 +7,7 @@ class AppCard extends StatelessWidget {
   final EdgeInsets? padding;
   final double? height;
   final double? width;
+  final double radius;
 
   const AppCard({
     super.key,
@@ -14,14 +15,16 @@ class AppCard extends StatelessWidget {
     this.padding,
     this.height,
     this.width,
+    this.radius = 15,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: .01,
+      margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(radius),
       ),
       child: Padding(
         padding: padding ?? EdgeInsets.zero,

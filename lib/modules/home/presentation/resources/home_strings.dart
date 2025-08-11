@@ -6,4 +6,6 @@ class HomeStrings {
   static const repay = 'Repay';
   static const creditScore = 'Credit Score';
   static const xpPoints = 'XP Points';
+  static const latestTransactions = 'Latest Transactions';
+  static const seeAll = 'See All';
 }

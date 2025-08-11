@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../resources/app_colors.dart';
+import '../../utils/functions.dart';
 
 class IconOuterCircle extends StatelessWidget {
   final double size;
@@ -24,7 +25,7 @@ class IconOuterCircle extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(size),
           border: Border.all(
-            color: const Color(0x1B38603D),
+            color: isLightTheme(context) ? Colors.blueGrey.shade200 : AppColors.secondaryDark,
           ),
         ),
         alignment: Alignment.center,
