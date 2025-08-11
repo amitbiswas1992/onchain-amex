@@ -36,7 +36,7 @@ class _InvitationSuccessScreenState extends ConsumerState<InvitationSuccessScree
           subTitle: InviteStrings.willBeAddedToYourAccountShortly,
           buttonTitle: SignInStrings.continuee,
           onButtonTap: () {
-            AppNav.goRouter.go(RtNm.homeScreen);
+            AppNav.goRouter.go(RtNm.spendScreen);
           },
         ),
       ),
