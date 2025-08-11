@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/resources/app_colors.dart';
-import '../../../../core/widgets/icon_outer_circle.dart';
+import '../../../../core/widgets/containers/icon_outer_circle.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 
 class HomeAppBar extends StatelessWidget {

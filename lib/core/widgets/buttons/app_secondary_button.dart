@@ -14,6 +14,9 @@ class AppSecondaryButton extends StatelessWidget {
   final bool? isExpanded;
   final double? horizontalMargin;
   final double? verticalPadding;
+  final bool rounded;
+  final bool showBorder;
+  final bool deepColor;
 
   const AppSecondaryButton({
     super.key,
@@ -25,6 +28,9 @@ class AppSecondaryButton extends StatelessWidget {
     this.isExpanded,
     this.horizontalMargin,
     this.verticalPadding,
+    this.rounded = false,
+    this.showBorder = true,
+    this.deepColor = false,
   });
 
   @override
@@ -49,9 +55,9 @@ class AppSecondaryButton extends StatelessWidget {
         ),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: lightTheme ? AppColors.backgroundLight : AppColors.secondaryDark.withValues(alpha: .8),
-          borderRadius: BorderRadius.circular(radius ?? 8),
-          border: Border.all(color: AppColors.borderColor, width: 1),
+          color: lightTheme ? (deepColor ? Colors.black12 :AppColors.cF5F5F5) : AppColors.secondaryDark.withValues(alpha: .8),
+          borderRadius: BorderRadius.circular(rounded ? 56 : (radius ?? 8)),
+          border: showBorder ? Border.all(color: AppColors.borderColor, width: 1) : null,
         ),
         child: Text(
           title,
@@ -66,68 +72,3 @@ class AppSecondaryButton extends StatelessWidget {
   }
 }
 
-class AppIconButton extends StatelessWidget {
-  final String title;
-  final Color? color;
-  final Function()? onTap;
-  final double? height;
-  final double? radius;
-  final TextStyle? titleStyle;
-  final Color? titleColor;
-  final bool? isExpanded;
-  final double? horizontalMargin;
-  final Widget icon;
-
-  const AppIconButton({
-    super.key,
-    required this.title,
-    required this.icon,
-    this.color,
-    this.onTap,
-    this.height,
-    this.radius,
-    this.titleStyle,
-    this.titleColor,
-    this.isExpanded,
-    this.horizontalMargin,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        height: height ?? 55,
-        width: isExpanded == true ? double.infinity : null,
-        padding: isExpanded == true ? EdgeInsets.zero : const EdgeInsets.symmetric(horizontal: 24),
-        margin: horizontalMargin == null
-            ? EdgeInsets.zero
-            : EdgeInsets.symmetric(
-          horizontal: horizontalMargin ?? 0.0,
-        ),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: color ?? Colors.white,
-          borderRadius: BorderRadius.circular(radius ?? 20),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon,
-            const HorizontalSpace(AppValues.paddingSmall),
-            Text(
-              title,
-              style: titleStyle ??
-                  TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    color: titleColor,
-                    fontFamily: interFontFamily
-                  ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

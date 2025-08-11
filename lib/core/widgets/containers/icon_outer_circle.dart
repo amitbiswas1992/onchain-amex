@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../resources/app_colors.dart';
+import '../../resources/app_colors.dart';
 
 class IconOuterCircle extends StatelessWidget {
   final double size;
