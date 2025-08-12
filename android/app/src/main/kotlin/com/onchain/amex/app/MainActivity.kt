@@ -1,4 +1,4 @@
-package com.onchain.amex.app
+package com.nodecard.xyz
 
 import io.flutter.embedding.android.FlutterActivity
 
