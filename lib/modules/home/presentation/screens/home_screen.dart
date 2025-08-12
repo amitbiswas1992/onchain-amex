@@ -5,7 +5,7 @@ import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
-import '../../../../core/widgets/containers/app_card.dart';
+import '../../../../core/widgets/containers/light_card.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../data/models/latest_transaction.dart';
@@ -90,7 +90,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
             const VerticalSpace(AppValues.paddingMedium),
-            AppCard(
+            LightCard(
               radius: 0,
               padding: const EdgeInsets.symmetric(
                 horizontal: AppValues.paddingMedium,
@@ -100,12 +100,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   const VerticalSpace(20),
                   Row(
                     children: [
-                      const TitleText(text:  latestTransactions),
-                      const Spacer(),
+                      const Expanded(
+                        child: TitleText(text: latestTransactions),
+                      ),
                       InkResponse(
                         onTap: () {},
                         child: Text(
-                           seeAll,
+                          seeAll,
                           style: s14W600(
                             context,
                             fontFamily: interFontFamily,

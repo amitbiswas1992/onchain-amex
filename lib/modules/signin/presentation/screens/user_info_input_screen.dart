@@ -52,39 +52,51 @@ class _UserInfoInputScreenState extends ConsumerState<UserInfoInputScreen> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              const AmexTextAppBar(),
-              const VerticalSpace(68),
-              const TitleText(
-                text: whatShouldICallYou,
-                textAlign: TextAlign.start,
-              ),
-              const VerticalSpace(AppValues.paddingMedium),
-              Text(
-                enterYourNameWeWillCompleteKYClater,
-                style: s14W400(context),
-              ),
-              const VerticalSpace(AppValues.paddingMedium),
-              AppTextFormField(
-                focusNode: _firstNameNode,
-                hintText: firstName,
-              ),
-              const VerticalSpace(AppValues.paddingMedium),
-              AppTextFormField(
-                focusNode: _lastNameNode,
-                hintText: lastName,
-              ),
-              const Expanded(child: SizedBox()),
-              SafeArea(
-                child: AppPrimaryButton(
-                  title: continuee,
-                  onTap: () {
-                    unFocus(context);
-                    AppNav.goRouter.push(RtNm.inviteFriendScreen);
-                  },
+              Flexible(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const AmexTextAppBar(),
+                      const VerticalSpace(68),
+                      const TitleText(
+                        text: whatShouldICallYou,
+                        textAlign: TextAlign.start,
+                      ),
+                      const VerticalSpace(AppValues.paddingMedium),
+                      Text(
+                        enterYourNameWeWillCompleteKYClater,
+                        style: s14W400(context),
+                      ),
+                      const VerticalSpace(AppValues.paddingMedium),
+                      AppTextFormField(
+                        focusNode: _firstNameNode,
+                        hintText: firstName,
+                      ),
+                      const VerticalSpace(AppValues.paddingMedium),
+                      AppTextFormField(
+                        focusNode: _lastNameNode,
+                        hintText: lastName,
+                      ),
+                      const VerticalSpace(AppValues.paddingMedium),
+                    ],
+                  ),
                 ),
               ),
-              const VerticalSpace(20),
+              Column(
+                children: [
+                  AppPrimaryButton(
+                    title: continuee,
+                    onTap: () {
+                      unFocus(context);
+                      AppNav.goRouter.push(RtNm.inviteFriendScreen);
+                    },
+                  ),
+                  const VerticalSpace(20),
+                ],
+              ),
             ],
           ),
         ),

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 
-class AppCard extends StatelessWidget {
+class LightCard extends StatelessWidget {
   final Widget child;
   final EdgeInsets? padding;
   final double? height;
   final double? width;
   final double radius;
 
-  const AppCard({
+  const LightCard({
     super.key,
     required this.child,
     this.padding,
     this.height,
     this.width,
-    this.radius = 15,
+    this.radius = 16,
   });
 
   @override

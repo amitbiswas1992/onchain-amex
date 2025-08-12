@@ -55,6 +55,7 @@ class _SpendsScreenState extends ConsumerState<SpendsScreen> with TickerProvider
                   height: 40,
                   child: TabBar(
                     controller: _tabController,
+
                     labelStyle: s14W500(context).copyWith(color: Colors.white),
                     labelPadding: const EdgeInsets.only(
                       left: AppValues.paddingLarge,

@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
-import '../../../../core/widgets/containers/app_card.dart';
+import '../../../../core/widgets/containers/light_card.dart';
 import '../../../../core/widgets/texts/large_number_text.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../resources/home_strings.dart';
@@ -17,7 +17,7 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: AppCard(
+          child: LightCard(
             padding: const EdgeInsets.symmetric(
               horizontal: AppValues.paddingMedium,
             ),
@@ -43,7 +43,7 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
         ),
         const HorizontalSpace(AppValues.paddingMedium),
         Expanded(
-          child: AppCard(
+          child: LightCard(
             padding: const EdgeInsets.symmetric(
               horizontal: AppValues.paddingMedium,
             ),

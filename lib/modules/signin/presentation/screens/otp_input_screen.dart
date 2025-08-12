@@ -43,34 +43,47 @@ class _OtpInputScreenState extends State<OtpInputScreen> {
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const AmexTextAppBar(),
-                const VerticalSpace(68),
-                const TitleText(
-                  text: enterTheCode,
-                  textAlign: TextAlign.start,
-                ),
-                const VerticalSpace(AppValues.paddingMedium),
-                Text(
-                  weHaveSentACodeTo,
-                  style: s14W400(context),
-                ),
-                const VerticalSpace(AppValues.paddingMedium),
-                AppTextFormField(
-                  focusNode: _otpNode,
-                  controller: _otpController,
-                  hintText: confirmationCode,
-                ),
-                const Expanded(child: SizedBox()),
-                SafeArea(
-                  child: AppPrimaryButton(
-                    title: continuee,
-                    onTap: () {
-                      AppNav.goRouter.pop(_otpController.text);
-                    },
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AmexTextAppBar(),
+                        const VerticalSpace(68),
+                        const TitleText(
+                          text: enterTheCode,
+                          textAlign: TextAlign.start,
+                        ),
+                        const VerticalSpace(AppValues.paddingMedium),
+                        Text(
+                          weHaveSentACodeTo,
+                          style: s14W400(context),
+                        ),
+                        const VerticalSpace(AppValues.paddingMedium),
+                        AppTextFormField(
+                          focusNode: _otpNode,
+                          controller: _otpController,
+                          hintText: confirmationCode,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const VerticalSpace(20),
+                // const Expanded(child: SizedBox()),
+                Column(
+                  children: [
+                    AppPrimaryButton(
+                      title: continuee,
+                      onTap: () {
+                        AppNav.goRouter.pop(_otpController.text);
+                      },
+                    ),
+                    const VerticalSpace(20),
+                  ],
+                ),
               ],
             ),
           ),

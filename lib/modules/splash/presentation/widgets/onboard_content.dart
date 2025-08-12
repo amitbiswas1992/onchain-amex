@@ -22,10 +22,10 @@ class OnboardContent extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: SvgPicture.asset(
-            assetPath,
+        Expanded(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: assetPath.contains('.svg') ? SvgPicture.asset(assetPath) : Image.asset(assetPath),
           ),
         ),
         Column(

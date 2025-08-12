@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import 'infrastructure/di/get_it_service.dart';
 import 'package:flutter/material.dart';
 import 'core/resources/app_strings.dart';
@@ -14,6 +16,11 @@ void main() async {
   /// Handle errors
   final errorHandler = AppErrorHandler();
   errorHandler.handleAllErrorsGlobally();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -34,7 +41,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
-            textScaler: const TextScaler.linear(1),
+            textScaler: const TextScaler.linear(1.9),
           ),
           child: child!,
         );

@@ -25,7 +25,7 @@ class IconOuterCircle extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(size),
           border: Border.all(
-            color: isLightTheme(context) ? Colors.blueGrey.shade200 : AppColors.secondaryDark,
+            color: isLightTheme(context) ? Colors.blueGrey.shade200 : AppColors.c616161,
           ),
         ),
         alignment: Alignment.center,

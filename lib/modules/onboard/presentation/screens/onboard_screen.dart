@@ -6,6 +6,7 @@ import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
+import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/buttons/app_text_utton.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
@@ -56,17 +57,17 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                 },
                 children: const [
                   OnboardContent(
-                    assetPath: 'assets/images/onboard/onboard1.svg',
+                    assetPath: 'assets/images/onboard/onboard1.png',
                     title: getInstantCredit,
                     description: getUsdtCreditInSecond,
                   ),
                   OnboardContent(
-                    assetPath: 'assets/images/onboard/onboard2.svg',
+                    assetPath: 'assets/images/onboard/onboard2.png',
                     title: decentralized,
                     description: noBankJustSmartContracts,
                   ),
                   OnboardContent(
-                    assetPath: 'assets/images/onboard/onboard3.svg',
+                    assetPath: 'assets/images/onboard/onboard3.png',
                     title: yourWallet,
                     description: connectAnyWeb3Wallet,
                   ),
@@ -102,16 +103,29 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                         );
                       }
 
-                      return AppTextButton(
-                        text: next,
-                        onPressed: () {
+                      return AppSecondaryButton(
+                        title: next,
+                        radius: 10,
+                        rounded: false,
+                        showBorder: true,
+                        onTap: () {
                           _pageController.nextPage(
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
                           );
                         },
-                        textStyle: s16W500(context),
                       );
+
+                      // return AppTextButton(
+                      //   text: next,
+                      //   onPressed: () {
+                      //     _pageController.nextPage(
+                      //       duration: const Duration(milliseconds: 300),
+                      //       curve: Curves.easeInOut,
+                      //     );
+                      //   },
+                      //   textStyle: s16W500(context),
+                      // );
                     },
                   ),
                 ),

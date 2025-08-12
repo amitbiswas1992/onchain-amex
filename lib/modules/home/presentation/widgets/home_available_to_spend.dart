@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_secondary_button.dart';
-import '../../../../core/widgets/containers/app_card.dart';
+import '../../../../core/widgets/containers/light_card.dart';
 import '../../../../core/widgets/texts/large_number_text.dart';
 import '../resources/home_strings.dart';
 
@@ -12,7 +12,7 @@ class HomeAvailableToSpend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppCard(
+    return LightCard(
       padding: const EdgeInsets.symmetric(
         horizontal: AppValues.paddingMedium,
         vertical: 20,

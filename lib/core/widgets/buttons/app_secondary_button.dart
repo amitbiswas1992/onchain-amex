@@ -10,6 +10,7 @@ class AppSecondaryButton extends StatelessWidget {
   final Function()? onTap;
   final double? radius;
   final TextStyle? titleStyle;
+  final Color? titleColor;
   final bool? isExpanded;
   final double? horizontalMargin;
   final double? verticalPadding;
@@ -30,6 +31,7 @@ class AppSecondaryButton extends StatelessWidget {
     this.rounded = false,
     this.showBorder = true,
     this.deepColor = false,
+    this.titleColor,
   });
 
   @override
@@ -54,7 +56,7 @@ class AppSecondaryButton extends StatelessWidget {
         ),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: lightTheme ? (deepColor ? Colors.black12 :AppColors.cF5F5F5) : AppColors.secondaryDark.withValues(alpha: .8),
+          color: lightTheme ? (deepColor ? Colors.black12 :AppColors.cE0E0E0) : AppColors.secondaryDark.withValues(alpha: .8),
           borderRadius: BorderRadius.circular(rounded ? 56 : (radius ?? 8)),
           border: showBorder ? Border.all(color: AppColors.borderColor, width: 1) : null,
         ),
@@ -64,7 +66,7 @@ class AppSecondaryButton extends StatelessWidget {
           // overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
           style: titleStyle ??
-              s16W500(context).copyWith(color: lightTheme ? AppColors.onBackgroundLight : AppColors.onBackgroundDark),
+              s16W500(context).copyWith(color: titleColor ?? (lightTheme ? AppColors.onBackgroundLight : AppColors.onBackgroundDark)),
         ),
       ),
     );
