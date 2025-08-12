@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
@@ -109,7 +110,7 @@ class _ShellScreenState extends ConsumerState<ShellScreen> {
                 ),
               ],
             ),
-            // const VerticalSpace(AppValues.paddingMedium),
+            const VerticalSpace(AppValues.paddingSmall),
           ],
         ),
       ),

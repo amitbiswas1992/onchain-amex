@@ -15,6 +15,8 @@ import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_email_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/user_info_input_screen.dart';
+import '../../modules/spends/presentation/screens/qr_code_scanner_screen.dart';
+import '../../modules/spends/presentation/screens/spend_after_scan_amount_input_screen.dart';
 import '../../modules/spends/presentation/screens/spends_screen.dart';
 import '../../modules/splash/presentation/screens/nowhere_screen.dart';
 import '../../modules/splash/presentation/screens/splash_screen.dart';
@@ -59,7 +61,8 @@ class AppNav {
     routes: [
       _shellRoutes,
       ..._authRoutes,
-      ...inviteFriendRoutes,
+      ..._inviteFriendRoutes,
+      ..._spendRoutes,
     ],
   );
 
@@ -123,7 +126,7 @@ class AppNav {
     ),
   ];
 
-  static final inviteFriendRoutes = [
+  static final _inviteFriendRoutes = [
     GoRoute(
       path: RtNm.inviteFriendScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
@@ -145,6 +148,24 @@ class AppNav {
         state,
       ),
     ),
+  ];
+
+  static final _spendRoutes = [
+    GoRoute(
+      path: RtNm.qrCodeScannerScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const QrCodeScannerScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.spendAfterScanAmountInputScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const SpendAfterScanAmountInputScreen(),
+        state,
+      ),
+    ),
+
   ];
 
   static final _shellRoutes = ShellRoute(
