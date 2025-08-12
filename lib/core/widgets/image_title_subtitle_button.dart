@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../resources/app_values.dart';
 import '../utils/sizebox_util.dart';
@@ -28,6 +29,7 @@ class ImageTitleSubtitleButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        assetPath.contains('.svg') ? SvgPicture.asset(assetPath) :
         Image.asset(
           assetPath,
         ),

@@ -15,6 +15,8 @@ import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_email_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/user_info_input_screen.dart';
+import '../../modules/spends/data/models/payment_success_extra.dart';
+import '../../modules/spends/presentation/screens/payment_success_screen.dart';
 import '../../modules/spends/presentation/screens/qr_code_scanner_screen.dart';
 import '../../modules/spends/presentation/screens/spend_after_scan_amount_input_screen.dart';
 import '../../modules/spends/presentation/screens/spends_screen.dart';
@@ -165,7 +167,13 @@ class AppNav {
         state,
       ),
     ),
-
+    GoRoute(
+      path: RtNm.paymentSuccessScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        PaymentSuccessScreen(extra: state.extra as PaymentSuccessExtra?),
+        state,
+      ),
+    ),
   ];
 
   static final _shellRoutes = ShellRoute(

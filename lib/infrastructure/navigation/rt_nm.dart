@@ -19,5 +19,6 @@ class RtNm {
   static const moreScreen = '/more-screen';
   static const qrCodeScannerScreen = '/qr-code-scanner-screen';
   static const spendAfterScanAmountInputScreen = '/spend-after-scan-amount-input-screen';
+  static const paymentSuccessScreen = '/payment-success-screen';
 
 }

@@ -58,6 +58,7 @@ class _UserInfoInputScreenState extends ConsumerState<UserInfoInputScreen> {
               Flexible(
                 child: SingleChildScrollView(
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const AmexTextAppBar(),
                       const VerticalSpace(68),

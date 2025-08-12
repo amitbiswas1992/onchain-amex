@@ -14,6 +14,9 @@ import '../../../../core/widgets/containers/deem_card.dart';
 import '../../../../core/widgets/containers/icon_outer_circle.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../data/models/payment_success_extra.dart';
 import '../providers/spend_providers.dart';
 import '../resources/spends_strings.dart';
 
@@ -127,7 +130,12 @@ class _SpendAfterScanAmountInputScreenState extends ConsumerState<SpendAfterScan
 
                   return AppPrimaryButton(
                     title: makePayment,
-                    onTap: () {},
+                    onTap: () {
+                      AppNav.goRouter.push(
+                        RtNm.paymentSuccessScreen,
+                        extra: PaymentSuccessExtra.dummay(),
+                      );
+                    },
                   );
                 },
               ),
