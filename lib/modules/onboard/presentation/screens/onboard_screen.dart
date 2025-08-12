@@ -5,10 +5,12 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
-import '../../../../core/widgets/app_text_form_field.dart';
-import '../../../../core/widgets/buttons/app_button.dart';
+import '../../../../core/widgets/buttons/app_primary_button.dart';
+import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/buttons/app_text_utton.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../splash/presentation/providers/onboard_providers.dart';
 import '../../../splash/presentation/resources/onboard_strings.dart';
 import '../../../splash/presentation/widgets/onboard_content.dart';
@@ -40,7 +42,9 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                 child: AppTextButton(
                   text: 'SKIP',
                   textStyle: s14W600(context),
-                  onPressed: () {},
+                  onPressed: () {
+                    AppNav.goRouter.go(RtNm.signInWithEmailScreen);
+                  },
                 ),
               ),
             ),
@@ -53,17 +57,17 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                 },
                 children: const [
                   OnboardContent(
-                    assetPath: 'assets/images/onboard/onboard1.svg',
+                    assetPath: 'assets/images/onboard/onboard1.png',
                     title: getInstantCredit,
                     description: getUsdtCreditInSecond,
                   ),
                   OnboardContent(
-                    assetPath: 'assets/images/onboard/onboard2.svg',
+                    assetPath: 'assets/images/onboard/onboard2.png',
                     title: decentralized,
                     description: noBankJustSmartContracts,
                   ),
                   OnboardContent(
-                    assetPath: 'assets/images/onboard/onboard3.svg',
+                    assetPath: 'assets/images/onboard/onboard3.png',
                     title: yourWallet,
                     description: connectAnyWeb3Wallet,
                   ),
@@ -91,24 +95,37 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                       final page = ref.watch(onboardPageProvider);
 
                       if (page == 2) {
-                        return AppButton(
+                        return AppPrimaryButton(
                           title: getStarted,
                           onTap: () {
-                            // navigate to login screen
+                            AppNav.goRouter.go(RtNm.signInWithEmailScreen);
                           },
                         );
                       }
 
-                      return AppTextButton(
-                        text: next,
-                        onPressed: () {
+                      return AppSecondaryButton(
+                        title: next,
+                        radius: 10,
+                        rounded: false,
+                        showBorder: true,
+                        onTap: () {
                           _pageController.nextPage(
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
                           );
                         },
-                        textStyle: s16W500(context),
                       );
+
+                      // return AppTextButton(
+                      //   text: next,
+                      //   onPressed: () {
+                      //     _pageController.nextPage(
+                      //       duration: const Duration(milliseconds: 300),
+                      //       curve: Curves.easeInOut,
+                      //     );
+                      //   },
+                      //   textStyle: s16W500(context),
+                      // );
                     },
                   ),
                 ),

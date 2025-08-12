@@ -3,4 +3,22 @@ class RtNm {
 
   static const splashScreen = '/splash-screen';
   static const onboardingScreen = '/onboarding-screen';
+  static const signInWithPhoneScreen = '/sign-in-with-phone-screen';
+  static const signInWithEmailScreen = '/sign-in-with-email-screen';
+  static const otpInputScreen = '/otp-input-screen';
+  static const userInfoInputScreen = '/user-info-input-screen';
+  static const signInLoadingScreen = '/sign-in-loading-screen';
+  static const inviteFriendScreen = '/invite-friend-screen';
+  static const inviteCodeInputScreen = '/invite-code-input-screen';
+  static const invitationSuccessScreen = '/invitation-success-screen';
+
+  static const homeScreen = '/home-screen';
+  static const cardsScreen = '/cards-screen';
+  static const spendScreen = '/spend-screen';
+  static const transactionsScreen = '/transactions-screen';
+  static const moreScreen = '/more-screen';
+  static const qrCodeScannerScreen = '/qr-code-scanner-screen';
+  static const spendAfterScanAmountInputScreen = '/spend-after-scan-amount-input-screen';
+  static const paymentSuccessScreen = '/payment-success-screen';
+
 }

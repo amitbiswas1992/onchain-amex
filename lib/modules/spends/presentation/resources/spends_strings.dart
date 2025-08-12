@@ -1,0 +1,9 @@
+const nfc = 'NFC';
+const scanAndPay = 'Scan & Pay';
+const holdYourPhoneNearThePOS = 'Hold your phone near the POS';
+const enterAmount = 'Enter Amount';
+const max = 'Max';
+const makePayment = 'Make Payment';
+const paymentSuccessful = 'Payment Successful';
+const returnHome = 'Return Home';
+const to = 'to';

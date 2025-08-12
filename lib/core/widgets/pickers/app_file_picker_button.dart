@@ -8,13 +8,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 
 import '../../../infrastructure/navigation/app_nav.dart';
-import '../../../infrastructure/navigation/rt_nm.dart';
 import '../../extensions/file_extension.dart';
-import '../../resources/app_colors.dart';
 import '../../resources/app_values.dart';
 import '../../utils/sizebox_util.dart';
 import '../sheets/image_capture_pick_sheet.dart';
-import '../texts/text_styles.dart';
 
 class AppFilePickerButton extends StatelessWidget {
   final double? borderRadius;

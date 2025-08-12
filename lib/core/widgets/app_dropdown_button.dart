@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../resources/app_colors.dart';
-import '../resources/app_values.dart';
 
 class AppDropDownButton<T> extends StatelessWidget {
   final List<T> items;
@@ -50,7 +49,7 @@ class AppDropDownButton<T> extends StatelessWidget {
           isDense: false,
           value: selectedItem,
           icon: const ImageIcon(
-            AssetImage('assets/icons/arrow_down.png'),
+            AssetImage('assets/icons/dropdown_arrow.png'),
             size: 14,
             color: AppColors.primaryLight,
           ),

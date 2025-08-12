@@ -6,6 +6,7 @@ import '../resources/app_values.dart';
 import '../utils/sizebox_util.dart';
 import 'app_text_form_field.dart';
 import 'input_formatters/phone_input_formatter.dart';
+import 'texts/text_styles.dart';
 
 class PhoneNumberTextField extends StatelessWidget {
   final BoxDecoration? decoration;
@@ -15,6 +16,8 @@ class PhoneNumberTextField extends StatelessWidget {
   final ValueChanged<CountryCode>? onCountryCodeChanged;
   final FormFieldSetter<String>? onSave;
   final ValueChanged<String>? onFieldSubmitted;
+  final Widget? prefixIcon;
+  final bool? autoFocus;
 
   final FocusNode? focusNode;
   final Color? errorColor;
@@ -31,14 +34,14 @@ class PhoneNumberTextField extends StatelessWidget {
     this.focusNode,
     this.errorColor,
     this.onCountryCodeChanged,
-    required this.countryCode,
+    required this.countryCode, this.prefixIcon, this.autoFocus,
   });
 
   final _countryCodes = const ['+1', '+2', '+3'];
 
   @override
   Widget build(BuildContext context) {
-
+    final theme = Theme.of(context);
     final isoCode = isoCodeConversionMap[countryCode.code] ?? IsoCode.US;
 
     return Row(
@@ -76,13 +79,16 @@ class PhoneNumberTextField extends StatelessWidget {
         //   },
         // ),
         Container(
-          height: height ?? AppValues.defaultInputBoxHeight + 5,
+          height: height ?? AppValues.defaultInputBoxHeight + 10,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           alignment: Alignment.center,
           decoration: decoration ??
               BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
+                color: theme.colorScheme.surface,
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(
+                  color: AppColors.borderColor,
+                ),
               ),
           child: CountryCodePicker(
             onChanged: onCountryCodeChanged,
@@ -118,26 +124,24 @@ class PhoneNumberTextField extends StatelessWidget {
               return Row(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(2),
+                    borderRadius: BorderRadius.circular(24),
                     child: Image.asset(
                       countryCode?.flagUri ?? '',
                       package: 'country_code_picker',
                       width: 24,
-                    ),
-                  ),
-                  const HorizontalSpace(AppValues.paddingMedium - 2),
-                  Text(
-                    countryCode?.dialCode ?? '-',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryLight,
+                      height: 24,
+                      fit: BoxFit.cover,
                     ),
                   ),
                   const HorizontalSpace(AppValues.paddingSmall),
+                  Text(
+                    countryCode?.dialCode ?? '-',
+                    style: s16W500(context),
+                  ),
+                  const HorizontalSpace(AppValues.paddingSmall),
                   const ImageIcon(
-                    AssetImage('assets/icons/arrow_down.png'),
+                    AssetImage('assets/icons/dropdown_arrow.png'),
                     size: 14,
-                    color: AppColors.primaryLight,
                   ),
                 ],
               );
@@ -145,11 +149,13 @@ class PhoneNumberTextField extends StatelessWidget {
             flagDecoration: BoxDecoration(borderRadius: BorderRadius.circular(2)),
           ),
         ),
-        const HorizontalSpace(AppValues.paddingMedium),
+        const HorizontalSpace(AppValues.paddingSmall),
         Expanded(
           child: AppTextFormField(
             height: height ?? AppValues.defaultInputBoxHeight + 5,
             decoration: decoration,
+            prefixIcon: prefixIcon,
+            autoFocus: true,
             hintText: 'e.g. 555 123 4567',
             maxLines: 1,
             textStyle: const TextStyle(

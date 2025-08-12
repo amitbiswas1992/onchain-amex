@@ -3,7 +3,7 @@ class AppValues {
 
   static const borderRadiusSmall = 8.0;
   static const borderRadiusLarge = 25.0;
-  static const borderRadiusMedium = 10.0;
+  static const borderRadiusMedium = 15.0;
 
   static const paddingSmall = 8.0;
   static const paddingMedium = 16.0;
@@ -14,7 +14,7 @@ class AppValues {
 
   static const chartBarWidth = 9.0;
 
-  static const buttonVerticalPadding = 14.0;
+  static const buttonVerticalPadding = 16.0;
 
   static const maxAllowedFileCount = 5;
 }

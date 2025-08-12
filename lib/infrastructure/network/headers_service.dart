@@ -1,8 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-import '../../core/extensions/string_extension.dart';
-import '../../core/services/secured_storage_service.dart';
-import '../di/get_it_service.dart';
 
 class HeadersService {
   final Map<String, String> defaultHeaders = {
@@ -24,6 +21,7 @@ class HeadersService {
       debugPrint(stck.toString());
       return null;
     }
+    return null;
   }
 
   Future<Map<String, String>?> getMultipartTokenizedHeaders() async {
@@ -41,5 +39,6 @@ class HeadersService {
       debugPrint(stck.toString());
       return null;
     }
+    return null;
   }
 }

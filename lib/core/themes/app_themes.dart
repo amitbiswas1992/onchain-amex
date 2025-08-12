@@ -94,11 +94,11 @@ class AppThemes {
       error: AppColors.errorLight,
       onPrimary: AppColors.onPrimaryLight,
       onSecondary: AppColors.onSecondaryLight,
-      onSurface: AppColors.onSurfaceLight,
+      onSurface: AppColors.onBackgroundLight,
       onError: AppColors.onErrorLight,
     ),
     iconTheme: const IconThemeData(
-      color: AppColors.primaryLight,
+      color: AppColors.c212121,
     ),
   );
 
@@ -108,6 +108,9 @@ class AppThemes {
     primaryColor: AppColors.primaryDark,
     primaryColorDark: AppColors.primaryVariantDark,
     scaffoldBackgroundColor: AppColors.backgroundDark,
+    iconTheme: const IconThemeData(
+      color: AppColors.secondaryVariantDark,
+    ),
     textTheme: const TextTheme(
       bodyLarge: TextStyle(color: AppColors.onBackgroundDark),
       bodyMedium: TextStyle(color: AppColors.onBackgroundDark),
@@ -144,7 +147,7 @@ class AppThemes {
       error: AppColors.errorDark,
       onPrimary: AppColors.onPrimaryDark,
       onSecondary: AppColors.onSecondaryDark,
-      onSurface: AppColors.onSurfaceDark,
+      onSurface: AppColors.onBackgroundDark,
       onError: AppColors.onErrorDark,
     ),
   );

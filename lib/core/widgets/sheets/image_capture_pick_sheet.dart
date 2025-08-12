@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../resources/app_colors.dart';
 
 class ImageCapturePickSheet extends StatelessWidget {
   final Function() onCaptureTap;

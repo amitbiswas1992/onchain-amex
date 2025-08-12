@@ -1,0 +1,10 @@
+const haveAnInvitation = 'Have an invitation?';
+const inviteYourFriendAndGet = 'Invite your friend and get\n\$5 each.';
+const alternativelyYouCanUseYour = 'Alternatively you can use your invitation code.';
+const shareLink = 'Share Link';
+const skip = 'Skip';
+const enterTheValidationCode = 'Enter the invitation code';
+const youWillGetAsInvitationGift = 'You will receive \$5 as invitation gift';
+const invitationCode = 'Invitation code';
+const congratulations = 'Congratulations!';
+const willBeAddedToYourAccountShortly = '\$5 will be added to your account shortly.';

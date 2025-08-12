@@ -1,3 +1,4 @@
+import '../../../../core/utils/functions.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../controllers/splash_controller.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.softGreen,
+      backgroundColor: isLightTheme(context) ? AppColors.softGreen : null,
       body: Center(
         child: Text(
           'Amex',
