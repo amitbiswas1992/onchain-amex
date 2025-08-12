@@ -33,7 +33,7 @@ class ImageTitleSubtitleButton extends StatelessWidget {
         Image.asset(
           assetPath,
         ),
-        const SizedBox(height: AppValues.paddingSmall),
+        const SizedBox(height: AppValues.paddingLarge),
         TitleText(
           text: title,
         ),
