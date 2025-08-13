@@ -113,31 +113,36 @@ class _SpendAfterScanAmountInputScreenState extends ConsumerState<SpendAfterScan
                   ),
                 ),
               ),
-              Consumer(
-                builder: (context, ref, _) {
-                  final input = ref.watch(inputDetectorProvider);
+              Column(
+                children: [
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final input = ref.watch(inputDetectorProvider);
 
-                  if (input.isEmpty) {
-                    return AppSecondaryButton(
-                      title: makePayment,
-                      rounded: false,
-                      showBorder: false,
-                      deepColor: false,
-                      titleColor: AppColors.surfaceLight,
-                      onTap: () {},
-                    );
-                  }
+                      if (input.isEmpty) {
+                        return AppSecondaryButton(
+                          title: makePayment,
+                          rounded: false,
+                          showBorder: false,
+                          deepColor: false,
+                          titleColor: AppColors.surfaceLight,
+                          onTap: () {},
+                        );
+                      }
 
-                  return AppPrimaryButton(
-                    title: makePayment,
-                    onTap: () {
-                      AppNav.goRouter.push(
-                        RtNm.paymentSuccessScreen,
-                        extra: PaymentSuccessExtra.dummay(),
+                      return AppPrimaryButton(
+                        title: makePayment,
+                        onTap: () {
+                          AppNav.goRouter.push(
+                            RtNm.paymentSuccessScreen,
+                            extra: PaymentSuccessExtra.dummay(),
+                          );
+                        },
                       );
                     },
-                  );
-                },
+                  ),
+                  const VerticalSpace(AppValues.paddingMedium),
+                ],
               ),
             ],
           ),

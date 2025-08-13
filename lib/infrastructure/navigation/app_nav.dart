@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../modules/add_and_repay/presentation/screens/add_found_screen.dart';
+import '../../modules/add_and_repay/presentation/screens/replay_found_screen.dart';
 import '../../modules/cards/presentation/screens/cards_screen.dart';
 import '../../modules/home/presentation/screens/home_screen.dart';
 import '../../modules/home/presentation/screens/shell_screen.dart';
@@ -59,12 +61,13 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation: RtNm.splashScreen,
+    initialLocation: RtNm.spendScreen,
     routes: [
       _shellRoutes,
       ..._authRoutes,
       ..._inviteFriendRoutes,
       ..._spendRoutes,
+      ..._addAndRepayFoundRoutes,
     ],
   );
 
@@ -171,6 +174,23 @@ class AppNav {
       path: RtNm.paymentSuccessScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         PaymentSuccessScreen(extra: state.extra as PaymentSuccessExtra?),
+        state,
+      ),
+    ),
+  ];
+
+  static final _addAndRepayFoundRoutes = [
+    GoRoute(
+      path: RtNm.addFoundScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const AddFoundScreen(),
+        state,
+        ),
+    ),
+    GoRoute(
+      path: RtNm.replayFoundScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ReplayFoundScreen(),
         state,
       ),
     ),

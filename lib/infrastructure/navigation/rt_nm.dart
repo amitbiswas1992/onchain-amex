@@ -20,5 +20,7 @@ class RtNm {
   static const qrCodeScannerScreen = '/qr-code-scanner-screen';
   static const spendAfterScanAmountInputScreen = '/spend-after-scan-amount-input-screen';
   static const paymentSuccessScreen = '/payment-success-screen';
+  static const addFoundScreen = '/add-found-screen';
+  static const replayFoundScreen = '/replay-found-screen';
 
 }

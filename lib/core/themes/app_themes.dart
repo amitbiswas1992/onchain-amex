@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../core/resources/app_colors.dart';
 import '../../core/resources/app_values.dart';
+import '../widgets/shapes/custom_value_indicator_shape.dart';
+import '../widgets/shapes/hollow_circle_thumb_shape.dart';
 import '../widgets/texts/text_styles.dart';
 
 class AppThemes {
@@ -100,6 +102,25 @@ class AppThemes {
     iconTheme: const IconThemeData(
       color: AppColors.c212121,
     ),
+    sliderTheme: SliderThemeData(
+      activeTrackColor: AppColors.primaryLight.withValues(alpha: .8),
+      inactiveTrackColor: Colors.grey.shade300,
+      trackHeight: 4,
+      thumbShape: const HollowCircleThumbShape(
+        hollowColor: AppColors.surfaceLight,
+      ),
+      overlayShape: SliderComponentShape.noOverlay,
+      valueIndicatorShape: const CustomValueIndicatorShape(
+        backgroundColor: AppColors.surfaceLight,
+        borderColor: Colors.blueGrey,
+        borderWidth: 1,
+        padding: EdgeInsets.symmetric(horizontal: AppValues.paddingSmall, vertical: 6),
+      ),// White background
+      valueIndicatorTextStyle: const TextStyle(
+        color: AppColors.onSurfaceLight, // Black text
+      ),
+      showValueIndicator: ShowValueIndicator.always,
+    ),
   );
 
   static final ThemeData darkTheme = ThemeData(
@@ -149,6 +170,25 @@ class AppThemes {
       onSecondary: AppColors.onSecondaryDark,
       onSurface: AppColors.onBackgroundDark,
       onError: AppColors.onErrorDark,
+    ),
+    sliderTheme: SliderThemeData(
+      activeTrackColor: AppColors.primaryLight.withValues(alpha: .8),
+      inactiveTrackColor: Colors.grey.shade300,
+      trackHeight: 4,
+      thumbShape: const HollowCircleThumbShape(
+        hollowColor: AppColors.surfaceDark
+      ),
+      overlayShape: SliderComponentShape.noOverlay,
+      showValueIndicator: ShowValueIndicator.always,
+      valueIndicatorShape: const CustomValueIndicatorShape(
+        backgroundColor: AppColors.surfaceLight,
+        borderColor: Colors.blueGrey,
+        borderWidth: 1,
+        padding: EdgeInsets.symmetric(horizontal: AppValues.paddingSmall, vertical: 6),
+      ),
+      valueIndicatorTextStyle: const TextStyle(
+        color: AppColors.onSurfaceDark, // Black text
+      ),
     ),
   );
 }

@@ -8,6 +8,8 @@ import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/containers/light_card.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../data/models/latest_transaction.dart';
 import '../resources/home_strings.dart';
 import '../widgets/home_app_bar.dart';
@@ -83,7 +85,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     profileName: 'SH',
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
-                  const HomeAvailableToSpend(),
+                  HomeAvailableToSpend(
+                    onAddFound: () {
+                      AppNav.goRouter.push(RtNm.addFoundScreen);
+                    },
+                    onRepayFound: () {
+                      AppNav.goRouter.push(RtNm.replayFoundScreen);
+                    },
+                  ),
                   const VerticalSpace(AppValues.paddingMedium),
                   const HomeCreditScoreAndXpPoints(),
                 ],

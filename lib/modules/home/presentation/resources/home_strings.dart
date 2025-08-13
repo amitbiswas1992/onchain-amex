@@ -5,3 +5,7 @@ const creditScore = 'Credit Score';
 const xpPoints = 'XP Points';
 const latestTransactions = 'Latest Transactions';
 const seeAll = 'See All';
+const addFound = 'Add Found';
+const repayIn = 'Repay in';
+const repayAmount = 'Repay amount';
+const includingProcessingFee = 'Including processing fees';
