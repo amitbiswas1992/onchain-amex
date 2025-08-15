@@ -68,12 +68,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final padding = MediaQuery.of(context).padding;
 
     return Scaffold(
-      backgroundColor: isLightTheme(context) ? const Color(0xFFF5F5F5) : const Color(0xFF121212),
+      backgroundColor: isLightTheme(context)
+          ? const Color(0xFFF5F5F5)
+          : const Color(0xFF121212),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppValues.paddingMedium),
               child: Column(
                 children: [
                   VerticalSpace(padding.top),
