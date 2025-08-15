@@ -7,7 +7,6 @@ import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
-import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../core/widgets/title_and_widget.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
