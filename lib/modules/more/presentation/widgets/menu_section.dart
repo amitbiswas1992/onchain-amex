@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
+import '../../../../core/widgets/containers/icon_outer_circle.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 
 class MenuSection extends StatelessWidget {
@@ -72,15 +73,8 @@ class MenuItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: color ?? AppColors.borderColor.withValues(alpha: 0.2),
-                ),
-                shape: BoxShape.circle,
-              ),
-              child: SvgPicture.asset(
+            IconOuterCircle(
+              icon: SvgPicture.asset(
                 icon,
                 color: color ?? Theme.of(context).iconTheme.color,
                 width: 24,
@@ -95,7 +89,7 @@ class MenuItem extends StatelessWidget {
                   Text(
                     title,
                     style: s14W600(context).copyWith(
-                      color: color,
+                      // color: color,
                     ),
                   ),
                   if (subtitle != null || subtitleWidget != null) ...[

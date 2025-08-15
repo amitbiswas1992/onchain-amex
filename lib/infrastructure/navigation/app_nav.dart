@@ -61,7 +61,7 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation: RtNm.spendScreen,
+    initialLocation: RtNm.splashScreen,
     routes: [
       _shellRoutes,
       ..._authRoutes,

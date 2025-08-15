@@ -33,9 +33,7 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
               VerticalSpace(padding.top + AppValues.paddingMedium),
               // Header Section
               const ProfileHeaderSection(),
-
               const VerticalSpace(AppValues.paddingLarge),
-
               const DividerCustom(),
               const VerticalSpace(AppValues.paddingMedium),
               // Menu Sections
