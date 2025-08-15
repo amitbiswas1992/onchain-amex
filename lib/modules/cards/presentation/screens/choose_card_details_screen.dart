@@ -8,6 +8,8 @@ import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/containers/app_chip.dart';
 import '../../../../core/widgets/texts/title_text.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../more/presentation/widgets/menu_section.dart';
 import '../../data/models/choose_card_extra.dart';
 import '../resources/cards_strings.dart';
@@ -28,13 +30,13 @@ class _ChooseCardDetailsScreenState extends ConsumerState<ChooseCardDetailsScree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PrimaryAppBar(),
+      appBar: const PrimaryAppBar(),
       body: Column(
         children: [
           SvgPicture.asset(widget.extra.assetPath),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
+              padding: const EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
               child: Column(
                 children: [
                   const VerticalSpace(24),
@@ -61,10 +63,12 @@ class _ChooseCardDetailsScreenState extends ConsumerState<ChooseCardDetailsScree
                     getYourCardInstantly,
                     style: TextStyle(fontSize: 9),
                   ),
-                  const VerticalSpace(AppValues.paddingSmall),
+                  const VerticalSpace(AppValues.paddingSmall + 4),
                   AppPrimaryButton(
                     title: orderYourCard,
-                    onTap: () {},
+                    onTap: () {
+                      AppNav.goRouter.push(RtNm.chooseCardInfoInputScreen);
+                    },
                   ),
                   const VerticalSpace(AppValues.paddingLarge),
                 ],

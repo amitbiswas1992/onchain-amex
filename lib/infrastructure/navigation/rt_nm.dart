@@ -31,4 +31,5 @@ class RtNm {
   static const securityPrivacyScreen = '/security-privacy';
   static const chooseCardScreen = '/choose-card-screen';
   static const chooseCardDetailsScreen = '/choose-card-details-screen';
+  static const chooseCardInfoInputScreen = '/choose-card-info-input-screen';
 }

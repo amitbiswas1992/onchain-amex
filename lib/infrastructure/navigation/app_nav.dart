@@ -7,6 +7,7 @@ import '../../modules/add_and_repay/presentation/screens/replay_found_screen.dar
 import '../../modules/cards/data/models/choose_card_extra.dart';
 import '../../modules/cards/presentation/screens/cards_screen.dart';
 import '../../modules/cards/presentation/screens/choose_card_details_screen.dart';
+import '../../modules/cards/presentation/screens/choose_card_info_input_screen.dart';
 import '../../modules/cards/presentation/screens/choose_card_screen.dart';
 import '../../modules/home/presentation/screens/home_screen.dart';
 import '../../modules/home/presentation/screens/shell_screen.dart';
@@ -87,6 +88,13 @@ class AppNav {
       path: RtNm.chooseCardDetailsScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         ChooseCardDetailsScreen(extra: state.extra as ChooseCardExtra),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.chooseCardInfoInputScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ChooseCardInfoInputScreen(),
         state,
       ),
     ),
@@ -206,7 +214,7 @@ class AppNav {
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         const AddFoundScreen(),
         state,
-        ),
+      ),
     ),
     GoRoute(
       path: RtNm.replayFoundScreen,

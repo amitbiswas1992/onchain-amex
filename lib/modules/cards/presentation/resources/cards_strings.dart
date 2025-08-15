@@ -17,4 +17,6 @@ const chooseYourCard = 'Choose your card';
 const orderYourCard = 'Order your card';
 const getYourCardInstantly = 'Get your card instantly';
 const alwaysASafeWayToPay = 'Always a safer way to pay';
+const cardInformation = 'Card Information';
 const replaceDeleteOrChangeYourCardInformationAnytimeYouFeelWorried  = 'Replace, delete or change your card information anytime you feel worried.';
+const allTheInformationHasBeenFilledUp = 'All the information has been filled up for you according to your KYC verification.';
