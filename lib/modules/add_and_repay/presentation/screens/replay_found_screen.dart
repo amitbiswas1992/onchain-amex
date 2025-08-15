@@ -12,6 +12,7 @@ import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/containers/app_chip.dart';
 import '../../../../core/widgets/containers/deem_card.dart';
 import '../../../../core/widgets/containers/icon_outer_circle.dart';
+import '../../../../core/widgets/dividers/app_divider.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
@@ -97,10 +98,7 @@ class _ReplayFoundScreenState extends ConsumerState<ReplayFoundScreen> {
                         ],
                       ),
                       const VerticalSpace(12),
-                      Container(
-                        height: 1,
-                        color: isLightTheme(context) ? Colors.black12 : Colors.white12,
-                      ),
+                      const AppDivider(),
                       const VerticalSpace(32),
                       const SubTitleText(text: enterAmount),
                       const VerticalSpace(AppValues.paddingMedium),

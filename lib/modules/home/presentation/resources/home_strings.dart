@@ -11,3 +11,4 @@ const repayAmount = 'Repay amount';
 const includingProcessingFee = 'Including processing fees';
 const replayDueIn = 'Repayment due in';
 const change = 'Change';
+const search = 'Search';
