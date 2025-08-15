@@ -14,3 +14,7 @@ const starter = 'Starter';
 const classic = 'Classic';
 const elite = 'Elite';
 const chooseYourCard = 'Choose your card';
+const orderYourCard = 'Order your card';
+const getYourCardInstantly = 'Get your card instantly';
+const alwaysASafeWayToPay = 'Always a safer way to pay';
+const replaceDeleteOrChangeYourCardInformationAnytimeYouFeelWorried  = 'Replace, delete or change your card information anytime you feel worried.';

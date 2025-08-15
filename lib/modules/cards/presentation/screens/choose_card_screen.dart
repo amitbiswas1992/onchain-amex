@@ -5,6 +5,15 @@ import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/texts/title_text.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../data/models/choose_card_extra.dart';
+import '../../data/models/choose_card_extra.dart';
+import '../../data/models/choose_card_extra.dart';
 import '../resources/cards_strings.dart';
 import '../widgets/choose_card_tile.dart';
 
@@ -36,7 +45,17 @@ class _ChooseCardScreenState extends ConsumerState<ChooseCardScreen> {
                 subTitle: aCardThatLiveOnline,
                 assetPath: 'assets/images/starter_card.svg',
                 price: '5 USD',
-                onTap: () {},
+                onTap: () {
+                  AppNav.goRouter.push(
+                    RtNm.chooseCardDetailsScreen,
+                    extra: ChooseCardExtra(
+                      title: starter,
+                      subTitle: aCardThatLiveOnline,
+                      assetPath: 'assets/images/starter_card.svg',
+                      price: '5 USD',
+                    ),
+                  );
+                },
               ),
               const VerticalSpace(AppValues.paddingMedium),
               ChooseCardTile(
@@ -44,7 +63,17 @@ class _ChooseCardScreenState extends ConsumerState<ChooseCardScreen> {
                 subTitle: aCardThatCanDoMostOfYourWork,
                 assetPath: 'assets/images/classic_card.svg',
                 price: '10 USD',
-                onTap: () {},
+                onTap: () {
+                  AppNav.goRouter.push(
+                    RtNm.chooseCardDetailsScreen,
+                    extra: ChooseCardExtra(
+                      title: classic,
+                      subTitle: aCardThatCanDoMostOfYourWork,
+                      assetPath: 'assets/images/classic_card.svg',
+                      price: '10 USD',
+                    ),
+                  );
+                },
               ),
               const VerticalSpace(AppValues.paddingMedium),
               ChooseCardTile(
@@ -52,7 +81,17 @@ class _ChooseCardScreenState extends ConsumerState<ChooseCardScreen> {
                 subTitle: aCardThatCanDoEveryThing,
                 assetPath: 'assets/images/elite_card.svg',
                 price: '20 USD',
-                onTap: () {},
+                onTap: () {
+                  AppNav.goRouter.push(
+                    RtNm.chooseCardDetailsScreen,
+                    extra: ChooseCardExtra(
+                      title: elite,
+                      subTitle: aCardThatCanDoEveryThing,
+                      assetPath: 'assets/images/elite_card.svg',
+                      price: '20 USD',
+                    ),
+                  );
+                },
               ),
               const VerticalSpace(32),
             ],

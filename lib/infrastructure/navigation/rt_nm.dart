@@ -30,4 +30,5 @@ class RtNm {
   static const changePhoneScreen = '/change-phone';
   static const securityPrivacyScreen = '/security-privacy';
   static const chooseCardScreen = '/choose-card-screen';
+  static const chooseCardDetailsScreen = '/choose-card-details-screen';
 }

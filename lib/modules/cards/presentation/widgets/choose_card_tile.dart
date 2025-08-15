@@ -25,27 +25,30 @@ class ChooseCardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DeemCard(
-      padding: const EdgeInsets.all(
-        AppValues.paddingMedium,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 27,
-              fontWeight: FontWeight.w600,
+    return InkWell(
+      onTap: onTap,
+      child: DeemCard(
+        padding: const EdgeInsets.all(
+          AppValues.paddingMedium,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 27,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          const VerticalSpace(AppValues.paddingMedium),
-          Text(subTitle),
-          const VerticalSpace(AppValues.paddingMedium),
-          AppChip(text: price),
-          const VerticalSpace(AppValues.paddingMedium),
-          SvgPicture.asset(assetPath),
-        ],
+            const VerticalSpace(AppValues.paddingMedium),
+            Text(subTitle),
+            const VerticalSpace(AppValues.paddingMedium),
+            AppChip(text: price),
+            const VerticalSpace(AppValues.paddingMedium),
+            SvgPicture.asset(assetPath),
+          ],
+        ),
       ),
     );
   }
