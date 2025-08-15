@@ -9,3 +9,5 @@ const addFound = 'Add Found';
 const repayIn = 'Repay in';
 const repayAmount = 'Repay amount';
 const includingProcessingFee = 'Including processing fees';
+const replayDueIn = 'Repayment due in';
+const change = 'Change';

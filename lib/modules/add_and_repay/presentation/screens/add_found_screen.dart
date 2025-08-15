@@ -89,19 +89,87 @@ class _AddFoundScreenState extends ConsumerState<AddFoundScreen> {
                         builder: (context, ref, _) {
                           final repayIn = ref.watch(repayInMonthProvider);
 
-                          return Container(
-                            // color: Colors.red,
-                            height: 56,
-                            child: Slider(
-                              value: repayIn.toDouble(),
-                              min: 1,
-                              max: 12,
-                              divisions: 3,
-                              label: "${repayIn.toInt()} months",
-                              onChanged: (newValue) {
-                                ref.read(repayInMonthProvider.notifier).state = newValue.toInt();
-                              },
-                            ),
+                          return Column(
+                            children: [
+                              Container(
+                                // color: Colors.red,
+                                height: 56,
+                                child: Slider(
+                                  value: repayIn.toDouble(),
+                                  min: 1,
+                                  max: 12,
+                                  divisions: 4,
+                                  label: "${repayIn.toInt()} months",
+                                  onChanged: (newValue) {
+                                    ref.read(repayInMonthProvider.notifier).state =
+                                        newValue.toInt();
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AppValues.paddingSmall,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ...['1', '3', '6', '9', '12'].map((e) {
+                                      return Text(
+                                        e,
+                                        style: s14W600(context),
+                                      );
+                                    }).toList(),
+                                  ],
+                                ),
+                              ),
+                              const VerticalSpace(32),
+                              DeemCard(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
+                                child: Column(
+                                  children: [
+                                    const SubTitleText(text: repayAmount),
+                                    // const VerticalSpace(AppValues.paddingMedium),
+                                    TextFormField(
+                                      style: s54w600(context),
+                                      textAlign: TextAlign.center,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                        hintText: '0.0',
+                                        hintStyle:
+                                            s54w600(context).copyWith(color: AppColors.c757575),
+                                        border: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        contentPadding: const EdgeInsets.symmetric(
+                                          vertical: AppValues.paddingMedium,
+                                          horizontal: AppValues.paddingMedium,
+                                        ),
+                                      ),
+                                      onChanged: (val) {
+                                        ref.read(inputDetectorProvider.notifier).state = val ?? '';
+                                      },
+                                    ),
+                                    const VerticalSpace(AppValues.paddingSmall),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        const Icon(Icons.info_outline, size: 12),
+                                        const HorizontalSpace(4),
+                                        Text(
+                                          includingProcessingFee,
+                                          style: s12W500(context),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ),
