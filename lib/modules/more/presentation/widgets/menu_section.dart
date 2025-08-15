@@ -9,7 +9,7 @@ import '../../../../core/widgets/texts/text_styles.dart';
 
 class MenuSection extends StatelessWidget {
   final String? title;
-  final List<MenuItem> items;
+  final List<Widget> items;
 
   const MenuSection({
     super.key,
