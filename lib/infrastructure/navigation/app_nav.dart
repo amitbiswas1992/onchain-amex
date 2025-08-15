@@ -2,13 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../modules/cards/presentation/screens/cards_screen.dart';
 import '../../modules/home/presentation/screens/home_screen.dart';
 import '../../modules/home/presentation/screens/shell_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_code_input_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_success_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invite_friend_screen.dart';
+import '../../modules/more/presentation/screens/change_email_screen.dart';
+import '../../modules/more/presentation/screens/change_phone_screen.dart';
 import '../../modules/more/presentation/screens/more_screen.dart';
+import '../../modules/more/presentation/screens/personal_details_screen.dart';
+import '../../modules/more/presentation/screens/personal_information_screen.dart';
+import '../../modules/more/presentation/screens/security_privacy_screen.dart';
 import '../../modules/onboard/presentation/screens/onboard_screen.dart';
 import '../../modules/signin/presentation/screens/otp_input_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
@@ -43,7 +49,10 @@ class AppNav {
   /// banners, and other persistent UI elements.
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
-  static Page<dynamic> fadeTransitionPageBuilder(Widget child, GoRouterState state) {
+  static Page<dynamic> fadeTransitionPageBuilder(
+    Widget child,
+    GoRouterState state,
+  ) {
     log('route => ${state.path}');
     return CustomTransitionPage(
       key: state.pageKey,
@@ -59,7 +68,7 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation: RtNm.splashScreen,
+    initialLocation: RtNm.moreScreen,
     routes: [
       _shellRoutes,
       ..._authRoutes,
@@ -219,6 +228,41 @@ class AppNav {
         // builder: (_, __) => const SettingsScreen(),
         pageBuilder: (context, state) => fadeTransitionPageBuilder(
           const MoreScreen(),
+          state,
+        ),
+      ),
+      GoRoute(
+        path: RtNm.personalDetailsScreen,
+        pageBuilder: (context, state) => fadeTransitionPageBuilder(
+          const PersonalDetailsScreen(),
+          state,
+        ),
+      ),
+      GoRoute(
+        path: RtNm.personalInformationScreen,
+        pageBuilder: (context, state) => fadeTransitionPageBuilder(
+          const PersonalInformationScreen(),
+          state,
+        ),
+      ),
+      GoRoute(
+        path: RtNm.changeEmailScreen,
+        pageBuilder: (context, state) => fadeTransitionPageBuilder(
+          const ChangeEmailScreen(),
+          state,
+        ),
+      ),
+      GoRoute(
+        path: RtNm.changePhoneScreen,
+        pageBuilder: (context, state) => fadeTransitionPageBuilder(
+          const ChangePhoneScreen(),
+          state,
+        ),
+      ),
+      GoRoute(
+        path: RtNm.securityPrivacyScreen,
+        pageBuilder: (context, state) => fadeTransitionPageBuilder(
+          const SecurityPrivacyScreen(),
           state,
         ),
       ),
