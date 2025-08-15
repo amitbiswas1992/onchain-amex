@@ -9,6 +9,7 @@ import '../../modules/cards/presentation/screens/cards_screen.dart';
 import '../../modules/cards/presentation/screens/choose_card_details_screen.dart';
 import '../../modules/cards/presentation/screens/choose_card_info_input_screen.dart';
 import '../../modules/cards/presentation/screens/choose_card_screen.dart';
+import '../../modules/cards/presentation/screens/order_card_payment_method_screen.dart';
 import '../../modules/home/presentation/screens/home_screen.dart';
 import '../../modules/home/presentation/screens/shell_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_code_input_screen.dart';
@@ -95,6 +96,13 @@ class AppNav {
       path: RtNm.chooseCardInfoInputScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         const ChooseCardInfoInputScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.orderCardPaymentMethodScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const OrderCardPaymentMethodScreen(),
         state,
       ),
     ),

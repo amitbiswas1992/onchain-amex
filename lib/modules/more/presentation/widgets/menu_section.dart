@@ -55,6 +55,7 @@ class MenuItem extends StatelessWidget {
   final Color? color;
   final bool arrowTopRight;
   final bool showTrailingIcon;
+  final bool doNotUseIconColor;
 
   const MenuItem({
     super.key,
@@ -66,6 +67,7 @@ class MenuItem extends StatelessWidget {
     this.color,
     this.arrowTopRight = false,
     this.showTrailingIcon = true,
+    this.doNotUseIconColor = false,
   });
 
   @override
@@ -80,7 +82,7 @@ class MenuItem extends StatelessWidget {
             IconOuterCircle(
               icon: SvgPicture.asset(
                 icon,
-                color: color ?? Theme.of(context).iconTheme.color,
+                color: doNotUseIconColor ? null : color ?? Theme.of(context).iconTheme.color,
                 width: 24,
                 height: 24,
               ),

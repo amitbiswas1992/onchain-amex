@@ -9,6 +9,8 @@ import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../core/widgets/title_and_widget.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../resources/cards_strings.dart';
 
 class ChooseCardInfoInputScreen extends ConsumerStatefulWidget {
@@ -29,7 +31,7 @@ class _ChooseCardInformationInputScreenState extends ConsumerState<ChooseCardInf
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const TitleText(text: cardInformation),
+              Text(cardInformation, style: s18W600(context),),
               const VerticalSpace(AppValues.paddingMedium),
               Text(
                 allTheInformationHasBeenFilledUp,
@@ -112,7 +114,7 @@ class _ChooseCardInformationInputScreenState extends ConsumerState<ChooseCardInf
               AppPrimaryButton(
                 title: 'Confirm & Pay 5 USD',
                 onTap: () {
-                  // AppNav.goRouter.push(RtNm.chooseCardInfoInputScreen);
+                  AppNav.goRouter.push(RtNm.orderCardPaymentMethodScreen);
                 },
               ),
               const VerticalSpace(AppValues.paddingLarge),
