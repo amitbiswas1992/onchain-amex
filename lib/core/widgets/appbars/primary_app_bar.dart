@@ -62,14 +62,11 @@ class PrimaryAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Text(
                     title ?? '',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: s18W600(context),
                   ),
                 ),
           if (actions != null) ...actions!,
+          if (actions == null) const HorizontalSpace(80),
         ],
       ),
     );

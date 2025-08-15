@@ -28,6 +28,7 @@ class AppTextFormField extends StatelessWidget {
   final Color? errorColor;
   final List<TextInputFormatter>? formatters;
   final bool? autoFocus;
+  final double borderRadius;
 
   const AppTextFormField({
     super.key,
@@ -53,6 +54,7 @@ class AppTextFormField extends StatelessWidget {
     this.focusNode,
     this.errorColor,
     this.formatters, this.autoFocus,
+    this.borderRadius = 6,
   });
 
   @override
@@ -102,25 +104,25 @@ class AppTextFormField extends StatelessWidget {
             color: errorColor ?? theme.colorScheme.error,
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(borderRadius),
             borderSide: const BorderSide(
               color: AppColors.borderColor,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(borderRadius),
             borderSide: const BorderSide(
               color: AppColors.borderColor,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(borderRadius),
             borderSide: const BorderSide(
               color: AppColors.borderColor,
             ),
           ),
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(borderRadius),
             borderSide: BorderSide(
               color: theme.colorScheme.error,
             ),

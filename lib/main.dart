@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       // builder: (context, child) {
       //   return MediaQuery(
       //     data: MediaQuery.of(context).copyWith(
-      //       textScaler: const TextScaler.linear(1),
+      //       textScaler: const TextScaler.linear(1.9),
       //     ),
       //     child: child!,
       //   );

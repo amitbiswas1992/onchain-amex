@@ -28,6 +28,7 @@ class PaymentSuccessScreen extends StatelessWidget {
           onButtonTap: extra?.onButtonTap ??
               () {
                 AppNav.goRouter.pop();
+
               },
         ),
       ),

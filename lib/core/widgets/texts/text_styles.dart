@@ -70,7 +70,7 @@ TextStyle s14W600(BuildContext context, {String? fontFamily}) {
     fontFamily: fontFamily ?? segoeProFontFamily,
     fontSize: 14,
     fontWeight: FontWeight.w600,
-    color: AppColors.c616161,
+    color: isLightTheme(context) ? AppColors.c616161 : AppColors.cF2F2F2,
     // same color for both themes
     letterSpacing: 0,
     height: 1,
@@ -88,6 +88,17 @@ TextStyle s12W400(BuildContext context, {String? fontFamily}) {
     height: 1,
   );
 }
+// TextStyle s12W500(BuildContext context, {String? fontFamily}) {
+//   return TextStyle(
+//     fontFamily: fontFamily ?? segoeProFontFamily,
+//     fontSize: 12,
+//     fontWeight: FontWeight.w500,
+//     color: isLightTheme(context) ? AppColors.c455468 : AppColors.secondaryVariantDark,
+//     // same color for both themes
+//     letterSpacing: 0,
+//     height: 1,
+//   );
+// }
 
 TextStyle s12W500(BuildContext context, {String? fontFamily}) {
   return TextStyle(
@@ -209,8 +220,6 @@ TextStyle s18W600(BuildContext context, {String? fontFamily}) {
     fontFamily: fontFamily ?? segoeProFontFamily,
     fontSize: 18,
     fontWeight: FontWeight.w600,
-    color: isLightTheme(context)
-        ? AppColors.onBackgroundLight
-        : AppColors.onBackgroundDark,
+    // color: isLightTheme(context) ? AppColors.c757575 : AppColors.onBackgroundDark,
   );
 }

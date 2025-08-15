@@ -2,8 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
+import '../../modules/add_and_repay/presentation/screens/add_found_screen.dart';
+import '../../modules/add_and_repay/presentation/screens/replay_found_screen.dart';
+import '../../modules/cards/data/models/choose_card_extra.dart';
 import '../../modules/cards/presentation/screens/cards_screen.dart';
+import '../../modules/cards/presentation/screens/choose_card_details_screen.dart';
+import '../../modules/cards/presentation/screens/choose_card_info_input_screen.dart';
+import '../../modules/cards/presentation/screens/choose_card_screen.dart';
+import '../../modules/cards/presentation/screens/order_card_payment_method_screen.dart';
 import '../../modules/home/presentation/screens/home_screen.dart';
 import '../../modules/home/presentation/screens/shell_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_code_input_screen.dart';
@@ -74,8 +80,41 @@ class AppNav {
       ..._authRoutes,
       ..._inviteFriendRoutes,
       ..._spendRoutes,
+      ..._addAndRepayFoundRoutes,
+      ..._cardsRoutes,
     ],
   );
+
+  static final _cardsRoutes = [
+    GoRoute(
+      path: RtNm.chooseCardScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ChooseCardScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.chooseCardDetailsScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        ChooseCardDetailsScreen(extra: state.extra as ChooseCardExtra),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.chooseCardInfoInputScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ChooseCardInfoInputScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.orderCardPaymentMethodScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const OrderCardPaymentMethodScreen(),
+        state,
+      ),
+    ),
+  ];
 
   static final _authRoutes = [
     GoRoute(
@@ -180,6 +219,23 @@ class AppNav {
       path: RtNm.paymentSuccessScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         PaymentSuccessScreen(extra: state.extra as PaymentSuccessExtra?),
+        state,
+      ),
+    ),
+  ];
+
+  static final _addAndRepayFoundRoutes = [
+    GoRoute(
+      path: RtNm.addFoundScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const AddFoundScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.replayFoundScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ReplayFoundScreen(),
         state,
       ),
     ),

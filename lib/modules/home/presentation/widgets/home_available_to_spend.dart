@@ -8,7 +8,14 @@ import '../../../../core/widgets/texts/large_number_text.dart';
 import '../resources/home_strings.dart';
 
 class HomeAvailableToSpend extends StatelessWidget {
-  const HomeAvailableToSpend({super.key});
+  final VoidCallback onAddFound;
+  final VoidCallback onRepayFound;
+
+  const HomeAvailableToSpend({
+    super.key,
+    required this.onAddFound,
+    required this.onRepayFound,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +39,7 @@ class HomeAvailableToSpend extends StatelessWidget {
                   showBorder: false,
                   deepColor: true,
                   rounded: true,
-                  onTap: () {},
+                  onTap: onAddFound,
                 ),
               ),
               const HorizontalSpace(AppValues.paddingMedium),
@@ -42,7 +49,7 @@ class HomeAvailableToSpend extends StatelessWidget {
                   showBorder: false,
                   deepColor: true,
                   rounded: true,
-                  onTap: () {},
+                  onTap: onRepayFound,
                 ),
               ),
             ],

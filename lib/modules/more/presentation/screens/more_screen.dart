@@ -25,9 +25,6 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
     final padding = MediaQuery.of(context).padding;
 
     return Scaffold(
-      backgroundColor: isLightTheme(context)
-          ? const Color.fromARGB(255, 255, 255, 255)
-          : const Color(0xFF121212),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
@@ -36,9 +33,7 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
               VerticalSpace(padding.top + AppValues.paddingMedium),
               // Header Section
               const ProfileHeaderSection(),
-
               const VerticalSpace(AppValues.paddingLarge),
-
               const DividerCustom(),
               const VerticalSpace(AppValues.paddingMedium),
               // Menu Sections
@@ -48,6 +43,7 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                   MenuItem(
                     icon: 'assets/icons/bank.svg',
                     title: 'KYC Verification',
+                    arrowTopRight: true,
                     subtitleWidget: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,
