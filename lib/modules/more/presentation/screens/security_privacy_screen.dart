@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 
+import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
@@ -83,7 +85,7 @@ class SecuritySettingsSection extends StatelessWidget {
           },
         ),
         MenuItem(
-          icon: 'assets/icons/device.svg',
+          icon: 'assets/icons/phone.svg',
           title: 'Devices',
           subtitle: 'Manage your devices',
           onTap: () {
@@ -91,7 +93,7 @@ class SecuritySettingsSection extends StatelessWidget {
           },
         ),
         MenuItem(
-          icon: 'assets/icons/language.svg',
+          icon: 'assets/icons/circle_half.svg',
           title: 'Language & appearance',
           subtitle: 'Customize language settings and which theme is used',
           onTap: () {
@@ -117,12 +119,12 @@ class PrivacySettingsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return MenuSection(
       items: [
-        // BiometricToggleMenuItem(
-        //   enabled: biometricDataEnabled,
-        //   onToggle: onBiometricToggle,
-        // ),
+        BiometricToggleMenuItem(
+          enabled: biometricDataEnabled,
+          onToggle: onBiometricToggle,
+        ),
         MenuItem(
-          icon: 'assets/icons/document.svg',
+          icon: 'assets/icons/notebook.svg',
           title: 'Privacy policy',
           subtitle: 'Read about our privacy policy',
           onTap: () {
@@ -146,63 +148,58 @@ class BiometricToggleMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppValues.paddingMedium,
-        vertical: 12,
-      ),
-      child: Row(
-        children: [
-          // Icon container
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey.shade100,
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: AppColors.borderColor.withValues(alpha: 0.2),
             ),
-            child: const Icon(
-              Icons.face,
-              size: 24,
-              color: Colors.grey,
-            ),
+            shape: BoxShape.circle,
           ),
-          const HorizontalSpace(AppValues.paddingMedium),
+          child: SvgPicture.asset(
+            'assets/icons/biometric.svg',
+            color: Theme.of(context).iconTheme.color,
+            width: 24,
+            height: 24,
+          ),
+        ),
+        const HorizontalSpace(AppValues.paddingMedium),
 
-          // Title and subtitle
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Biometric data',
-                  style: s16W500(context, fontFamily: interFontFamily),
+        // Title and subtitle
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Biometric data',
+                style: s16W500(context, fontFamily: interFontFamily),
+              ),
+              const VerticalSpace(4),
+              Text(
+                'Allow Amex to store and use your selfie & ID for automated verification',
+                style: s14W400(context, fontFamily: interFontFamily).copyWith(
+                  color: Colors.grey.shade600,
+                  height: 1.3,
                 ),
-                const VerticalSpace(4),
-                Text(
-                  'Allow Amex to store and use your selfie & ID for automated verification',
-                  style: s14W400(context, fontFamily: interFontFamily).copyWith(
-                    color: Colors.grey.shade600,
-                    height: 1.3,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
 
-          const HorizontalSpace(AppValues.paddingSmall),
+        const HorizontalSpace(AppValues.paddingSmall),
 
-          // Toggle switch
-          Switch(
-            value: enabled,
-            onChanged: onToggle,
-            activeColor: Colors.white,
-            activeTrackColor: Colors.green,
-            inactiveThumbColor: Colors.white,
-            inactiveTrackColor: Colors.grey.shade300,
-          ),
-        ],
-      ),
+        // Toggle switch
+        Switch(
+          value: enabled,
+          onChanged: onToggle,
+          activeColor: Colors.white,
+          activeTrackColor: Colors.green,
+          inactiveThumbColor: Colors.white,
+          inactiveTrackColor: Colors.grey.shade300,
+        ),
+      ],
     );
   }
 }
