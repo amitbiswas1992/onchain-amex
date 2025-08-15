@@ -43,6 +43,7 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                   MenuItem(
                     icon: 'assets/icons/bank.svg',
                     title: 'KYC Verification',
+                    arrowTopRight: true,
                     subtitleWidget: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 8,

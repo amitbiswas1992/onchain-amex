@@ -53,6 +53,8 @@ class MenuItem extends StatelessWidget {
   final Widget? subtitleWidget;
   final VoidCallback onTap;
   final Color? color;
+  final bool arrowTopRight;
+  final bool showTrailingIcon;
 
   const MenuItem({
     super.key,
@@ -62,6 +64,8 @@ class MenuItem extends StatelessWidget {
     this.subtitle,
     required this.onTap,
     this.color,
+    this.arrowTopRight = false,
+    this.showTrailingIcon = true,
   });
 
   @override
@@ -89,8 +93,8 @@ class MenuItem extends StatelessWidget {
                   Text(
                     title,
                     style: s14W600(context).copyWith(
-                      // color: color,
-                    ),
+                        // color: color,
+                        ),
                   ),
                   if (subtitle != null || subtitleWidget != null) ...[
                     const SizedBox(height: 4),
@@ -107,13 +111,15 @@ class MenuItem extends StatelessWidget {
                 ],
               ),
             ),
-            title.contains('KYC')
-                ? SvgPicture.asset('assets/icons/arrow_up_right.svg')
-                : const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                    color: AppColors.c455468,
-                  ),
+            if (showTrailingIcon)
+              if (arrowTopRight)
+                SvgPicture.asset('assets/icons/arrow_up_right.svg')
+              else
+                const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: AppColors.c455468,
+                ),
           ],
         ),
       ),
