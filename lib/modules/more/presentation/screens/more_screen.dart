@@ -25,9 +25,6 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
     final padding = MediaQuery.of(context).padding;
 
     return Scaffold(
-      backgroundColor: isLightTheme(context)
-          ? const Color.fromARGB(255, 255, 255, 255)
-          : const Color(0xFF121212),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: SingleChildScrollView(
