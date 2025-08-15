@@ -1,0 +1,16 @@
+const letsGetACard = "Let’s get a card that works\nonly for you";
+const getYourFirstCard = "Get your first card";
+
+const instantAccess = 'Instant access';
+const applyAndGetYourVirtualCard = 'Apply and get your virtual card instantly';
+const worldWideUsage = 'Worldwide usage';
+const useYourCardAnywhereInTheWorld = 'Use your card anywhere in the world';
+const exitingOfferEveryday = 'Exciting offers everyday';
+const byUsingYourCardEveryDay = 'By using your card for payments and shopping, you can get exciting offers everyday';
+const aCardThatLiveOnline = 'A card that lives online, can do some of your work. Easy, secure and always ready to use. But you will miss all the offers.';
+const aCardThatCanDoMostOfYourWork = 'A card that can do most of your work. Easy, secure and always ready to use. You will enter a world of new exiting offers everyday. Customize to your own.';
+const aCardThatCanDoEveryThing = 'A card that can do everything. Only card that you will ever need. ';
+const starter = 'Starter';
+const classic = 'Classic';
+const elite = 'Elite';
+const chooseYourCard = 'Choose your card';

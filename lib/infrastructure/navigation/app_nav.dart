@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../modules/add_and_repay/presentation/screens/add_found_screen.dart';
 import '../../modules/add_and_repay/presentation/screens/replay_found_screen.dart';
 import '../../modules/cards/presentation/screens/cards_screen.dart';
+import '../../modules/cards/presentation/screens/choose_card_screen.dart';
 import '../../modules/home/presentation/screens/home_screen.dart';
 import '../../modules/home/presentation/screens/shell_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_code_input_screen.dart';
@@ -68,8 +69,20 @@ class AppNav {
       ..._inviteFriendRoutes,
       ..._spendRoutes,
       ..._addAndRepayFoundRoutes,
+      ..._cardsRoutes,
     ],
   );
+
+  static final _cardsRoutes = [
+    GoRoute(
+      path: RtNm.chooseCardScreen,
+      // builder: (_, __) => const NowhereScreen(),
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ChooseCardScreen(),
+        state,
+      ),
+    ),
+  ];
 
   static final _authRoutes = [
     GoRoute(

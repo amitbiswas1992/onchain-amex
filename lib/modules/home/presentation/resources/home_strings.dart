@@ -12,12 +12,3 @@ const includingProcessingFee = 'Including processing fees';
 const replayDueIn = 'Repayment due in';
 const change = 'Change';
 const search = 'Search';
-const letsGetACard = "Let’s get a card that works\nonly for you";
-const getYourFirstCard = "Get your first card";
-
-const instantAccess = 'Instant access';
-const applyAndGetYourVirtualCard = 'Apply and get your virtual card instantly';
-const worldWideUsage = 'Worldwide usage';
-const useYourCardAnywhereInTheWorld = 'Use your card anywhere in the world';
-const exitingOfferEveryday = 'Exciting offers everyday';
-const byUsingYourCardEveryDay = 'By using your card for payments and shopping, you can get exciting offers everyday';

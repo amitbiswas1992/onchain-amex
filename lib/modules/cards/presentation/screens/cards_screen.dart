@@ -5,8 +5,11 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../home/presentation/resources/home_strings.dart';
 import '../../../more/presentation/widgets/menu_section.dart';
+import '../resources/cards_strings.dart';
 
 class CardsScreen extends ConsumerStatefulWidget {
   const CardsScreen({super.key});
@@ -30,7 +33,7 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
               child: Column(
                 children: [
                   const VerticalSpace(AppValues.paddingMedium),
-                  SvgPicture.asset('assets/images/card.svg'),
+                  SvgPicture.asset('assets/images/starter_card.svg'),
                   const VerticalSpace(24),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -82,7 +85,9 @@ class _CardsScreenState extends ConsumerState<CardsScreen> {
             ),
             child: AppPrimaryButton(
               title: getYourFirstCard,
-              onTap: () {},
+              onTap: () {
+                AppNav.goRouter.push(RtNm.chooseCardScreen);
+              },
             ),
           ),
         ],

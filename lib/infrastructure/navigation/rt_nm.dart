@@ -25,8 +25,9 @@ class RtNm {
   static const replayFoundScreen = '/replay-found-screen';
 
   static const personalDetailsScreen = '/personal-details-screen';
-  static const String personalInformationScreen = '/personal-information';
-  static const String changeEmailScreen = '/change-email';
-  static const String changePhoneScreen = '/change-phone';
-  static const String securityPrivacyScreen = '/security-privacy';
+  static const personalInformationScreen = '/personal-information';
+  static const changeEmailScreen = '/change-email';
+  static const changePhoneScreen = '/change-phone';
+  static const securityPrivacyScreen = '/security-privacy';
+  static const chooseCardScreen = '/choose-card-screen';
 }
