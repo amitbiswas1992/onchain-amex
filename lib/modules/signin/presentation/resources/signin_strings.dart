@@ -1,4 +1,4 @@
-const amex = 'Amex';
+const amex = 'Node';
 const letsGetYpuSignedIn = 'Let’s get you signed in';
 const yourEmailAddress = 'Your email address';
 const usePhone = 'Use Phone';

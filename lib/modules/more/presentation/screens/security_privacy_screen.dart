@@ -178,7 +178,7 @@ class BiometricToggleMenuItem extends StatelessWidget {
               ),
               const VerticalSpace(4),
               Text(
-                'Allow Amex to store and use your selfie & ID for automated verification',
+                'Allow Node to store and use your selfie & ID for automated verification',
                 style: s14W400(context, fontFamily: interFontFamily).copyWith(
                   color: Colors.grey.shade600,
                   height: 1.3,

@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: isLightTheme(context) ? AppColors.softGreen : null,
       body: Center(
         child: Text(
-          'Amex',
+          'Node',
           style: s32W600(context).copyWith(
             color: AppColors.primaryLight,
             fontSize: 56,
