@@ -19,27 +19,32 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: LightCard(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppValues.paddingMedium,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const VerticalSpace(12),
-                SvgPicture.asset('assets/icons/usd_with_bg.svg'),
-                const VerticalSpace(AppValues.paddingSmall),
-                Text(
-                  creditScore,
-                  style: s14W500(
-                    context,
-                    fontFamily: interFontFamily,
+          child: InkWell(
+            onTap: () {
+              AppNav.goRouter.push(RtNm.rewardsScreen);
+            },
+            child: LightCard(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppValues.paddingMedium,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const VerticalSpace(12),
+                  SvgPicture.asset('assets/icons/usd_with_bg.svg'),
+                  const VerticalSpace(AppValues.paddingSmall),
+                  Text(
+                    creditScore,
+                    style: s14W500(
+                      context,
+                      fontFamily: interFontFamily,
+                    ),
                   ),
-                ),
-                const VerticalSpace(AppValues.paddingMedium),
-                const LargeNumberText(text: '750', fontSize: 34,),
-                const VerticalSpace(32),
-              ],
+                  const VerticalSpace(AppValues.paddingMedium),
+                  const LargeNumberText(text: '750', fontSize: 34,),
+                  const VerticalSpace(32),
+                ],
+              ),
             ),
           ),
         ),

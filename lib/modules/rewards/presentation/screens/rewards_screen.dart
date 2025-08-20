@@ -53,8 +53,8 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> with SingleTicker
 
                     labelStyle: s14W500(context).copyWith(color: Colors.white),
                     labelPadding: const EdgeInsets.only(
-                      left: AppValues.paddingLarge,
-                      right: AppValues.paddingLarge,
+                      left: AppValues.paddingMedium,
+                      right: AppValues.paddingMedium,
                       top: 5,
                     ),
                     unselectedLabelStyle: s14W500(context),

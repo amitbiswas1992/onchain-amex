@@ -1,3 +1,10 @@
 const rewards = 'Rewards';
 const tires = 'Tires';
 const challenges = 'Challenges';
+const goldTire = 'Gold Tire';
+const nextTire = 'Next Tire';
+const tireList = 'Tire List';
+const bronze = 'Bronze';
+const silver = 'Silver';
+const gold = 'Gold';
+const platinum = 'Platinum';
