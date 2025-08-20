@@ -8,3 +8,6 @@ const bronze = 'Bronze';
 const silver = 'Silver';
 const gold = 'Gold';
 const platinum = 'Platinum';
+const totalRewardsEarned = 'Total rewards earned';
+const claimRewards = 'Claim Rewards';
+const rewardsPerks = 'Reward perks';

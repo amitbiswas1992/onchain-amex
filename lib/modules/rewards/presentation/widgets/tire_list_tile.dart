@@ -13,6 +13,7 @@ class TireListTile extends StatelessWidget {
   final Map<String, dynamic> item;
   final bool isCurrent;
   final VoidCallback? onTap;
+  final Widget? badgeWidget;
 
   const TireListTile({
     super.key,
@@ -20,6 +21,7 @@ class TireListTile extends StatelessWidget {
     required this.isCurrent,
     this.onTap,
     required this.iconPath,
+    this.badgeWidget,
   });
 
   @override
@@ -36,31 +38,57 @@ class TireListTile extends StatelessWidget {
               width: 56,
             ),
             const HorizontalSpace(AppValues.paddingMedium),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item['title'],
-                  style: s18W600(context),
-                ),
-                const VerticalSpace(AppValues.paddingSmall),
-                ...(item['value'] as List<String>).map((val) {
-                  return Row(
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      const Icon(
-                        CupertinoIcons.check_mark,
-                        color: AppColors.primaryVariantLight,
-                        size: 24,
-                      ),
-                      const HorizontalSpace(4),
                       Text(
-                        val,
-                        style: s12W400(context),
+                        item['title'],
+                        style: s18W600(context),
                       ),
+                      const HorizontalSpace(6),
+                      Visibility(
+                        visible: isCurrent,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.jungleGreen,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 3,
+                          ),
+                          child: Text(
+                            'Current',
+                            style: s12W500(context).copyWith(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const Flexible(child: SizedBox()),
                     ],
-                  );
-                }).toList(),
-              ],
+                  ),
+                  const VerticalSpace(AppValues.paddingSmall),
+                  ...(item['value'] as List<String>).map((val) {
+                    return Row(
+                      children: [
+                        const Icon(
+                          CupertinoIcons.check_mark,
+                          color: AppColors.primaryVariantLight,
+                          size: 24,
+                        ),
+                        const HorizontalSpace(4),
+                        Text(
+                          val,
+                          style: s12W400(context),
+                        ),
+                      ],
+                    );
+                  }),
+                ],
+              ),
             ),
           ],
         ),
