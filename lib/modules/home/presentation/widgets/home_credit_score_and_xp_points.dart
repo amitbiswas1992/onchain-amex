@@ -6,6 +6,8 @@ import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/containers/light_card.dart';
 import '../../../../core/widgets/texts/large_number_text.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../resources/home_strings.dart';
 
 class HomeCreditScoreAndXpPoints extends StatelessWidget {
@@ -43,27 +45,32 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
         ),
         const HorizontalSpace(AppValues.paddingMedium),
         Expanded(
-          child: LightCard(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppValues.paddingMedium,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const VerticalSpace(12),
-                SvgPicture.asset('assets/icons/star_with_bg.svg'),
-                const VerticalSpace(AppValues.paddingSmall),
-                Text(
-                  xpPoints,
-                  style: s14W500(
-                    context,
-                    fontFamily: interFontFamily,
+          child: InkWell(
+            onTap: () {
+              AppNav.goRouter.push(RtNm.rewardsScreen);
+            },
+            child: LightCard(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppValues.paddingMedium,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const VerticalSpace(12),
+                  SvgPicture.asset('assets/icons/star_with_bg.svg'),
+                  const VerticalSpace(AppValues.paddingSmall),
+                  Text(
+                    xpPoints,
+                    style: s14W500(
+                      context,
+                      fontFamily: interFontFamily,
+                    ),
                   ),
-                ),
-                const VerticalSpace(AppValues.paddingMedium),
-                const LargeNumberText(text: '750', fontSize: 34,),
-                const VerticalSpace(32),
-              ],
+                  const VerticalSpace(AppValues.paddingMedium),
+                  const LargeNumberText(text: '750', fontSize: 34,),
+                  const VerticalSpace(32),
+                ],
+              ),
             ),
           ),
         ),

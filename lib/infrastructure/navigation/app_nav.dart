@@ -22,6 +22,7 @@ import '../../modules/more/presentation/screens/personal_details_screen.dart';
 import '../../modules/more/presentation/screens/personal_information_screen.dart';
 import '../../modules/more/presentation/screens/security_privacy_screen.dart';
 import '../../modules/onboard/presentation/screens/onboard_screen.dart';
+import '../../modules/rewards/presentation/screens/rewards_screen.dart';
 import '../../modules/signin/presentation/screens/otp_input_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_email_screen.dart';
@@ -74,7 +75,7 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation: RtNm.splashScreen,
+    initialLocation: RtNm.homeScreen,
     routes: [
       _shellRoutes,
       ..._authRoutes,
@@ -82,8 +83,19 @@ class AppNav {
       ..._spendRoutes,
       ..._addAndRepayFoundRoutes,
       ..._cardsRoutes,
+      ..._rewardsRoutes,
     ],
   );
+
+  static final _rewardsRoutes = [
+    GoRoute(
+      path: RtNm.rewardsScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const RewardsScreen(),
+        state,
+      ),
+    ),
+  ];
 
   static final _cardsRoutes = [
     GoRoute(
