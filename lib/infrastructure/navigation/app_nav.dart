@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../modules/add_and_repay/presentation/screens/add_found_screen.dart';
@@ -75,7 +76,7 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation: RtNm.homeScreen,
+    initialLocation: kDebugMode == false ? RtNm.splashScreen: RtNm.homeScreen,
     routes: [
       _shellRoutes,
       ..._authRoutes,
