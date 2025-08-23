@@ -6,6 +6,7 @@ import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
+import '../../../../core/widgets/app_progress_bar.dart';
 import '../../../../core/widgets/containers/deem_card.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
@@ -105,37 +106,7 @@ class TiresPage extends ConsumerWidget {
                     ],
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          height: 12,
-                          decoration: const BoxDecoration(
-                              color: AppColors.primaryVariantLight,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                bottomLeft: Radius.circular(10),
-                              )),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          height: 12,
-                          decoration: BoxDecoration(
-                            color: isLightTheme(context)
-                                ? AppColors.surfaceLight
-                                : AppColors.secondaryVariantDark,
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(10),
-                              bottomRight: Radius.circular(10),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  const AppProgressBar(target: 100, achievement: 30),
                 ],
               ),
             ),

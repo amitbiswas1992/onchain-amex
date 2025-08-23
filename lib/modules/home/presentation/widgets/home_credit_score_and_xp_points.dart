@@ -21,7 +21,7 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
         Expanded(
           child: InkWell(
             onTap: () {
-              AppNav.goRouter.push(RtNm.rewardsScreen);
+              // AppNav.goRouter.push(RtNm.rewardsScreen);
             },
             child: LightCard(
               padding: const EdgeInsets.symmetric(
@@ -52,7 +52,7 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
         Expanded(
           child: InkWell(
             onTap: () {
-              AppNav.goRouter.push(RtNm.rewardsScreen);
+              // AppNav.goRouter.push(RtNm.rewardsScreen);
             },
             child: LightCard(
               padding: const EdgeInsets.symmetric(

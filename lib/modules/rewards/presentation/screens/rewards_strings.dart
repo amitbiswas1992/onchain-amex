@@ -11,3 +11,6 @@ const platinum = 'Platinum';
 const totalRewardsEarned = 'Total rewards earned';
 const claimRewards = 'Claim Rewards';
 const rewardsPerks = 'Reward perks';
+const weeklyChallenges = 'Weekly challenges';
+const completeChallengesToEarn = 'Complete challenges to earn bonus XP and rewards';
+const progress = 'Progress';

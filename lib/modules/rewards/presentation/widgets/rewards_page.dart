@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
+import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/containers/light_card.dart';
@@ -26,7 +27,7 @@ class RewardsPage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             LightCard(
-              color: AppColors.softGreen,
+              color: isLightTheme(context) ? AppColors.softGreen : null,
               padding: const EdgeInsets.symmetric(
                 horizontal: AppValues.paddingMedium,
                 vertical: 20,
