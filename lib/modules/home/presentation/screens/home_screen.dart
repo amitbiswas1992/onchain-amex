@@ -82,7 +82,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   VerticalSpace(padding.top),
                   const VerticalSpace(AppValues.paddingMedium),
                   HomeAppBar(
-                    onGiftTap: () {},
+                    onGiftTap: () {
+                      AppNav.goRouter.push(RtNm.rewardsScreen);
+                    },
                     onNotificationTap: () {},
                     onProfileTap: () {},
                     profileName: 'SH',

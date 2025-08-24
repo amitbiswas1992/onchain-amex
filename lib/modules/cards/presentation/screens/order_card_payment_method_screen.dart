@@ -9,6 +9,7 @@ import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../home/presentation/providers/home_providers.dart';
 import '../../../more/presentation/widgets/menu_section.dart';
+import '../providers/card_providers.dart';
 import '../resources/cards_strings.dart';
 
 class OrderCardPaymentMethodScreen extends ConsumerStatefulWidget {
@@ -22,10 +23,10 @@ class _OrderCardPaymentMethodScreenState extends ConsumerState<OrderCardPaymentM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PrimaryAppBar(),
+      appBar: const PrimaryAppBar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(AppValues.paddingMedium),
+          padding: const EdgeInsets.all(AppValues.paddingMedium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -39,6 +40,7 @@ class _OrderCardPaymentMethodScreenState extends ConsumerState<OrderCardPaymentM
                 title: debitCard,
                 onTap: () {
                   ref.read(bottomNavSelectedIndexProvider.notifier).state = 1;
+                  ref.read(cardAddedProvider.notifier).state = true;
                   AppNav.goRouter.go(RtNm.cardsScreen);
                 },
                 doNotUseIconColor: true,
@@ -48,6 +50,7 @@ class _OrderCardPaymentMethodScreenState extends ConsumerState<OrderCardPaymentM
                 title: creditCard,
                 onTap: () {
                   ref.read(bottomNavSelectedIndexProvider.notifier).state = 1;
+                  ref.read(cardAddedProvider.notifier).state = true;
                   AppNav.goRouter.go(RtNm.cardsScreen);
                 },
                 doNotUseIconColor: true,
@@ -57,6 +60,7 @@ class _OrderCardPaymentMethodScreenState extends ConsumerState<OrderCardPaymentM
                 title: usCentralBank,
                 onTap: () {
                   ref.read(bottomNavSelectedIndexProvider.notifier).state = 1;
+                  ref.read(cardAddedProvider.notifier).state = true;
                   AppNav.goRouter.go(RtNm.cardsScreen);
                 },
               ),
@@ -65,6 +69,7 @@ class _OrderCardPaymentMethodScreenState extends ConsumerState<OrderCardPaymentM
                 title: bracBankLtd,
                 onTap: () {
                   ref.read(bottomNavSelectedIndexProvider.notifier).state = 1;
+                  ref.read(cardAddedProvider.notifier).state = true;
                   AppNav.goRouter.go(RtNm.cardsScreen);
                 },
               ),

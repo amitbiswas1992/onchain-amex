@@ -60,7 +60,7 @@ class UserConsentText extends StatelessWidget {
               },
           ),
           TextSpan(
-            text: ' of Amex On Chain.',
+            text: ' of Node On Chain.',
             style: s12W400(context),
           ),
         ],

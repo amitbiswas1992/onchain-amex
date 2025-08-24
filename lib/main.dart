@@ -3,10 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/resources/app_strings.dart';
+import 'core/services/secured_storage_service.dart';
 import 'core/themes/app_themes.dart';
 import 'infrastructure/di/get_it_service.dart';
 import 'infrastructure/error/app_error_handler.dart';
 import 'infrastructure/navigation/app_nav.dart';
+import 'modules/home/presentation/providers/home_providers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,18 +23,28 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  runApp(const ProviderScope(child: MyApp()));
+  final savedThemeMode = await getIt<SecuredStorageService>().getThemeMode();
+
+  runApp(
+    ProviderScope(
+      child: MyApp(savedThemeMode: savedThemeMode),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends ConsumerWidget {
+  final ThemeMode savedThemeMode;
+
+  const MyApp({super.key, required this.savedThemeMode});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: appTitle,
-      themeMode: ThemeMode.light,
+      themeMode: themeMode ?? savedThemeMode,
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
       routerConfig: AppNav.goRouter,

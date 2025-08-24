@@ -7,6 +7,7 @@ class LightCard extends StatelessWidget {
   final double? height;
   final double? width;
   final double radius;
+  final Color? color;
 
   const LightCard({
     super.key,
@@ -14,13 +15,14 @@ class LightCard extends StatelessWidget {
     this.padding,
     this.height,
     this.width,
-    this.radius = 16,
+    this.radius = 16, this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: .01,
+      color: color,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(radius),

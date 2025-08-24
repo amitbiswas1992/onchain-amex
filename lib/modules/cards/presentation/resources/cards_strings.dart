@@ -25,3 +25,6 @@ const debitCard = 'Debit Card';
 const creditCard = 'Credit Card';
 const usCentralBank = 'US Central Bank (ACH)';
 const bracBankLtd = 'BRAC Bank Ltd';
+const showPin = 'Show Pin';
+const freezeCard = 'Freeze Card';
+const more = 'More';

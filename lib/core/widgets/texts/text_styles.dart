@@ -82,12 +82,23 @@ TextStyle s12W400(BuildContext context, {String? fontFamily}) {
     fontFamily: fontFamily ?? segoeProFontFamily,
     fontSize: 12,
     fontWeight: FontWeight.w400,
-    color: AppColors.c757575,
+    color: isLightTheme(context) ? AppColors.c757575 : AppColors.cE0E0E0,
     // same color for both themes
     letterSpacing: 0,
     height: 1,
   );
 }
+
+TextStyle s12W600(BuildContext context, {String? fontFamily}) {
+  return TextStyle(
+    fontFamily: fontFamily ?? segoeProFontFamily,
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 0,
+    height: 1,
+  );
+}
+
 // TextStyle s12W500(BuildContext context, {String? fontFamily}) {
 //   return TextStyle(
 //     fontFamily: fontFamily ?? segoeProFontFamily,

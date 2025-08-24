@@ -4,12 +4,16 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
+import '../../../../core/services/secured_storage_service.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
+import '../../../../core/widgets/buttons/theme_toogle_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../../../infrastructure/di/get_it_service.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../home/presentation/providers/home_providers.dart';
 import '../widgets/menu_section.dart';
 
 class MoreScreen extends ConsumerStatefulWidget {
@@ -30,7 +34,19 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              VerticalSpace(padding.top + AppValues.paddingMedium),
+              VerticalSpace(padding.top + AppValues.paddingSmall),
+              Align(
+                alignment: Alignment.centerRight,
+                child: ThemeToggleButton(
+                  isDarkMode: isLightTheme(context) == false,
+                  onToggle: () {
+                    ref.read(themeModeProvider.notifier).state = isLightTheme(context)
+                        ? ThemeMode.dark
+                        : ThemeMode.light;
+                    getIt<SecuredStorageService>().saveThemeMode(ref.read(themeModeProvider)!);
+                  },
+                ),
+              ),
               // Header Section
               const ProfileHeaderSection(),
               const VerticalSpace(AppValues.paddingLarge),
@@ -55,8 +71,7 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                       ),
                       child: Text(
                         'KYC Not Verified',
-                        style: s12W500(context, fontFamily: interFontFamily)
-                            .copyWith(
+                        style: s12W500(context, fontFamily: interFontFamily).copyWith(
                           color: AppColors.errorLight,
                         ),
                       ),
@@ -94,20 +109,22 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                     icon: 'assets/icons/bell.svg',
                     title: 'Notifications',
                     subtitle: 'Customize how you get updates',
-                    onTap: () {},
+                    onTap: () {
+                      AppNav.goRouter.push(RtNm.notificationSettingsScreen);
+                    },
                   ),
                   MenuItem(
                     icon: 'assets/icons/bank.svg',
                     title: 'Payment methods',
-                    subtitle:
-                        'Manage saved cards and bank accounts that linked to this account',
-                    onTap: () {},
+                    subtitle: 'Manage saved cards and bank accounts that linked to this account',
+                    onTap: () {
+                      AppNav.goRouter.push(RtNm.paymentMethodsScreen);
+                    },
                   ),
                   MenuItem(
                     icon: 'assets/icons/circle_half.svg',
                     title: 'Language & Appearance',
-                    subtitle:
-                        'Customize language settings and which theme is used',
+                    subtitle: 'Customize language settings and which theme is used',
                     onTap: () {},
                   ),
                 ],
@@ -125,8 +142,7 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                   MenuItem(
                     icon: 'assets/icons/bank.svg',
                     title: 'Referrals and rewards',
-                    subtitle:
-                        'Send and track referrals and manage your rewards',
+                    subtitle: 'Send and track referrals and manage your rewards',
                     onTap: () {},
                   ),
                   MenuItem(
