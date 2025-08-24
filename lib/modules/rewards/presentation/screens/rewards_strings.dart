@@ -14,3 +14,5 @@ const rewardsPerks = 'Reward perks';
 const weeklyChallenges = 'Weekly challenges';
 const completeChallengesToEarn = 'Complete challenges to earn bonus XP and rewards';
 const progress = 'Progress';
+const notificationSettings = 'Notification Settings';
+const pushNotification = 'Push notification';

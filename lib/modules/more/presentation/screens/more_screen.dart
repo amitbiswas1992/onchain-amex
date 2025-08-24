@@ -109,7 +109,9 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                     icon: 'assets/icons/bell.svg',
                     title: 'Notifications',
                     subtitle: 'Customize how you get updates',
-                    onTap: () {},
+                    onTap: () {
+                      AppNav.goRouter.push(RtNm.notificationSettingsScreen);
+                    },
                   ),
                   MenuItem(
                     icon: 'assets/icons/bank.svg',

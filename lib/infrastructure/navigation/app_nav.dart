@@ -19,6 +19,7 @@ import '../../modules/invite_friend/presentation/screens/invite_friend_screen.da
 import '../../modules/more/presentation/screens/change_email_screen.dart';
 import '../../modules/more/presentation/screens/change_phone_screen.dart';
 import '../../modules/more/presentation/screens/more_screen.dart';
+import '../../modules/more/presentation/screens/notification_settings_screen.dart';
 import '../../modules/more/presentation/screens/personal_details_screen.dart';
 import '../../modules/more/presentation/screens/personal_information_screen.dart';
 import '../../modules/more/presentation/screens/security_privacy_screen.dart';
@@ -76,7 +77,7 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation: kDebugMode == false ? RtNm.splashScreen: RtNm.homeScreen,
+    initialLocation: kDebugMode == false ? RtNm.splashScreen : RtNm.homeScreen,
     routes: [
       _shellRoutes,
       ..._authRoutes,
@@ -85,8 +86,54 @@ class AppNav {
       ..._addAndRepayFoundRoutes,
       ..._cardsRoutes,
       ..._rewardsRoutes,
+      ..._moreRoutes,
     ],
   );
+
+  static final _moreRoutes = [
+    GoRoute(
+      path: RtNm.personalDetailsScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const PersonalDetailsScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.personalInformationScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const PersonalInformationScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.changeEmailScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ChangeEmailScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.changePhoneScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ChangePhoneScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.securityPrivacyScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const SecurityPrivacyScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.notificationSettingsScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const NotificationSettingsScreen(),
+        state,
+      ),
+    ),
+  ];
 
   static final _rewardsRoutes = [
     GoRoute(
@@ -297,41 +344,6 @@ class AppNav {
         // builder: (_, __) => const SettingsScreen(),
         pageBuilder: (context, state) => fadeTransitionPageBuilder(
           const MoreScreen(),
-          state,
-        ),
-      ),
-      GoRoute(
-        path: RtNm.personalDetailsScreen,
-        pageBuilder: (context, state) => fadeTransitionPageBuilder(
-          const PersonalDetailsScreen(),
-          state,
-        ),
-      ),
-      GoRoute(
-        path: RtNm.personalInformationScreen,
-        pageBuilder: (context, state) => fadeTransitionPageBuilder(
-          const PersonalInformationScreen(),
-          state,
-        ),
-      ),
-      GoRoute(
-        path: RtNm.changeEmailScreen,
-        pageBuilder: (context, state) => fadeTransitionPageBuilder(
-          const ChangeEmailScreen(),
-          state,
-        ),
-      ),
-      GoRoute(
-        path: RtNm.changePhoneScreen,
-        pageBuilder: (context, state) => fadeTransitionPageBuilder(
-          const ChangePhoneScreen(),
-          state,
-        ),
-      ),
-      GoRoute(
-        path: RtNm.securityPrivacyScreen,
-        pageBuilder: (context, state) => fadeTransitionPageBuilder(
-          const SecurityPrivacyScreen(),
           state,
         ),
       ),

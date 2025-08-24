@@ -23,9 +23,9 @@ class _SecurityPrivacyScreenState extends ConsumerState<SecurityPrivacyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: isLightTheme(context)
-          ? const Color.fromARGB(255, 255, 255, 255)
-          : const Color(0xFF121212),
+      // backgroundColor: isLightTheme(context)
+      //     ? const Color.fromARGB(255, 255, 255, 255)
+      //     : const Color(0xFF121212),
       appBar: const PrimaryAppBar(
         title: 'Security & Privacy',
       ),
@@ -120,6 +120,9 @@ class PrivacySettingsSection extends StatelessWidget {
     return MenuSection(
       items: [
         BiometricToggleMenuItem(
+          assetPath: 'assets/icons/fingerprint.svg',
+          title: 'Biometric data',
+          subTitle: 'Allow Node to store and use your selfie & ID for automated verification',
           enabled: biometricDataEnabled,
           onToggle: onBiometricToggle,
         ),
@@ -137,6 +140,9 @@ class PrivacySettingsSection extends StatelessWidget {
 }
 
 class BiometricToggleMenuItem extends StatelessWidget {
+  final String assetPath;
+  final String title;
+  final String subTitle;
   final bool enabled;
   final ValueChanged<bool> onToggle;
 
@@ -144,6 +150,9 @@ class BiometricToggleMenuItem extends StatelessWidget {
     super.key,
     required this.enabled,
     required this.onToggle,
+    required this.assetPath,
+    required this.title,
+    required this.subTitle,
   });
 
   @override
@@ -159,7 +168,7 @@ class BiometricToggleMenuItem extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: SvgPicture.asset(
-            'assets/icons/biometric.svg',
+            assetPath,
             color: Theme.of(context).iconTheme.color,
             width: 24,
             height: 24,
@@ -173,12 +182,12 @@ class BiometricToggleMenuItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Biometric data',
+                title,
                 style: s16W500(context, fontFamily: interFontFamily),
               ),
               const VerticalSpace(4),
               Text(
-                'Allow Node to store and use your selfie & ID for automated verification',
+                subTitle,
                 style: s14W400(context, fontFamily: interFontFamily).copyWith(
                   color: Colors.grey.shade600,
                   height: 1.3,
