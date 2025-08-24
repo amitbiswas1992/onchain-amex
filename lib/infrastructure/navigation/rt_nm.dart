@@ -34,6 +34,9 @@ class RtNm {
   static const chooseCardInfoInputScreen = '/choose-card-info-input-screen';
   static const orderCardPaymentMethodScreen = '/order-card-payment-method-screen';
   static const notificationSettingsScreen = '/notification-settings-screen';
+  static const paymentMethodsScreen = '/payment-methods-screen';
+  static const savedCardsScreen = '/saved-cards-screen';
+  static const addACardScreen = '/add-a-card-screen';
 
   static const rewardsScreen = '/rewards-screen';
 }

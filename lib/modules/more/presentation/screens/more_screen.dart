@@ -117,7 +117,9 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                     icon: 'assets/icons/bank.svg',
                     title: 'Payment methods',
                     subtitle: 'Manage saved cards and bank accounts that linked to this account',
-                    onTap: () {},
+                    onTap: () {
+                      AppNav.goRouter.push(RtNm.paymentMethodsScreen);
+                    },
                   ),
                   MenuItem(
                     icon: 'assets/icons/circle_half.svg',

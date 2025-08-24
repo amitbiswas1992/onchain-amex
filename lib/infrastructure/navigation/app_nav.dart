@@ -24,6 +24,9 @@ import '../../modules/more/presentation/screens/personal_details_screen.dart';
 import '../../modules/more/presentation/screens/personal_information_screen.dart';
 import '../../modules/more/presentation/screens/security_privacy_screen.dart';
 import '../../modules/onboard/presentation/screens/onboard_screen.dart';
+import '../../modules/payment_methods/presentation/screens/add_a_card_screen.dart';
+import '../../modules/payment_methods/presentation/screens/payment_methods_screen.dart';
+import '../../modules/payment_methods/presentation/screens/saved_cards_screen.dart';
 import '../../modules/rewards/presentation/screens/rewards_screen.dart';
 import '../../modules/signin/presentation/screens/otp_input_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
@@ -130,6 +133,27 @@ class AppNav {
       path: RtNm.notificationSettingsScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         const NotificationSettingsScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.paymentMethodsScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const PaymentMethodsScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.savedCardsScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const SavedCardsScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.addACardScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const AddACardScreen(),
         state,
       ),
     ),
