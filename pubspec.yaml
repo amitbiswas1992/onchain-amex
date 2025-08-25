@@ -64,6 +64,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/icons/bottom_nav/
+    - assets/icons/country_flags/
     - assets/images/
     - assets/images/onboard/
     - assets/dummy/

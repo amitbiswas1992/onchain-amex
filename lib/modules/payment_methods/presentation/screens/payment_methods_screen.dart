@@ -49,7 +49,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
                 title: connectedBankAccounts,
                 subtitle: 'See and manage bank accounts you’ve got connected to your account',
                 onTap: () {
-
+                  AppNav.goRouter.push(RtNm.connectedBankAccountsScreen);
                 },
               ),
             ],
