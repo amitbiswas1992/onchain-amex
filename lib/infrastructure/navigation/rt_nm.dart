@@ -40,6 +40,7 @@ class RtNm {
   static const connectedBankAccountsScreen = '/connected-bank-accounts-screen';
   static const bankLocationSelectScreen = '/bank-location-select-screen';
   static const connectBankAcDisclaimerScreen = '/connect-bank-ac-disclaimer-screen';
+  static const deleteAccountScreen = '/delete-account-screen';
 
   static const rewardsScreen = '/rewards-screen';
 }
