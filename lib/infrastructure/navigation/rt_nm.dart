@@ -37,6 +37,10 @@ class RtNm {
   static const paymentMethodsScreen = '/payment-methods-screen';
   static const savedCardsScreen = '/saved-cards-screen';
   static const addACardScreen = '/add-a-card-screen';
+  static const connectedBankAccountsScreen = '/connected-bank-accounts-screen';
+  static const bankLocationSelectScreen = '/bank-location-select-screen';
+  static const connectBankAcDisclaimerScreen = '/connect-bank-ac-disclaimer-screen';
+  static const deleteAccountScreen = '/delete-account-screen';
 
   static const rewardsScreen = '/rewards-screen';
 }

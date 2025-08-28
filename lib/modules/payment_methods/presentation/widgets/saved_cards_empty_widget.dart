@@ -9,7 +9,16 @@ import '../../../../core/widgets/texts/title_text.dart';
 import '../../../rewards/presentation/screens/rewards_strings.dart';
 
 class SavedCardsEmptyWidget extends StatelessWidget {
-  const SavedCardsEmptyWidget({super.key});
+  final String? assetPath;
+  final String? title;
+  final String? subTitle;
+
+  const SavedCardsEmptyWidget({
+    super.key,
+    this.assetPath,
+    this.title,
+    this.subTitle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +26,16 @@ class SavedCardsEmptyWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset('assets/images/chromed_mone_savings.png', width: 273, height: 280,),
+        Image.asset(
+          assetPath ?? 'assets/images/chromed_mone_savings.png',
+          width: 273,
+          height: 280,
+        ),
         const VerticalSpace(AppValues.paddingMedium),
-        const TitleText(text: addABankCard),
+        TitleText(text: title ?? addABankCard),
         const VerticalSpace(AppValues.paddingMedium),
         Text(
-          'Tap on the button to add a bank card to your account. You can use this for repayments.',
+          subTitle ?? 'Tap on the button to add a bank card to your account. You can use this for repayments.',
           style: s14W400(context),
           textAlign: TextAlign.center,
         ),

@@ -11,6 +11,7 @@ import '../../modules/cards/presentation/screens/choose_card_details_screen.dart
 import '../../modules/cards/presentation/screens/choose_card_info_input_screen.dart';
 import '../../modules/cards/presentation/screens/choose_card_screen.dart';
 import '../../modules/cards/presentation/screens/order_card_payment_method_screen.dart';
+import '../../modules/delete_account/presentation/screens/delete_account_screen.dart';
 import '../../modules/home/presentation/screens/home_screen.dart';
 import '../../modules/home/presentation/screens/shell_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_code_input_screen.dart';
@@ -25,6 +26,9 @@ import '../../modules/more/presentation/screens/personal_information_screen.dart
 import '../../modules/more/presentation/screens/security_privacy_screen.dart';
 import '../../modules/onboard/presentation/screens/onboard_screen.dart';
 import '../../modules/payment_methods/presentation/screens/add_a_card_screen.dart';
+import '../../modules/payment_methods/presentation/screens/bank_location_select_screen.dart';
+import '../../modules/payment_methods/presentation/screens/connect_bank_ac_desclaimer_screen.dart';
+import '../../modules/payment_methods/presentation/screens/connected_bank_accounts_screen.dart';
 import '../../modules/payment_methods/presentation/screens/payment_methods_screen.dart';
 import '../../modules/payment_methods/presentation/screens/saved_cards_screen.dart';
 import '../../modules/rewards/presentation/screens/rewards_screen.dart';
@@ -154,6 +158,34 @@ class AppNav {
       path: RtNm.addACardScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         const AddACardScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.connectedBankAccountsScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ConnectedBankAccountsScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.bankLocationSelectScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const BankLocationSelectScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.connectBankAcDisclaimerScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ConnectBankAcDisclaimerScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.deleteAccountScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const DeleteAccountScreen(),
         state,
       ),
     ),

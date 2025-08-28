@@ -161,7 +161,9 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                     title: 'Delete Account',
                     subtitle: 'Close your borrower account',
                     color: AppColors.errorLight,
-                    onTap: () {},
+                    onTap: () {
+                      AppNav.goRouter.push(RtNm.deleteAccountScreen);
+                    },
                   ),
                 ],
               ),
