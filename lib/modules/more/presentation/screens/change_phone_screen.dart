@@ -9,6 +9,8 @@ import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/phone_number_text_field.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../signin/presentation/providers/sign_in_providers.dart';
 
 class ChangePhoneScreen extends ConsumerStatefulWidget {
@@ -105,10 +107,11 @@ class _ChangePhoneScreenState extends ConsumerState<ChangePhoneScreen> {
 
   void _handlePhoneUpdate() {
     // TODO: Implement phone update logic
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Phone number update functionality to be implemented'),
-      ),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(
+    //     content: Text('Phone number update functionality to be implemented'),
+    //   ),
+    // );
+    AppNav.goRouter.push(RtNm.otpInputScreen);
   }
 }
