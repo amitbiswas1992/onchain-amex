@@ -2,7 +2,7 @@ name: advisify
 description: "A flutter project with clean architecture"
 publish_to: "none"
 
-version: 1.0.9+7
+version: 1.0.10+8
 
 environment:
   sdk: ">=3.4.1 <4.0.0"
