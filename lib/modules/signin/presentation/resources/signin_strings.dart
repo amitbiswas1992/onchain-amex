@@ -1,4 +1,6 @@
-const amex = 'Node';
+import '../../../../core/resources/app_strings.dart';
+
+const amex = appTitle;
 const letsGetYpuSignedIn = 'Let’s get you signed in';
 const yourEmailAddress = 'Your email address';
 const usePhone = 'Use Phone';
