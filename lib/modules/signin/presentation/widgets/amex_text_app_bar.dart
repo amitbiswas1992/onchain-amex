@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
+import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../resources/signin_strings.dart';
@@ -19,7 +20,9 @@ class AmexTextAppBar extends StatelessWidget {
           child: Text(
             amex,
             textAlign: TextAlign.center,
-            style: s32W600(context).copyWith(color: AppColors.primaryVariantLight),
+            style: s32W600(context).copyWith(
+                color:
+                    isLightTheme(context) ?  AppColors.primaryVariantLight : AppColors.primaryLight),
           ),
         ),
       ],

@@ -87,7 +87,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                       child: AppPrimaryButton(
                         title: continuee,
                         onTap: () async {
-                          _controller.signIn();
+                          // _controller.signIn();
                         },
                       ),
                     ),

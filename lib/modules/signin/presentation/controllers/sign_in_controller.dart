@@ -11,12 +11,20 @@ class SignInController {
 
   const SignInController({required this.context, required this.ref});
 
-  Future<void> signIn() async {
-    AppNav.goRouter.push(RtNm.signInLoadingScreen);
-    await Future.delayed(const Duration(seconds: 3));
-    AppNav.navKey.currentState?.pop();
-    final otp = await AppNav.goRouter.push(RtNm.otpInputScreen);
-    otp.toString().show(tag: 'otp => ');
-    AppNav.goRouter.push(RtNm.userInfoInputScreen);
+  Future<void> signIn({
+    required String email,
+    required String password,
+  }) async {
+    // AppNav.goRouter.push(RtNm.signInLoadingScreen);
+    // await Future.delayed(const Duration(seconds: 3));
+    // AppNav.navKey.currentState?.pop();
+    // final otp = await AppNav.goRouter.push(RtNm.otpInputScreen);
+    // otp.toString().show(tag: 'otp => ');
+    // AppNav.goRouter.push(RtNm.userInfoInputScreen);
+
+
+    email.show(tag: 'email');
+    password.show(tag: 'password');
+
   }
 }

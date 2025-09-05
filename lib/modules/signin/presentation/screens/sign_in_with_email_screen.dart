@@ -39,6 +39,13 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _emailNode.dispose();
+    _passwordNode.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => unFocus(context),
@@ -97,6 +104,9 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                     maxLines: 1,
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
+                    onSave: (val) {
+                      _password = val ?? '';
+                    },
                   ),
                   const VerticalSpace(32),
                   Row(
@@ -114,7 +124,11 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                         child: AppPrimaryButton(
                           title: continuee,
                           onTap: () async {
-                            _controller.signIn();
+                            final valid = await _formKey.currentState!.validate();
+                            if (valid) {
+                              _formKey.currentState!.save();
+                              _controller.signIn(email: _email, password: _password);
+                            }
                           },
                         ),
                       ),
