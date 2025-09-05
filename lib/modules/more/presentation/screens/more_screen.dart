@@ -10,7 +10,7 @@ import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/theme_toogle_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
-import '../../../../infrastructure/di/get_it_service.dart';
+import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../home/presentation/providers/home_providers.dart';
@@ -43,7 +43,7 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                     ref.read(themeModeProvider.notifier).state = isLightTheme(context)
                         ? ThemeMode.dark
                         : ThemeMode.light;
-                    getIt<SecuredStorageService>().saveThemeMode(ref.read(themeModeProvider)!);
+                    ref.read(securedStorageService).saveThemeMode(ref.read(themeModeProvider)!);
                   },
                 ),
               ),

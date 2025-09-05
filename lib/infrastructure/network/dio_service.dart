@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
-import '../di/get_it_service.dart';
 import 'connectivity_service.dart';
 import 'headers_service.dart';
 import 'response_model.dart';
@@ -11,8 +10,9 @@ import 'response_model.dart';
 class DioService {
   late final Dio dio;
   final HeadersService headersService;
+  final ConnectivityService connectivityService;
 
-  DioService({required this.headersService}) {
+  DioService({required this.headersService, required this.connectivityService}) {
     _initialize();
   }
 
@@ -66,7 +66,7 @@ class DioService {
   }
 
   Future<bool> _hasConnection() async {
-    return await getIt<ConnectivityService>().checkInternet();
+    return await connectivityService.checkInternet();
   }
 
   Future<Map<String, String>?> _getHeaders({bool useTokenizeHeader = false}) async {
@@ -154,7 +154,7 @@ class DioService {
     Map<String, dynamic>? query,
   }) async {
     try {
-      if (await getIt<ConnectivityService>().checkInternet() == false) {
+      if (await connectivityService.checkInternet() == false) {
         return ResponseModel().noInternetResponse;
       }
 

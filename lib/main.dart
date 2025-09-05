@@ -5,14 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/resources/app_strings.dart';
 import 'core/services/secured_storage_service.dart';
 import 'core/themes/app_themes.dart';
-import 'infrastructure/di/get_it_service.dart';
+import 'infrastructure/di/global_providers.dart';
 import 'infrastructure/error/app_error_handler.dart';
 import 'infrastructure/navigation/app_nav.dart';
 import 'modules/home/presentation/providers/home_providers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupGetIt();
 
   /// Handle errors
   final errorHandler = AppErrorHandler();
@@ -23,40 +22,44 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  final savedThemeMode = await getIt<SecuredStorageService>().getThemeMode();
-
   runApp(
-    ProviderScope(
-      child: MyApp(savedThemeMode: savedThemeMode),
+    const ProviderScope(
+      child: MyApp(),
     ),
   );
 }
 
 class MyApp extends ConsumerWidget {
-  final ThemeMode savedThemeMode;
 
-  const MyApp({super.key, required this.savedThemeMode});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
+    final asyncThemeMode = ref.watch(savedThemeModeProvider);
 
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: appTitle,
-      themeMode: themeMode ?? savedThemeMode,
-      theme: AppThemes.lightTheme,
-      darkTheme: AppThemes.darkTheme,
-      routerConfig: AppNav.goRouter,
-      scaffoldMessengerKey: AppNav.scaffoldMessengerKey,
-      // builder: (context, child) {
-      //   return MediaQuery(
-      //     data: MediaQuery.of(context).copyWith(
-      //       textScaler: const TextScaler.linear(1.9),
-      //     ),
-      //     child: child!,
-      //   );
-      // },
+    return asyncThemeMode.when(
+      data: (savedThemeMode) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: appTitle,
+          themeMode: themeMode ?? savedThemeMode,
+          theme: AppThemes.lightTheme,
+          darkTheme: AppThemes.darkTheme,
+          routerConfig: AppNav.goRouter,
+          scaffoldMessengerKey: AppNav.scaffoldMessengerKey,
+          // builder: (context, child) {
+          //   return MediaQuery(
+          //     data: MediaQuery.of(context).copyWith(
+          //       textScaler: const TextScaler.linear(1.9),
+          //     ),
+          //     child: child!,
+          //   );
+          // },
+        );
+      },
+      error: (err, stack) => const SizedBox(),
+      loading: () => const SizedBox(),
     );
   }
 }

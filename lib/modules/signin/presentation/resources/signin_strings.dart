@@ -13,3 +13,5 @@ const whatShouldICallYou = 'What should we call you?';
 const enterYourNameWeWillCompleteKYClater = 'Enter your name. We’ll complete KYC later';
 const firstName = 'First name';
 const lastName = 'Last name';
+const inputRequired = 'Input required';
+const invalidEmail = 'Invalid email';
