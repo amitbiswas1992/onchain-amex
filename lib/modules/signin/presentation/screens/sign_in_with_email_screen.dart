@@ -93,7 +93,7 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                       _email = val ?? '';
                     },
                   ),
-                  const VerticalSpace(AppValues.paddingLarge),
+                  const VerticalSpace(AppValues.paddingMedium),
                   AppTextFormField(
                     focusNode: _passwordNode,
                     prefixIcon: const Icon(
