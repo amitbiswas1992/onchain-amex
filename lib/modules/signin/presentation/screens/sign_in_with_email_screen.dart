@@ -29,8 +29,8 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailNode = FocusNode();
   final _passwordNode = FocusNode();
-  String email = '';
-  String password = '';
+  String _email = '';
+  String _password = '';
 
   @override
   void initState() {
@@ -83,7 +83,7 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                       _passwordNode.requestFocus();
                     },
                     onSave: (val) {
-                      email = val ?? '';
+                      _email = val ?? '';
                     },
                   ),
                   const VerticalSpace(AppValues.paddingLarge),
@@ -93,7 +93,7 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                       Icons.lock_outline,
                       size: 20,
                     ),
-                    hintText: enterTheCode,
+                    hintText: password,
                     maxLines: 1,
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,

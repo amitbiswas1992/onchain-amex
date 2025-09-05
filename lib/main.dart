@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'core/resources/app_strings.dart';
-import 'core/services/secured_storage_service.dart';
 import 'core/themes/app_themes.dart';
-import 'infrastructure/di/global_providers.dart';
 import 'infrastructure/error/app_error_handler.dart';
 import 'infrastructure/navigation/app_nav.dart';
 import 'modules/home/presentation/providers/home_providers.dart';
