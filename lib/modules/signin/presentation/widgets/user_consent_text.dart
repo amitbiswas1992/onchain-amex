@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/resources/app_colors.dart';
+import '../../../../core/resources/app_strings.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 
@@ -60,7 +61,7 @@ class UserConsentText extends StatelessWidget {
               },
           ),
           TextSpan(
-            text: ' of Node On Chain.',
+            text: ' of $appTitle.',
             style: s12W400(context),
           ),
         ],

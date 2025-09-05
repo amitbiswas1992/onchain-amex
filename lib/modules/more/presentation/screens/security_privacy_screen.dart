@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/resources/app_colors.dart';
+import '../../../../core/resources/app_strings.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
@@ -122,7 +123,7 @@ class PrivacySettingsSection extends StatelessWidget {
         BiometricToggleMenuItem(
           assetPath: 'assets/icons/fingerprint.svg',
           title: 'Biometric data',
-          subTitle: 'Allow Node to store and use your selfie & ID for automated verification',
+          subTitle: 'Allow $appTitle to store and use your selfie & ID for automated verification',
           enabled: biometricDataEnabled,
           onToggle: onBiometricToggle,
         ),

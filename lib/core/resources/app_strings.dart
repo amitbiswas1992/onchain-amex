@@ -1,1 +1,1 @@
-const appTitle = 'Onchain';
+const appTitle = 'TMRW';

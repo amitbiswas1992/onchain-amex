@@ -1,3 +1,4 @@
+import '../../../../core/resources/app_strings.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../controllers/splash_controller.dart';
@@ -27,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: isLightTheme(context) ? AppColors.softGreen : null,
       body: Center(
         child: Text(
-          'Node',
+          appTitle,
           style: s32W600(context).copyWith(
             color: AppColors.primaryLight,
             fontSize: 56,
