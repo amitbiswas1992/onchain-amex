@@ -37,7 +37,11 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = SignInController(context: context, ref: ref);
+    _controller = SignInController(
+      context: context,
+      ref: ref,
+      signInRepo: ref.read(signInRepoProvider),
+    );
   }
 
   @override

@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
+import 'api_urls.dart';
 import 'connectivity_service.dart';
 import 'headers_service.dart';
 import 'response_model.dart';
@@ -18,11 +19,12 @@ class DioService {
 
   void _initialize() {
     BaseOptions options = BaseOptions(
+      baseUrl: ApiUrls.base,
       connectTimeout: const Duration(seconds: 120),
       receiveTimeout: const Duration(seconds: 120),
     );
 
-    dio = Dio();
+    dio = Dio(options);
     dio.interceptors.add(
       InterceptorsWrapper(
         onError: (error, handler) {

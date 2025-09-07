@@ -10,27 +10,40 @@ import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../controllers/sign_in_controller.dart';
+import '../providers/sign_in_providers.dart';
 import '../resources/signin_strings.dart';
 import '../widgets/amex_text_app_bar.dart';
 
 class UserInfoInputScreen extends ConsumerStatefulWidget {
-  const UserInfoInputScreen({super.key});
+  final String email;
+  final String password;
+
+  const UserInfoInputScreen({
+    super.key,
+    required this.email,
+    required this.password,
+  });
 
   @override
   ConsumerState createState() => _UserInfoInputScreenState();
 }
 
 class _UserInfoInputScreenState extends ConsumerState<UserInfoInputScreen> {
-
+  late final SignInController _controller;
+  final _formKey = GlobalKey<FormState>();
   final _firstNameNode = FocusNode();
   final _lastNameNode = FocusNode();
-  final String _firstName = '';
-  final String _lastName = '';
-
+  String _firstName = '';
+  String _lastName = '';
 
   @override
   void initState() {
-    // TODO: implement initState
+    _controller = SignInController(
+      context: context,
+      ref: ref,
+      signInRepo: ref.read(signInRepoProvider),
+    );
     super.initState();
   }
 
@@ -50,55 +63,90 @@ class _UserInfoInputScreenState extends ConsumerState<UserInfoInputScreen> {
           padding: const EdgeInsets.symmetric(
             horizontal: AppValues.paddingMedium,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Flexible(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const AmexTextAppBar(),
-                      const VerticalSpace(68),
-                      const TitleText(
-                        text: whatShouldICallYou,
-                        textAlign: TextAlign.start,
-                      ),
-                      const VerticalSpace(AppValues.paddingMedium),
-                      Text(
-                        enterYourNameWeWillCompleteKYClater,
-                        style: s14W400(context),
-                      ),
-                      const VerticalSpace(AppValues.paddingMedium),
-                      AppTextFormField(
-                        focusNode: _firstNameNode,
-                        hintText: firstName,
-                      ),
-                      const VerticalSpace(AppValues.paddingMedium),
-                      AppTextFormField(
-                        focusNode: _lastNameNode,
-                        hintText: lastName,
-                      ),
-                      const VerticalSpace(AppValues.paddingMedium),
-                    ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AmexTextAppBar(),
+                        const VerticalSpace(68),
+                        const TitleText(
+                          text: whatShouldICallYou,
+                          textAlign: TextAlign.start,
+                        ),
+                        const VerticalSpace(AppValues.paddingMedium),
+                        Text(
+                          enterYourNameWeWillCompleteKYClater,
+                          style: s14W400(context),
+                        ),
+                        const VerticalSpace(AppValues.paddingMedium),
+                        AppTextFormField(
+                          focusNode: _firstNameNode,
+                          hintText: firstName,
+                          onFieldSubmitted: (value) {
+                            _lastNameNode.requestFocus();
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return inputRequired;
+                            }
+                            return null;
+                          },
+                          onSave: (val) {
+                            _firstName = val ?? '';
+                          },
+                        ),
+                        const VerticalSpace(AppValues.paddingMedium),
+                        AppTextFormField(
+                          focusNode: _lastNameNode,
+                          hintText: lastName,
+                          onFieldSubmitted: (value) {
+                            _lastNameNode.unfocus();
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return inputRequired;
+                            }
+                            return null;
+                          },
+                          onSave: (val) {
+                            _lastName = val ?? '';
+                          },
+                        ),
+                        const VerticalSpace(AppValues.paddingMedium),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Column(
-                children: [
-                  AppPrimaryButton(
-                    title: continuee,
-                    onTap: () {
-                      unFocus(context);
-                      AppNav.goRouter.push(RtNm.inviteFriendScreen);
-                    },
-                  ),
-                  const VerticalSpace(20),
-                ],
-              ),
-            ],
+                Column(
+                  children: [
+                    AppPrimaryButton(
+                      title: continuee,
+                      onTap: () {
+                        unFocus(context);
+                        if (_formKey.currentState!.validate() == true) {
+                          _formKey.currentState!.save();
+                          _controller.register(
+                            email: widget.email,
+                            password: widget.password,
+                            firstName: _firstName,
+                            lastName: _lastName,
+                          );
+                        }
+                      },
+                    ),
+                    const VerticalSpace(20),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -285,10 +285,13 @@ class AppNav {
     ),
     GoRoute(
       path: RtNm.userInfoInputScreen,
-      pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const UserInfoInputScreen(),
-        state,
-      ),
+      pageBuilder: (context, state) {
+        final extras = state.extra as Map<String, dynamic>;
+        return fadeTransitionPageBuilder(
+          UserInfoInputScreen(email: extras['email'], password: extras['password']),
+          state,
+        );
+      },
     ),
   ];
 
