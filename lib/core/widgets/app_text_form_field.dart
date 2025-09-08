@@ -29,6 +29,7 @@ class AppTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? formatters;
   final bool? autoFocus;
   final double borderRadius;
+  final TextCapitalization textCapitalization;
 
   const AppTextFormField({
     super.key,
@@ -55,6 +56,7 @@ class AppTextFormField extends StatelessWidget {
     this.errorColor,
     this.formatters, this.autoFocus,
     this.borderRadius = 6,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   @override
@@ -84,6 +86,7 @@ class AppTextFormField extends StatelessWidget {
         style: textStyle ??
             s14W500(context).copyWith(color: theme.colorScheme.onSurface),
         inputFormatters: formatters,
+        textCapitalization: textCapitalization,
         decoration: InputDecoration(
           isDense: true,
           hintText: hintText,

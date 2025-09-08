@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/string_extension.dart';
 import '../../../../core/widgets/dialogs.dart';
+import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../../infrastructure/network/result.dart';
@@ -58,6 +59,7 @@ class SignInController {
 
     switch (result) {
       case Ok<TokensModel?>():
+        await ref.read(securedStorageService).saveUserTokens(result.value!);
         AppNav.goRouter.go(RtNm.homeScreen);
       case Error<TokensModel?>():
         showErrorDialog(context: context, message: result.toString());

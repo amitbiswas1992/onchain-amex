@@ -111,6 +111,15 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                     onSave: (val) {
                       _password = val ?? '';
                     },
+                    validator: (val) {
+                      if (val == null || val.isEmpty) {
+                        return inputRequired;
+                      }
+                      if (val.length < 8) {
+                        return 'Password should be 8 character long';
+                      }
+                      return null;
+                    },
                   ),
                   const VerticalSpace(32),
                   Row(

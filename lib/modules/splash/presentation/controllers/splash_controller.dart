@@ -17,6 +17,11 @@ class SplashController {
   void routeNext() async {
     await Future.delayed(const Duration(seconds: 3));
 
+    final userTokens = await ref.read(securedStorageService).getUserTokens();
+    if (userTokens != null) {
+      AppNav.goRouter.go(RtNm.homeScreen);
+    }
+
     final onboarded = await ref.read(securedStorageService).isOnboarded();
 
     if (onboarded) {

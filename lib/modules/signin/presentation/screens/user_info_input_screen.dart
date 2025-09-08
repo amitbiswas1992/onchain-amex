@@ -90,6 +90,8 @@ class _UserInfoInputScreenState extends ConsumerState<UserInfoInputScreen> {
                         AppTextFormField(
                           focusNode: _firstNameNode,
                           hintText: firstName,
+                          keyboardType: TextInputType.name,
+                          textCapitalization: TextCapitalization.words,
                           onFieldSubmitted: (value) {
                             _lastNameNode.requestFocus();
                           },
@@ -107,6 +109,8 @@ class _UserInfoInputScreenState extends ConsumerState<UserInfoInputScreen> {
                         AppTextFormField(
                           focusNode: _lastNameNode,
                           hintText: lastName,
+                          keyboardType: TextInputType.name,
+                          textCapitalization: TextCapitalization.words,
                           onFieldSubmitted: (value) {
                             _lastNameNode.unfocus();
                           },
