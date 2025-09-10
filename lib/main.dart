@@ -41,7 +41,7 @@ class MyApp extends ConsumerWidget {
           debugShowCheckedModeBanner: false,
           title: appTitle,
           themeMode: themeMode ?? savedThemeMode,
-          theme: AppThemes.lightTheme,
+          theme: AppThemes.darkTheme,
           darkTheme: AppThemes.darkTheme,
           routerConfig: AppNav.goRouter,
           scaffoldMessengerKey: AppNav.scaffoldMessengerKey,

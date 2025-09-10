@@ -45,7 +45,7 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                   textStyle: s14W600(context),
                   onPressed: () {
                     ref.read(securedStorageService).markAsOnboarded();
-                    AppNav.goRouter.go(RtNm.signInWithEmailScreen);
+                    AppNav.goRouter.go(RtNm.registerWithEmailScreen);
                   },
                 ),
               ),
@@ -101,7 +101,7 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                           title: getStarted,
                           onTap: () {
                             ref.read(securedStorageService).markAsOnboarded();
-                            AppNav.goRouter.go(RtNm.signInWithEmailScreen);
+                            AppNav.goRouter.go(RtNm.registerWithEmailScreen);
                           },
                         );
                       }

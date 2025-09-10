@@ -25,7 +25,7 @@ class SplashController {
     final onboarded = await ref.read(securedStorageService).isOnboarded();
 
     if (onboarded) {
-      AppNav.goRouter.go(RtNm.signInWithEmailScreen);
+      AppNav.goRouter.go(RtNm.registerWithEmailScreen);
     } else {
       AppNav.goRouter.go(RtNm.onboardingScreen);
     }

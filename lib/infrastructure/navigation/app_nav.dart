@@ -34,7 +34,7 @@ import '../../modules/payment_methods/presentation/screens/saved_cards_screen.da
 import '../../modules/rewards/presentation/screens/rewards_screen.dart';
 import '../../modules/signin/presentation/screens/otp_input_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
-import '../../modules/signin/presentation/screens/sign_in_with_email_screen.dart';
+import '../../modules/signin/presentation/screens/register_with_email_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/user_info_input_screen.dart';
 import '../../modules/spends/data/models/payment_success_extra.dart';
@@ -256,9 +256,9 @@ class AppNav {
       ),
     ),
     GoRoute(
-      path: RtNm.signInWithEmailScreen,
+      path: RtNm.registerWithEmailScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const SignInWithEmailScreen(),
+        const RegisterWithEmailScreen(),
         state,
       ),
     ),
@@ -279,7 +279,7 @@ class AppNav {
     GoRoute(
       path: RtNm.otpInputScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const OtpInputScreen(),
+        OtpInputScreen(emailOrPhone: state.extra!.toString()),
         state,
       ),
     ),

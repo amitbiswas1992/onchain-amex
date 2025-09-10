@@ -17,18 +17,22 @@ import '../resources/signin_strings.dart';
 import '../widgets/amex_text_app_bar.dart';
 import '../widgets/user_consent_text.dart';
 
-class SignInWithEmailScreen extends ConsumerStatefulWidget {
-  const SignInWithEmailScreen({super.key});
+class RegisterWithEmailScreen extends ConsumerStatefulWidget {
+  const RegisterWithEmailScreen({super.key});
 
   @override
   ConsumerState createState() => _SignInWithEmailScreenState();
 }
 
-class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
+class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen> {
   late final SignInController _controller;
   final _formKey = GlobalKey<FormState>();
   final _emailNode = FocusNode();
   final _passwordNode = FocusNode();
+  final _firstNameNode = FocusNode();
+  final _lastNameNode = FocusNode();
+  String _firstName = '';
+  String _lastName = '';
   String _email = '';
   String _password = '';
 
@@ -47,6 +51,8 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
     super.dispose();
     _emailNode.dispose();
     _passwordNode.dispose();
+    _firstNameNode.dispose();
+    _lastNameNode.dispose();
   }
 
   @override
@@ -111,14 +117,57 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                     onSave: (val) {
                       _password = val ?? '';
                     },
-                    validator: (val) {
-                      if (val == null || val.isEmpty) {
+                    // validator: (val) {
+                    //   if (val == null || val.isEmpty) {
+                    //     return inputRequired;
+                    //   }
+                    //   if (val.length < 8) {
+                    //     return 'Password should be 8 character long';
+                    //   }
+                    //   return null;
+                    // },
+                    validator: validatePassword,
+                    onFieldSubmitted: (val) {
+                      _passwordNode.unfocus();
+                      _firstNameNode.requestFocus()
+;                    },
+                  ),
+                  const VerticalSpace(AppValues.paddingMedium),
+                  AppTextFormField(
+                    focusNode: _firstNameNode,
+                    hintText: firstName,
+                    keyboardType: TextInputType.name,
+                    textCapitalization: TextCapitalization.words,
+                    onFieldSubmitted: (value) {
+                      _lastNameNode.requestFocus();
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
                         return inputRequired;
                       }
-                      if (val.length < 8) {
-                        return 'Password should be 8 character long';
+                      return null;
+                    },
+                    onSave: (val) {
+                      _firstName = val ?? '';
+                    },
+                  ),
+                  const VerticalSpace(AppValues.paddingMedium),
+                  AppTextFormField(
+                    focusNode: _lastNameNode,
+                    hintText: lastName,
+                    keyboardType: TextInputType.name,
+                    textCapitalization: TextCapitalization.words,
+                    onFieldSubmitted: (value) {
+                      _lastNameNode.unfocus();
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return inputRequired;
                       }
                       return null;
+                    },
+                    onSave: (val) {
+                      _lastName = val ?? '';
                     },
                   ),
                   const VerticalSpace(32),
@@ -140,7 +189,7 @@ class _SignInWithEmailScreenState extends ConsumerState<SignInWithEmailScreen> {
                             final valid = await _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
-                              _controller.signIn(email: _email, password: _password);
+                              _controller.register(email: _email, password: _password, lastName: _lastName, firstName: _firstName);
                             }
                           },
                         ),

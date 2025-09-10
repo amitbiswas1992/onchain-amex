@@ -1,7 +1,9 @@
 import '../../../../infrastructure/network/result.dart';
+import '../../../signin/data/models/register_model.dart';
 import '../../data/dto/register_dto.dart';
-import '../../data/models/tokens_model.dart';
+import '../../../signin/data/models/tokens_model.dart';
 
 abstract interface class SignInRepoInterface {
-  Future<Result<TokensModel?>> register({required RegisterDto dto});
+  Future<Result<RegisterModel?>> registerWithEmail({required RegisterDto dto});
+  Future<Result<dynamic>> verifyEmailOtp({required Map<String, dynamic> payload});
 }

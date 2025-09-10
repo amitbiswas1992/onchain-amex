@@ -5,5 +5,7 @@ class ApiUrls {
 
   static const base = 'https://paytmrw.com/';
   static const register = '/api/v1/auth/register';
+  static const sendOtpToEmail = '/api/v1/auth/send-email-verification-otp';
+  static const verifyOtpForEmail = '/api/v1/auth/verify-email-otp';
 
 }

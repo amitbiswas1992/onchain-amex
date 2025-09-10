@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
+import '../../../../core/utils/string_utils.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/app_secondary_button.dart';
@@ -111,6 +112,19 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                     onSave: (val) {
                       _password = val ?? '';
                     },
+                    // validator: (val) {
+                    //   if (val == null || val.isEmpty) {
+                    //     return inputRequired;
+                    //   }
+                    //   if (val.length < 8) {
+                    //     return 'Password should be 8 character long';
+                    //   }
+                    //   return null;
+                    // },
+                    validator: validatePassword,
+                    onFieldSubmitted: (val) {
+                      _passwordNode.unfocus();
+                    },
                   ),
                   const VerticalSpace(32),
                   Row(
@@ -119,7 +133,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                         child: AppSecondaryButton(
                           title: useEmail,
                           onTap: () {
-                            AppNav.goRouter.pushReplacement(RtNm.signInWithEmailScreen);
+                            AppNav.goRouter.pushReplacement(RtNm.registerWithEmailScreen);
                           },
                         ),
                       ),

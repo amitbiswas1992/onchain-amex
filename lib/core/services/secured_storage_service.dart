@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../modules/more/data/models/tokens_model.dart';
+import '../../modules/signin/data/models/tokens_model.dart';
 
 class SecuredStorageService {
   final _storage = const FlutterSecureStorage(

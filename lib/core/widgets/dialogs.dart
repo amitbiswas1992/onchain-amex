@@ -94,18 +94,18 @@ Future<void> statusDialogBase({
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  icon,
+                  // icon,
                   const VerticalSpace(AppValues.paddingSmall),
                   TitleText(
                     text: title,
-                    color: AppColors.primaryLight,
+                    // color: AppColors.primaryLight,
                     textAlign: TextAlign.center,
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
                   SingleChildScrollView(
                     child: SubTitleText(
                       text: message,
-                      color: Colors.black54,
+                      // color: Colors.black54,
                       textAlign: TextAlign.center,
                     ),
                   ),

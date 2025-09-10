@@ -17,7 +17,7 @@ class RegisterDto {
     final data = {
       isEmail ? "email" : "phoneNumber": emailOrPhone,
       "password": password,
-      "username": firstName.toLowerCase(),
+      "username": DateTime.now().millisecondsSinceEpoch.toString(),
       "firstName": firstName,
       "lastName": lastName
     };
