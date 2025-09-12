@@ -32,6 +32,7 @@ import '../../modules/payment_methods/presentation/screens/connected_bank_accoun
 import '../../modules/payment_methods/presentation/screens/payment_methods_screen.dart';
 import '../../modules/payment_methods/presentation/screens/saved_cards_screen.dart';
 import '../../modules/rewards/presentation/screens/rewards_screen.dart';
+import '../../modules/signin/presentation/screens/login_with_email_screen.dart';
 import '../../modules/signin/presentation/screens/otp_input_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
 import '../../modules/signin/presentation/screens/register_with_email_screen.dart';
@@ -259,6 +260,13 @@ class AppNav {
       path: RtNm.registerWithEmailScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         const RegisterWithEmailScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.loginWithEmailScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const LoginWithEmailScreen(),
         state,
       ),
     ),

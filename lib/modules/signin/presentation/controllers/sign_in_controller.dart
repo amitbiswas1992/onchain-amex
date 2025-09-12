@@ -60,16 +60,15 @@ class SignInController {
     required String password,
   }) async {
     AppNav.goRouter.push(RtNm.signInLoadingScreen);
-    await Future.delayed(const Duration(seconds: 3));
+    final result = await signInRepo.login(
+      payload: {
+        "email": email,
+        "password": password,
+        // "twoFactorCode": "123456"
+      },
+    );
     AppNav.navKey.currentState?.pop();
-    final otp = await AppNav.goRouter.push(RtNm.otpInputScreen);
-    // AppNav.goRouter.push(
-    //   RtNm.userInfoInputScreen,
-    //   extra: {
-    //     'email': email,
-    //     'password': password,
-    //   },
-    // );
+    _handleLoginRegisterResponse(result: result, emailOrPhone: email);
   }
 
   Future<void> register({
@@ -95,7 +94,15 @@ class SignInController {
 
   Future<void> resendOtp(String emailOrPhone) async {
     if (isValidEmail(emailOrPhone)) {
-
+      final result = await signInRepo.resendOtpToEmail(
+        payload: {'email': emailOrPhone},
+      );
+      switch (result) {
+        case Ok():
+        // AppNav.goRouter.push(RtNm.otpInputScreen, extra: emailOrPhone);
+        case Error():
+          showErrorDialog(context: context, message: result.toString());
+      }
     } else {
       //TODO: handle resend otp for phone number
     }

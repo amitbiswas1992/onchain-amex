@@ -48,4 +48,41 @@ class SignInRepo implements SignInRepoInterface {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }
   }
+
+  @override
+  Future<Result> resendOtpToEmail({required Map<String, dynamic> payload}) async {
+    try {
+      final response = await dioService.post(
+        ApiUrls.resendOtpToEmail,
+        body: payload,
+      );
+
+      return response.toResult(dataHandler: (json) {
+        return null;
+      });
+    } catch (error, stck) {
+      return handleCatchAndReturnResult(error: error, stck: stck);
+    }
+  }
+
+  @override
+  Future<Result<RegisterModel?>> login({required Map<String, dynamic> payload}) async {
+    try {
+      final response = await dioService.post(
+        ApiUrls.login,
+        body: payload,
+      );
+
+      return response.toResult(
+        dataHandler: (data) {
+          return RegisterModel(
+            tokensModel: TokensModel.fromJson(data['tokens']),
+            userMap: data['user'],
+          );
+        },
+      );
+    } catch (error, stck) {
+      return handleCatchAndReturnResult(error: error, stck: stck);
+    }
+  }
 }

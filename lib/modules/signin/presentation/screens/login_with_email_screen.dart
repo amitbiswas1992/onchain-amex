@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,7 +8,6 @@ import '../../../../core/utils/string_utils.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/app_secondary_button.dart';
-import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
@@ -19,22 +17,18 @@ import '../resources/signin_strings.dart';
 import '../widgets/amex_text_app_bar.dart';
 import '../widgets/user_consent_text.dart';
 
-class RegisterWithEmailScreen extends ConsumerStatefulWidget {
-  const RegisterWithEmailScreen({super.key});
+class LoginWithEmailScreen extends ConsumerStatefulWidget {
+  const LoginWithEmailScreen({super.key});
 
   @override
-  ConsumerState createState() => _SignInWithEmailScreenState();
+  ConsumerState createState() => _LoginWithEmailScreenState();
 }
 
-class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen> {
+class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
   late final SignInController _controller;
   final _formKey = GlobalKey<FormState>();
   final _emailNode = FocusNode();
   final _passwordNode = FocusNode();
-  final _firstNameNode = FocusNode();
-  final _lastNameNode = FocusNode();
-  String _firstName = '';
-  String _lastName = '';
   String _email = '';
   String _password = '';
 
@@ -53,8 +47,6 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
     super.dispose();
     _emailNode.dispose();
     _passwordNode.dispose();
-    _firstNameNode.dispose();
-    _lastNameNode.dispose();
   }
 
   @override
@@ -131,45 +123,6 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                     validator: validatePassword,
                     onFieldSubmitted: (val) {
                       _passwordNode.unfocus();
-                      _firstNameNode.requestFocus()
-;                    },
-                  ),
-                  const VerticalSpace(AppValues.paddingMedium),
-                  AppTextFormField(
-                    focusNode: _firstNameNode,
-                    hintText: firstName,
-                    keyboardType: TextInputType.name,
-                    textCapitalization: TextCapitalization.words,
-                    onFieldSubmitted: (value) {
-                      _lastNameNode.requestFocus();
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return inputRequired;
-                      }
-                      return null;
-                    },
-                    onSave: (val) {
-                      _firstName = val ?? '';
-                    },
-                  ),
-                  const VerticalSpace(AppValues.paddingMedium),
-                  AppTextFormField(
-                    focusNode: _lastNameNode,
-                    hintText: lastName,
-                    keyboardType: TextInputType.name,
-                    textCapitalization: TextCapitalization.words,
-                    onFieldSubmitted: (value) {
-                      _lastNameNode.unfocus();
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return inputRequired;
-                      }
-                      return null;
-                    },
-                    onSave: (val) {
-                      _lastName = val ?? '';
                     },
                   ),
                   const VerticalSpace(32),
@@ -179,7 +132,7 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                         child: AppSecondaryButton(
                           title: usePhone,
                           onTap: () {
-                            AppNav.goRouter.pushReplacement(RtNm.signInWithPhoneScreen);
+                            // AppNav.goRouter.pushReplacement(RtNm.signInWithPhoneScreen);
                           },
                         ),
                       ),
@@ -191,34 +144,12 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                             final valid = await _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
-                              _controller.register(email: _email, password: _password, lastName: _lastName, firstName: _firstName);
+                              _controller.signIn(email: _email, password: _password);
                             }
                           },
                         ),
                       ),
                     ],
-                  ),
-                  const VerticalSpace(AppValues.paddingMedium),
-                  Text(
-                    'or',
-                    style: s14W400(context),
-                  ),
-                  const VerticalSpace(AppValues.paddingMedium),
-                  RichText(
-                    text: TextSpan(
-                      text: "Already have an account?  ",
-                      style: s14W400(context),
-                      children: [
-                        TextSpan(
-                          text: "Login.",
-                          style: s14W500(context),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              AppNav.goRouter.push(RtNm.loginWithEmailScreen);
-                            },
-                        ),
-                      ],
-                    ),
                   ),
                   const VerticalSpace(82),
                   const UserConsentText(),
