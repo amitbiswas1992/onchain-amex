@@ -20,6 +20,7 @@ class SplashController {
     final userTokens = await ref.read(securedStorageService).getUserTokens();
     if (userTokens != null) {
       AppNav.goRouter.go(RtNm.homeScreen);
+      return;
     }
 
     final onboarded = await ref.read(securedStorageService).isOnboarded();

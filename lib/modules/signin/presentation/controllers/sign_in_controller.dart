@@ -100,6 +100,7 @@ class SignInController {
       switch (result) {
         case Ok():
         // AppNav.goRouter.push(RtNm.otpInputScreen, extra: emailOrPhone);
+          break;
         case Error():
           showErrorDialog(context: context, message: result.toString());
       }

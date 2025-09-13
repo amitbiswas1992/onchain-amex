@@ -198,12 +198,8 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                       ),
                     ],
                   ),
-                  const VerticalSpace(AppValues.paddingMedium),
-                  Text(
-                    'or',
-                    style: s14W400(context),
-                  ),
-                  const VerticalSpace(AppValues.paddingMedium),
+
+                  const VerticalSpace(AppValues.paddingLarge),
                   RichText(
                     text: TextSpan(
                       text: "Already have an account?  ",

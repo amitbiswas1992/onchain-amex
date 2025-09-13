@@ -170,7 +170,10 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
               MenuItem(
                 icon: 'assets/icons/log_out.svg',
                 title: 'Logout',
-                onTap: () {},
+                onTap: () async {
+                  await ref.read(securedStorageService).deleteUserTokens();
+                  AppNav.goRouter.go(RtNm.splashScreen);
+                },
               ),
               // Logout Section
 

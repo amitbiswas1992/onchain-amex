@@ -40,4 +40,13 @@ class SecuredStorageService {
     return null;
   }
 
+  Future<void> deleteUserTokens() async {
+    try {
+      return await _storage.delete(key: 'user_token');
+    } catch (error, stck) {
+      debugPrint(error.toString());
+      debugPrint(stck.toString());
+    }
+  }
+
 }

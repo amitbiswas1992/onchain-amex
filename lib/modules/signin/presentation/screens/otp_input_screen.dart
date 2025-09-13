@@ -106,7 +106,7 @@ class _OtpInputScreenState extends ConsumerState<OtpInputScreen> {
                           onResend: () {
                             _controller.resendOtp(widget.emailOrPhone);
                           },
-                          initialDuration: const Duration(seconds: 30),
+                          initialDuration: const Duration(minutes: 2),
                         ),
                       ],
                     ),
