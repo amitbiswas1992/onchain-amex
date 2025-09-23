@@ -13,6 +13,7 @@ import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../connect_wallet/presentation/screens/connect_wallet_screen.dart';
 import '../../../home/presentation/providers/home_providers.dart';
 import '../widgets/menu_section.dart';
 
@@ -258,7 +259,9 @@ class ProfileHeaderSection extends StatelessWidget {
               color: AppColors.onBackgroundDark,
             ),
             height: 48,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const ConnectWalletScreen()));
+            },
             icon: SvgPicture.asset('assets/icons/link.svg'),
             radius: AppValues.borderRadiusLarge,
             color: AppColors.backgroundDark,

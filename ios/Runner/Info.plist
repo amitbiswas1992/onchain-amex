@@ -52,21 +52,17 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 
-	<key>NSCameraUsageDescription</key>
-    <string>This app needs access to your camera to take photos for customized contents.</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>This app needs access to your photo library to select images for customized contents.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>This app needs access to your microphone to record videos with sound for processing.</string>
-
     <key>CFBundleURLTypes</key>
     <array>
       <dict>
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>com.example.yourBundleId</string>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.googleusercontent.apps.748918869384-cor4rm29qblo7dodd6qt4k2q8410qfdn</string>
+          <!-- no :// here; this must match redirect.native without :// -->
+          <string>tmrw</string>
         </array>
       </dict>
     </array>
