@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +10,7 @@ import '../../../../core/utils/string_utils.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/app_secondary_button.dart';
+import '../../../../core/widgets/phone_number_text_field.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
@@ -19,20 +21,25 @@ import '../resources/signin_strings.dart';
 import '../widgets/amex_text_app_bar.dart';
 import '../widgets/user_consent_text.dart';
 
-class LoginWithEmailScreen extends ConsumerStatefulWidget {
-  const LoginWithEmailScreen({super.key});
+class RegisterWithPhoneScreen extends ConsumerStatefulWidget {
+  const RegisterWithPhoneScreen({super.key});
 
   @override
-  ConsumerState createState() => _LoginWithEmailScreenState();
+  ConsumerState createState() => _RegisterWithPhoneScreenState();
 }
 
-class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
+class _RegisterWithPhoneScreenState extends ConsumerState<RegisterWithPhoneScreen> {
   late final SignInController _controller;
+
   final _formKey = GlobalKey<FormState>();
-  final _emailNode = FocusNode();
+  final _phoneNode = FocusNode();
   final _passwordNode = FocusNode();
-  String _email = '';
+  final _firstNameNode = FocusNode();
+  final _lastNameNode = FocusNode();
+  String _firstName = '';
+  String _lastName = '';
   String _password = '';
+  String _phone = '';
 
   @override
   void initState() {
@@ -47,8 +54,10 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
   @override
   void dispose() {
     super.dispose();
-    _emailNode.dispose();
+    _phoneNode.dispose();
     _passwordNode.dispose();
+    _firstNameNode.dispose();
+    _lastNameNode.dispose();
   }
 
   @override
@@ -73,30 +82,30 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                     textAlign: TextAlign.start,
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
-                  AppTextFormField(
-                    focusNode: _emailNode,
-                    prefixIcon: const Icon(
-                      Icons.email_outlined,
-                      size: 20,
-                    ),
-                    hintText: yourEmailAddress,
-                    maxLines: 1,
-                    keyboardType: TextInputType.emailAddress,
-                    autoFocus: true,
-                    validator: (val) {
-                      if (val == null || val.isEmpty) {
-                        return inputRequired;
-                      }
-                      if (!isValidEmail(val)) {
-                        return invalidEmail;
-                      }
-                      return null;
-                    },
-                    onFieldSubmitted: (val) {
-                      _passwordNode.requestFocus();
-                    },
-                    onSave: (val) {
-                      _email = val ?? '';
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final countryCode = ref.watch(selectedCountryCodeProvider);
+
+                      return PhoneNumberTextField(
+                        focusNode: _phoneNode,
+                        countryCode: countryCode,
+                        onCountryCodeChanged: (code) {
+                          ref.read(selectedCountryCodeProvider.notifier).state = code;
+                        },
+                        prefixIcon: const Icon(
+                          CupertinoIcons.device_phone_portrait,
+                          size: 20,
+                        ),
+                        autoFocus: true,
+                        onFieldSubmitted: (val) {
+                          _passwordNode.requestFocus();
+                        },
+                        onSave: (val) {
+                          _phone = '${countryCode.dialCode}${val ?? ' '}';
+                          _phone = _phone.replaceAll('-', '');
+                          _phone = _phone.replaceAll(' ', '');
+                        },
+                      );
                     },
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
@@ -125,6 +134,47 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                     validator: validatePassword,
                     onFieldSubmitted: (val) {
                       _passwordNode.unfocus();
+                      _firstNameNode.requestFocus();
+                    },
+                  ),
+                  const VerticalSpace(AppValues.paddingMedium),
+                  AppTextFormField(
+                    focusNode: _firstNameNode,
+                    hintText: firstName,
+                    prefixIcon: const Icon(CupertinoIcons.person),
+                    keyboardType: TextInputType.name,
+                    textCapitalization: TextCapitalization.words,
+                    onFieldSubmitted: (value) {
+                      _lastNameNode.requestFocus();
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return inputRequired;
+                      }
+                      return null;
+                    },
+                    onSave: (val) {
+                      _firstName = val ?? '';
+                    },
+                  ),
+                  const VerticalSpace(AppValues.paddingMedium),
+                  AppTextFormField(
+                    focusNode: _lastNameNode,
+                    hintText: lastName,
+                    prefixIcon: const Icon(CupertinoIcons.person),
+                    keyboardType: TextInputType.name,
+                    textCapitalization: TextCapitalization.words,
+                    onFieldSubmitted: (value) {
+                      _lastNameNode.unfocus();
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return inputRequired;
+                      }
+                      return null;
+                    },
+                    onSave: (val) {
+                      _lastName = val ?? '';
                     },
                   ),
                   const VerticalSpace(32),
@@ -132,9 +182,9 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                     children: [
                       Expanded(
                         child: AppSecondaryButton(
-                          title: usePhone,
+                          title: useEmail,
                           onTap: () {
-                            // AppNav.goRouter.pushReplacement(RtNm.signInWithPhoneScreen);
+                            AppNav.goRouter.pushReplacement(RtNm.registerWithEmailScreen);
                           },
                         ),
                       ),
@@ -146,7 +196,13 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                             final valid = await _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
-                              _controller.signIn(email: _email, password: _password, isEmail: true);
+                              _controller.register(
+                                email: _phone,
+                                password: _password,
+                                firstName: _firstName,
+                                lastName: _lastName,
+                                isEmail: false,
+                              );
                             }
                           },
                         ),
@@ -156,15 +212,15 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                   const VerticalSpace(AppValues.paddingLarge),
                   RichText(
                     text: TextSpan(
-                      text: "Do not have an account?  ",
+                      text: "Already have an account?  ",
                       style: s14W400(context),
                       children: [
                         TextSpan(
-                          text: "Register.",
+                          text: "Login.",
                           style: s14W500(context),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              AppNav.goRouter.push(RtNm.registerWithEmailScreen);
+                              AppNav.goRouter.push(RtNm.loginWithPhoneScreen);
                             },
                         ),
                       ],

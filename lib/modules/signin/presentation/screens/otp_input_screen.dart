@@ -18,10 +18,12 @@ import '../widgets/amex_text_app_bar.dart';
 
 class OtpInputScreen extends ConsumerStatefulWidget {
   final String emailOrPhone;
+  final bool isEmail;
 
   const OtpInputScreen({
     super.key,
     required this.emailOrPhone,
+    required this.isEmail,
   });
 
   @override
@@ -104,7 +106,10 @@ class _OtpInputScreenState extends ConsumerState<OtpInputScreen> {
                         const VerticalSpace(AppValues.paddingSmall),
                         OtpResendTimer(
                           onResend: () {
-                            _controller.resendOtp(widget.emailOrPhone);
+                            _controller.resendOtp(
+                              emailOrPhone: widget.emailOrPhone,
+                              isEmail: widget.isEmail,
+                            );
                           },
                           initialDuration: const Duration(minutes: 2),
                         ),

@@ -18,7 +18,7 @@ class SignInRepo implements SignInRepoInterface {
   Future<Result<RegisterModel?>> registerWithEmail({required RegisterDto dto}) async {
     try {
       final response = await dioService.post(
-        ApiUrls.register,
+        dto.isEmail ? ApiUrls.register : ApiUrls.registerWIthPhone,
         body: dto.toJson(),
       );
 
@@ -34,10 +34,10 @@ class SignInRepo implements SignInRepoInterface {
   }
 
   @override
-  Future<Result> verifyEmailOtp({required Map<String, dynamic> payload}) async {
+  Future<Result> verifyEmailOtp({required Map<String, dynamic> payload, required bool isEmail}) async {
     try {
       final response = await dioService.post(
-        ApiUrls.verifyOtpForEmail,
+        isEmail ? ApiUrls.verifyOtpForEmail : ApiUrls.verifyOtpForPhone,
         body: payload,
       );
 
@@ -50,10 +50,10 @@ class SignInRepo implements SignInRepoInterface {
   }
 
   @override
-  Future<Result> resendOtpToEmail({required Map<String, dynamic> payload}) async {
+  Future<Result> resendOtpToEmail({required Map<String, dynamic> payload, required bool isEmail}) async {
     try {
       final response = await dioService.post(
-        ApiUrls.resendOtpToEmail,
+        isEmail ? ApiUrls.resendOtpToEmail : ApiUrls.resendOtpToPhone,
         body: payload,
       );
 
@@ -66,10 +66,10 @@ class SignInRepo implements SignInRepoInterface {
   }
 
   @override
-  Future<Result<RegisterModel?>> login({required Map<String, dynamic> payload}) async {
+  Future<Result<RegisterModel?>> login({required Map<String, dynamic> payload, required bool isEmail}) async {
     try {
       final response = await dioService.post(
-        ApiUrls.login,
+        isEmail ? ApiUrls.login : ApiUrls.loginWIthPhone,
         body: payload,
       );
 

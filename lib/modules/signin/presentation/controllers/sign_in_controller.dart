@@ -28,18 +28,22 @@ class SignInController {
   void _handleLoginRegisterResponse({
     required Result<RegisterModel?> result,
     required String emailOrPhone,
+    required bool isEmail,
   }) async {
     switch (result) {
       case Ok<RegisterModel?>():
-        if (result.value!.userMap['isEmailVerified'] == true) {
+        if (result.value!.userMap[isEmail ? 'isEmailVerified' : 'isPhoneVerified'] == true) {
           await ref.read(securedStorageService).saveUserTokens(result.value!.tokensModel);
           AppNav.goRouter.go(RtNm.homeScreen);
         } else {
-          final otp = await AppNav.goRouter.push(RtNm.otpInputScreen, extra: emailOrPhone);
+          final otp = await AppNav.goRouter.push(
+            RtNm.otpInputScreen,
+            extra: {'emailOrPhone': emailOrPhone, 'isEmail': isEmail},
+          );
           if (otp == null) return;
           showLoadingDialog(context: context, message: 'Verifying OTP...');
           final otpVerificationResult = await signInRepo.verifyEmailOtp(
-            payload: {'email': emailOrPhone, 'otp': otp},
+            payload: {'email': emailOrPhone, 'otp': otp}, isEmail: isEmail,
           );
           hideDialog();
           switch (otpVerificationResult) {
@@ -58,6 +62,7 @@ class SignInController {
   Future<void> signIn({
     required String email,
     required String password,
+    required bool isEmail,
   }) async {
     AppNav.goRouter.push(RtNm.signInLoadingScreen);
     final result = await signInRepo.login(
@@ -66,9 +71,10 @@ class SignInController {
         "password": password,
         // "twoFactorCode": "123456"
       },
+      isEmail: isEmail,
     );
     AppNav.navKey.currentState?.pop();
-    _handleLoginRegisterResponse(result: result, emailOrPhone: email);
+    _handleLoginRegisterResponse(result: result, emailOrPhone: email, isEmail: isEmail);
   }
 
   Future<void> register({
@@ -76,6 +82,7 @@ class SignInController {
     required String password,
     required String firstName,
     required String lastName,
+    required bool isEmail,
   }) async {
     AppNav.goRouter.push(RtNm.signInLoadingScreen);
     final result = await signInRepo.registerWithEmail(
@@ -84,18 +91,20 @@ class SignInController {
         password: password,
         firstName: firstName,
         lastName: lastName,
-        isEmail: true,
+        isEmail: isEmail,
+        userType: 'BORROWER',
       ),
     );
     AppNav.navKey.currentState?.pop();
 
-    _handleLoginRegisterResponse(result: result, emailOrPhone: email);
+    _handleLoginRegisterResponse(result: result, emailOrPhone: email, isEmail: isEmail);
   }
 
-  Future<void> resendOtp(String emailOrPhone) async {
+  Future<void> resendOtp({required String emailOrPhone, required bool isEmail}) async {
     if (isValidEmail(emailOrPhone)) {
       final result = await signInRepo.resendOtpToEmail(
         payload: {'email': emailOrPhone},
+        isEmail: isEmail,
       );
       switch (result) {
         case Ok():

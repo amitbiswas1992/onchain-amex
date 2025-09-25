@@ -34,9 +34,10 @@ import '../../modules/payment_methods/presentation/screens/saved_cards_screen.da
 import '../../modules/rewards/presentation/screens/rewards_screen.dart';
 import '../../modules/signin/presentation/screens/login_with_email_screen.dart';
 import '../../modules/signin/presentation/screens/otp_input_screen.dart';
+import '../../modules/signin/presentation/screens/register_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
 import '../../modules/signin/presentation/screens/register_with_email_screen.dart';
-import '../../modules/signin/presentation/screens/sign_in_with_phone_screen.dart';
+import '../../modules/signin/presentation/screens/login_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/user_info_input_screen.dart';
 import '../../modules/spends/data/models/payment_success_extra.dart';
 import '../../modules/spends/presentation/screens/payment_success_screen.dart';
@@ -264,6 +265,13 @@ class AppNav {
       ),
     ),
     GoRoute(
+      path: RtNm.registerWithPhoneScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const RegisterWithPhoneScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
       path: RtNm.loginWithEmailScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         const LoginWithEmailScreen(),
@@ -271,9 +279,9 @@ class AppNav {
       ),
     ),
     GoRoute(
-      path: RtNm.signInWithPhoneScreen,
+      path: RtNm.loginWithPhoneScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const SignInWithPhoneScreen(),
+        const LogInWithPhoneScreen(),
         state,
       ),
     ),
@@ -286,10 +294,13 @@ class AppNav {
     ),
     GoRoute(
       path: RtNm.otpInputScreen,
-      pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        OtpInputScreen(emailOrPhone: state.extra!.toString()),
-        state,
-      ),
+      pageBuilder: (context, state) {
+        final extraMap = state.extra as Map<String, dynamic>;
+        return fadeTransitionPageBuilder(
+          OtpInputScreen(emailOrPhone: extraMap['emailOrPhone'], isEmail: extraMap['isEmail']),
+          state,
+        );
+      },
     ),
     GoRoute(
       path: RtNm.userInfoInputScreen,

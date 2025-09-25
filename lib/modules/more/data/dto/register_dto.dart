@@ -4,6 +4,7 @@ class RegisterDto {
   final String firstName;
   final String lastName;
   final bool isEmail;
+  final String userType;
 
   const RegisterDto({
     required this.emailOrPhone,
@@ -11,6 +12,7 @@ class RegisterDto {
     required this.firstName,
     required this.lastName,
     required this.isEmail,
+    required this.userType,
   });
 
   Map<String, dynamic> toJson() {
@@ -19,7 +21,8 @@ class RegisterDto {
       "password": password,
       "username": DateTime.now().millisecondsSinceEpoch.toString(),
       "firstName": firstName,
-      "lastName": lastName
+      "lastName": lastName,
+      "userType": userType,
     };
     return data;
   }

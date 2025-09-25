@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -131,13 +132,14 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                     validator: validatePassword,
                     onFieldSubmitted: (val) {
                       _passwordNode.unfocus();
-                      _firstNameNode.requestFocus()
-;                    },
+                      _firstNameNode.requestFocus();
+                    },
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
                   AppTextFormField(
                     focusNode: _firstNameNode,
                     hintText: firstName,
+                    prefixIcon: const Icon(CupertinoIcons.person),
                     keyboardType: TextInputType.name,
                     textCapitalization: TextCapitalization.words,
                     onFieldSubmitted: (value) {
@@ -157,6 +159,7 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                   AppTextFormField(
                     focusNode: _lastNameNode,
                     hintText: lastName,
+                    prefixIcon: const Icon(CupertinoIcons.person),
                     keyboardType: TextInputType.name,
                     textCapitalization: TextCapitalization.words,
                     onFieldSubmitted: (value) {
@@ -179,7 +182,7 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                         child: AppSecondaryButton(
                           title: usePhone,
                           onTap: () {
-                            AppNav.goRouter.pushReplacement(RtNm.signInWithPhoneScreen);
+                            AppNav.goRouter.pushReplacement(RtNm.registerWithPhoneScreen);
                           },
                         ),
                       ),
@@ -191,14 +194,19 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                             final valid = await _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
-                              _controller.register(email: _email, password: _password, lastName: _lastName, firstName: _firstName);
+                              _controller.register(
+                                email: _email,
+                                password: _password,
+                                lastName: _lastName,
+                                firstName: _firstName,
+                                isEmail: true,
+                              );
                             }
                           },
                         ),
                       ),
                     ],
                   ),
-
                   const VerticalSpace(AppValues.paddingLarge),
                   RichText(
                     text: TextSpan(

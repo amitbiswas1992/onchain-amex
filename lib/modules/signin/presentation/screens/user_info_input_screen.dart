@@ -136,13 +136,13 @@ class _UserInfoInputScreenState extends ConsumerState<UserInfoInputScreen> {
                       onTap: () {
                         unFocus(context);
                         if (_formKey.currentState!.validate() == true) {
-                          _formKey.currentState!.save();
-                          _controller.register(
-                            email: widget.email,
-                            password: widget.password,
-                            firstName: _firstName,
-                            lastName: _lastName,
-                          );
+                          // _formKey.currentState!.save();
+                          // _controller.register(
+                          //   email: widget.email,
+                          //   password: widget.password,
+                          //   firstName: _firstName,
+                          //   lastName: _lastName,
+                          // );
                         }
                       },
                     ),

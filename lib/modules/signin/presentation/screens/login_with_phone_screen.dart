@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +11,7 @@ import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/phone_number_text_field.dart';
+import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
@@ -19,14 +21,14 @@ import '../resources/signin_strings.dart';
 import '../widgets/amex_text_app_bar.dart';
 import '../widgets/user_consent_text.dart';
 
-class SignInWithPhoneScreen extends ConsumerStatefulWidget {
-  const SignInWithPhoneScreen({super.key});
+class LogInWithPhoneScreen extends ConsumerStatefulWidget {
+  const LogInWithPhoneScreen({super.key});
 
   @override
   ConsumerState createState() => _SignInWithPhoneScreenState();
 }
 
-class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
+class _SignInWithPhoneScreenState extends ConsumerState<LogInWithPhoneScreen> {
   late final SignInController _controller;
 
   final _formKey = GlobalKey<FormState>();
@@ -133,7 +135,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                         child: AppSecondaryButton(
                           title: useEmail,
                           onTap: () {
-                            AppNav.goRouter.pushReplacement(RtNm.registerWithEmailScreen);
+                            AppNav.goRouter.pushReplacement(RtNm.loginWithEmailScreen);
                           },
                         ),
                       ),
@@ -145,12 +147,29 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                             final valid = await _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
-                              _controller.signIn(email: _phone, password: _password);
+                              _controller.signIn(email: _phone, password: _password, isEmail: false);
                             }
                           },
                         ),
                       ),
                     ],
+                  ),
+                  const VerticalSpace(AppValues.paddingLarge),
+                  RichText(
+                    text: TextSpan(
+                      text: "Do not have an account?  ",
+                      style: s14W400(context),
+                      children: [
+                        TextSpan(
+                          text: "Register.",
+                          style: s14W500(context),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              AppNav.goRouter.push(RtNm.registerWithPhoneScreen);
+                            },
+                        ),
+                      ],
+                    ),
                   ),
                   const VerticalSpace(82),
                   const UserConsentText(),

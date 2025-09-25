@@ -3,7 +3,8 @@ class RtNm {
 
   static const splashScreen = '/splash-screen';
   static const onboardingScreen = '/onboarding-screen';
-  static const signInWithPhoneScreen = '/sign-in-with-phone-screen';
+  static const loginWithPhoneScreen = '/login-with-phone-screen';
+  static const registerWithPhoneScreen = '/register-with-phone-screen';
   static const loginWithEmailScreen = '/login-with-email-screen';
   static const registerWithEmailScreen = '/register-with-email-screen';
   static const otpInputScreen = '/otp-input-screen';
