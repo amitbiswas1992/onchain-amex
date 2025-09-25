@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,6 +17,7 @@ import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../connect_wallet/presentation/screens/connect_wallet_screen.dart';
 import '../../../home/presentation/providers/home_providers.dart';
+import '../controllers/connect_wallet_controller.dart';
 import '../widgets/menu_section.dart';
 
 class MoreScreen extends ConsumerStatefulWidget {
@@ -25,6 +28,24 @@ class MoreScreen extends ConsumerStatefulWidget {
 }
 
 class _MoreScreenState extends ConsumerState<MoreScreen> {
+
+  late final ConnectWalletController _connectWalletController;
+
+  @override
+  void initState() {
+    _connectWalletController = ConnectWalletController(
+      context: context,
+      ref: ref,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _connectWalletController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
@@ -49,7 +70,12 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                 ),
               ),
               // Header Section
-              const ProfileHeaderSection(),
+              ProfileHeaderSection(
+                onWalletConnectTap: () async {
+                  final address = await _connectWalletController.connectToMetaMask();
+                  log('block chain public address => $address');
+                },
+              ),
               const VerticalSpace(AppValues.paddingLarge),
               const DividerCustom(),
               const VerticalSpace(AppValues.paddingMedium),
@@ -202,8 +228,12 @@ class DividerCustom extends StatelessWidget {
 }
 
 class ProfileHeaderSection extends StatelessWidget {
+
+  final VoidCallback onWalletConnectTap;
+
   const ProfileHeaderSection({
     super.key,
+    required this.onWalletConnectTap,
   });
 
   @override
@@ -259,9 +289,7 @@ class ProfileHeaderSection extends StatelessWidget {
               color: AppColors.onBackgroundDark,
             ),
             height: 48,
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const ConnectWalletScreen()));
-            },
+            onTap: onWalletConnectTap,
             icon: SvgPicture.asset('assets/icons/link.svg'),
             radius: AppValues.borderRadiusLarge,
             color: AppColors.backgroundDark,
