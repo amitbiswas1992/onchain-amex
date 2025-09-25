@@ -98,6 +98,8 @@ class _SignInWithPhoneScreenState extends ConsumerState<LogInWithPhoneScreen> {
                           _phone = '${countryCode.dialCode}${val ?? ' '}';
                           _phone = _phone.replaceAll('-', '');
                           _phone = _phone.replaceAll(' ', '');
+                          _phone = _phone.replaceAll('(', '');
+                          _phone = _phone.replaceAll(')', '');
                         },
                       );
                     },

@@ -134,7 +134,7 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                         child: AppSecondaryButton(
                           title: usePhone,
                           onTap: () {
-                            // AppNav.goRouter.pushReplacement(RtNm.signInWithPhoneScreen);
+                            AppNav.goRouter.pushReplacement(RtNm.loginWithPhoneScreen);
                           },
                         ),
                       ),
