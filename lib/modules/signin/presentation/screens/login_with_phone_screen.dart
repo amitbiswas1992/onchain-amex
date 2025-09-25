@@ -95,7 +95,9 @@ class _SignInWithPhoneScreenState extends ConsumerState<LogInWithPhoneScreen> {
                           _passwordNode.requestFocus();
                         },
                         onSave: (val) {
-                          _phone = val ?? '';
+                          _phone = '${countryCode.dialCode}${val ?? ' '}';
+                          _phone = _phone.replaceAll('-', '');
+                          _phone = _phone.replaceAll(' ', '');
                         },
                       );
                     },

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -43,7 +45,7 @@ class SignInController {
           if (otp == null) return;
           showLoadingDialog(context: context, message: 'Verifying OTP...');
           final otpVerificationResult = await signInRepo.verifyEmailOtp(
-            payload: {'email': emailOrPhone, 'otp': otp}, isEmail: isEmail,
+            payload: {isEmail ? 'email': 'phoneNumber': emailOrPhone, 'otp': otp}, isEmail: isEmail,
           );
           hideDialog();
           switch (otpVerificationResult) {
@@ -67,7 +69,7 @@ class SignInController {
     AppNav.goRouter.push(RtNm.signInLoadingScreen);
     final result = await signInRepo.login(
       payload: {
-        "email": email,
+        isEmail ? "email": 'phoneNumber': email,
         "password": password,
         // "twoFactorCode": "123456"
       },
@@ -101,9 +103,9 @@ class SignInController {
   }
 
   Future<void> resendOtp({required String emailOrPhone, required bool isEmail}) async {
-    if (isValidEmail(emailOrPhone)) {
+    if (isEmail ? isValidEmail(emailOrPhone) : true) {
       final result = await signInRepo.resendOtpToEmail(
-        payload: {'email': emailOrPhone},
+        payload: {isEmail ? 'email': 'phoneNumber': emailOrPhone},
         isEmail: isEmail,
       );
       switch (result) {

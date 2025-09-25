@@ -82,7 +82,7 @@ class _OtpInputScreenState extends ConsumerState<OtpInputScreen> {
                         ),
                         const VerticalSpace(AppValues.paddingMedium),
                         Text(
-                          weHaveSentACodeTo,
+                          'We’ve sent a code to ‘${widget.emailOrPhone}’',
                           style: s14W400(context),
                         ),
                         const VerticalSpace(AppValues.paddingMedium),
