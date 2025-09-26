@@ -4,10 +4,10 @@ import '../../../../core/utils/log_util.dart';
 import '../../../../infrastructure/network/api_urls.dart';
 import '../../../../infrastructure/network/dio_service.dart';
 import '../../../../infrastructure/network/result.dart';
-import '../../../signin/data/models/register_model.dart';
-import '../../business/repository/sign_in_repo_interface.dart';
 import '../dto/register_dto.dart';
-import '../../../signin/data/models/tokens_model.dart';
+import '../models/register_model.dart';
+import '../../business/repository/sign_in_repo_interface.dart';
+import '../models/tokens_model.dart';
 
 class SignInRepo implements SignInRepoInterface {
   final DioService dioService;
