@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
-import '../../../../core/services/secured_storage_service.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
@@ -15,9 +14,9 @@ import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
-import '../../../connect_wallet/presentation/screens/connect_wallet_screen.dart';
+import '../../../connect_wallet/presentation/providers/wallet_providers.dart';
 import '../../../home/presentation/providers/home_providers.dart';
-import '../controllers/connect_wallet_controller.dart';
+import '../../../connect_wallet/presentation/controllers/wallet_controller.dart';
 import '../widgets/menu_section.dart';
 
 class MoreScreen extends ConsumerStatefulWidget {
@@ -29,20 +28,21 @@ class MoreScreen extends ConsumerStatefulWidget {
 
 class _MoreScreenState extends ConsumerState<MoreScreen> {
 
-  late final ConnectWalletController _connectWalletController;
+  late final WalletController _walletController;
 
   @override
   void initState() {
-    _connectWalletController = ConnectWalletController(
+    _walletController = WalletController(
       context: context,
       ref: ref,
+      walletRepo: ref.read(walletRepoProvider),
     );
     super.initState();
   }
 
   @override
   void dispose() {
-    _connectWalletController.dispose();
+    _walletController.dispose();
     super.dispose();
   }
 
@@ -72,8 +72,7 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
               // Header Section
               ProfileHeaderSection(
                 onWalletConnectTap: () async {
-                  final address = await _connectWalletController.connectToMetaMask();
-                  log('block chain public address => $address');
+                  await _walletController.connectWalletToServer();
                 },
               ),
               const VerticalSpace(AppValues.paddingLarge),

@@ -13,5 +13,6 @@ class ApiUrls {
   static const resendOtpToPhone = '/api/v1/auth/phone/send-otp';
   static const login = '/api/v1/auth/login';
   static const loginWIthPhone = '/api/v1/auth/phone/login';
+  static const connectWallet = '/api/v1/blockchain/creditor/admin/borrower/register';
 
 }

@@ -115,6 +115,7 @@ Future<void> statusDialogBase({
               AppPrimaryButton(
                 title: 'Done',
                 color: AppColors.primaryLight,
+                titleColor: Colors.white,
                 verticalPadding: AppValues.paddingMedium - 4,
                 radius: 15,
                 titleStyle: const TextStyle(
@@ -210,6 +211,7 @@ Future<bool> showPermissionDialog({
                     child: AppPrimaryButton(
                       title: 'Yes',
                       color: AppColors.primaryLight,
+                      titleColor: Colors.white,
                       verticalPadding: AppValues.paddingMedium - 4,
                       radius: 15,
                       titleStyle: const TextStyle(

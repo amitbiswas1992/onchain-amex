@@ -10,6 +10,6 @@ final selectedCountryCodeProvider = StateProvider.autoDispose(
 
 final signInRepoProvider = Provider.autoDispose(
   (ref) => SignInRepo(
-    dioService: ref.read(dioServiceProvider),
+    dioService: ref.read(dioService),
   ),
 );

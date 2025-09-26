@@ -6,11 +6,6 @@ import '../network/dio_service.dart';
 import '../network/headers_service.dart';
 
 final securedStorageService = Provider((ref) => SecuredStorageService());
-final headerService = Provider((ref) => HeadersService());
+final headerService = Provider((ref) => HeadersService(securedStorageService: ref.read(securedStorageService)));
 final connectivityService = Provider((ref) => ConnectivityService());
-final dioServiceProvider = Provider(
-  (ref) => DioService(
-    headersService: ref.read(headerService),
-    connectivityService: ref.read(connectivityService),
-  ),
-);
+final dioService = Provider((ref) => DioService(headersService: ref.read(headerService), connectivityService: ref.read(connectivityService)));
