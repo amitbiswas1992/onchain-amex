@@ -15,5 +15,6 @@ class ApiUrls {
   static const loginWIthPhone = '/api/v1/auth/phone/login';
   static const connectWallet = '/api/v1/blockchain/creditor/admin/borrower/register';
   static const profile = '/api/v1/auth/profile';
+  static const refreshToken = '/api/v1/auth/refresh';
 
 }
