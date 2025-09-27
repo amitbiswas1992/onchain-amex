@@ -35,6 +35,7 @@ class SignInController {
     switch (result) {
       case Ok<RegisterModel?>():
         if (result.data!.userMap[isEmail ? 'isEmailVerified' : 'isPhoneVerified'] == true) {
+          result.data!.tokensModel.accessToken = 'asda';
           await ref.read(securedStorageService).saveUserTokens(result.data!.tokensModel);
           AppNav.goRouter.go(RtNm.homeScreen);
         } else {

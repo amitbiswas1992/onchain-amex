@@ -3,6 +3,10 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
+import '../../core/services/secured_storage_service.dart';
+import '../../modules/signin/data/models/tokens_model.dart';
+import '../navigation/app_nav.dart';
+import '../navigation/rt_nm.dart';
 import 'api_urls.dart';
 import 'connectivity_service.dart';
 import 'headers_service.dart';
@@ -20,14 +24,14 @@ class DioService {
   void _initialize() {
     BaseOptions options = BaseOptions(
       baseUrl: ApiUrls.base,
-      connectTimeout: const Duration(seconds: 120),
-      receiveTimeout: const Duration(seconds: 120),
+      connectTimeout: const Duration(seconds: 45),
+      receiveTimeout: const Duration(seconds: 45),
     );
 
     dio = Dio(options);
     dio.interceptors.add(
       InterceptorsWrapper(
-        onError: (error, handler) {
+        onError: (error, handler) async {
           final data = error.requestOptions.data;
           final payloadLog = data is FormData ? 'FormData(...)' : jsonEncode(data);
 
@@ -40,6 +44,23 @@ class DioService {
       🌐 response: ${jsonEncode(error.response?.data)}
       ''',
           );
+
+          // 🔑 handle 401 here
+          log('handling 401');
+          if (error.response?.statusCode == 401 && !_isRefreshRequest(error.requestOptions)) {
+            final success = await _refreshAuthTokens();
+            if (success) {
+              final retryResponse = await _retryRequest(error.requestOptions);
+              if (retryResponse.statusCode == 401) {
+                await _forceLogout(); // Only logout if retry is still 401
+                return handler.reject(error);
+              }
+              return handler.resolve(retryResponse); // OK for 400/200/201 etc.
+            } else {
+              await _forceLogout(); // Logout if refresh failed
+              return handler.reject(error);
+            }
+          }
 
           return handler.next(error);
         },
@@ -65,6 +86,62 @@ class DioService {
       ),
     );
     log('dio initialized');
+  }
+
+  Future<Response<dynamic>> _retryRequest(RequestOptions requestOptions) async {
+    final tokens = await headersService.securedStorageService.getUserTokens();
+    final headers = {
+      ...requestOptions.headers,
+      if (tokens != null) 'Authorization': 'Bearer ${tokens.accessToken}',
+    };
+
+    final options = Options(
+      method: requestOptions.method,
+      headers: headers,
+      responseType: requestOptions.responseType,
+      contentType: requestOptions.contentType,
+      validateStatus: (status) => status != null, // Treat all HTTP status codes as valid
+    );
+
+    return dio.request<dynamic>(
+      requestOptions.path,
+      data: requestOptions.data,
+      queryParameters: requestOptions.queryParameters,
+      options: options,
+    );
+  }
+
+
+  Future<bool> _refreshAuthTokens() async {
+    try {
+      final tokens = await headersService.securedStorageService.getUserTokens();
+      if (tokens == null) return false;
+
+      final response = await dio.post(
+        ApiUrls.refreshToken,
+        data: {'refreshToken': tokens.refreshToken},
+        options: Options(headers: headersService.defaultHeaders),
+      );
+
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        final newTokens = TokensModel.fromJson(response.data['data']);
+        await headersService.securedStorageService.saveUserTokens(newTokens);
+        return true;
+      }
+
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<void> _forceLogout() async {
+    await headersService.securedStorageService.deleteUserTokens();
+    AppNav.goRouter.go(RtNm.splashScreen);
+  }
+
+  bool _isRefreshRequest(RequestOptions options) {
+    return options.path.contains(ApiUrls.refreshToken);
   }
 
   Future<bool> _hasConnection() async {
