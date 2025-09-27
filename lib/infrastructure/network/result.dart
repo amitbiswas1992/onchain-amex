@@ -31,17 +31,17 @@ sealed class Result<T> {
   const factory Result.error(AppException error) = Error._;
 }
 
-/// A successful [Result] with a returned [value].
+/// A successful [Result] with a returned [data].
 final class Ok<T> extends Result<T> {
-  const Ok._(this.value, {required this.message});
+  const Ok._(this.data, {required this.message});
 
   /// The returned value of this result.
-  final T value;
+  final T data;
 
   final String message;
 
   @override
-  String toString() => 'Result<$T>.ok($value)';
+  String toString() => 'Result<$T>.ok($data)';
 }
 
 /// An error [Result] with a resulting [error].

@@ -34,8 +34,8 @@ class SignInController {
   }) async {
     switch (result) {
       case Ok<RegisterModel?>():
-        if (result.value!.userMap[isEmail ? 'isEmailVerified' : 'isPhoneVerified'] == true) {
-          await ref.read(securedStorageService).saveUserTokens(result.value!.tokensModel);
+        if (result.data!.userMap[isEmail ? 'isEmailVerified' : 'isPhoneVerified'] == true) {
+          await ref.read(securedStorageService).saveUserTokens(result.data!.tokensModel);
           AppNav.goRouter.go(RtNm.homeScreen);
         } else {
           final otp = await AppNav.goRouter.push(
@@ -50,7 +50,7 @@ class SignInController {
           hideDialog();
           switch (otpVerificationResult) {
             case Ok():
-              await ref.read(securedStorageService).saveUserTokens(result.value!.tokensModel);
+              await ref.read(securedStorageService).saveUserTokens(result.data!.tokensModel);
               AppNav.goRouter.go(RtNm.homeScreen);
             case Error():
               showErrorDialog(context: context, message: otpVerificationResult.toString());

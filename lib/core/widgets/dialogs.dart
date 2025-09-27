@@ -14,6 +14,7 @@ Future<void> showSuccessDialog({
   required String message,
   Function()? onDone,
   bool dismissible = false,
+  Widget? otherWidget,
 }) async {
   return statusDialogBase(
     context: context,
@@ -22,6 +23,7 @@ Future<void> showSuccessDialog({
     icon: SvgPicture.asset('assets/icons/check_circle_green.svg'),
     onDone: onDone,
     dismissible: dismissible,
+    otherWidget: otherWidget,
   );
 }
 
@@ -64,6 +66,7 @@ Future<void> statusDialogBase({
   required Widget icon,
   Function()? onDone,
   bool dismissible = false,
+  Widget? otherWidget,
 }) async {
   return await showDialog(
     context: context,
@@ -112,6 +115,9 @@ Future<void> statusDialogBase({
                 ],
               ),
               const VerticalSpace(AppValues.paddingLarge + AppValues.paddingMedium),
+              if (otherWidget != null)
+                otherWidget,
+              const VerticalSpace(AppValues.paddingLarge + AppValues.paddingMedium),
               AppPrimaryButton(
                 title: 'Done',
                 color: AppColors.primaryLight,
@@ -121,6 +127,7 @@ Future<void> statusDialogBase({
                 titleStyle: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
+                  color: Colors.white,
                 ),
                 onTap: () {
                   onDone?.call();
@@ -217,6 +224,7 @@ Future<bool> showPermissionDialog({
                       titleStyle: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
+                        color: Colors.white,
                         // color: AppColors.yellowGreen,
                       ),
                       onTap: () async {

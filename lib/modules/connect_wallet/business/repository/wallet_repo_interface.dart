@@ -1,5 +1,6 @@
 import '../../../../infrastructure/network/result.dart';
+import '../../data/models/transaction_model.dart';
 
 abstract interface class WalletRepoInterface {
-  Future<Result> connectWallet({required Map<String, dynamic> payload});
+  Future<Result<TransactionModel?>> connectWallet({required Map<String, dynamic> payload});
 }

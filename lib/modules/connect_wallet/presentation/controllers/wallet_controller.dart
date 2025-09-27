@@ -1,13 +1,17 @@
 import 'dart:async';
 
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reown_appkit/reown_appkit.dart';
 
+import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_secrets.dart';
 import '../../../../core/widgets/dialogs.dart';
+import '../../../../core/widgets/texts/transaction_hash_text.dart';
 import '../../../../infrastructure/network/result.dart';
 import '../../business/repository/wallet_repo_interface.dart';
+import '../../data/models/transaction_model.dart';
 
 class WalletController {
   final BuildContext context;
@@ -112,10 +116,14 @@ class WalletController {
     hideDialog();
 
     switch (result) {
-      case Ok():
-        showSuccessDialog(context: context, message: result.message);
+      case Ok<TransactionModel?>():
+        showSuccessDialog(
+          context: context,
+          message: 'Wallet connected successfully.',
+          otherWidget: TransactionHashText(text: result.data?.transactionHash ?? ''),
+        );
         break;
-      case Error():
+      case Error<TransactionModel?>():
         showErrorDialog(context: context, message: result.toString());
         break;
     }

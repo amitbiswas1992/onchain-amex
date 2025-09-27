@@ -10,7 +10,9 @@ import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/theme_toogle_button.dart';
+import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../../../core/widgets/texts/transaction_hash_text.dart';
 import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
@@ -71,7 +73,15 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
               ),
               // Header Section
               ProfileHeaderSection(
+                isWalletConnected: false,
                 onWalletConnectTap: () async {
+                  // showSuccessDialog(
+                  //   context: context,
+                  //   message: 'Wallet connected successfully.',
+                  //   otherWidget: const TransactionHashText(
+                  //     text: '0xfshstgwejbasdgsjfsjdavbdkisasdjfsjkabvjsa',
+                  //   ),
+                  // );
                   await _walletController.connectWalletToServer();
                 },
               ),
@@ -229,10 +239,11 @@ class DividerCustom extends StatelessWidget {
 class ProfileHeaderSection extends StatelessWidget {
 
   final VoidCallback onWalletConnectTap;
+  final bool isWalletConnected;
 
   const ProfileHeaderSection({
     super.key,
-    required this.onWalletConnectTap,
+    required this.onWalletConnectTap, required this.isWalletConnected,
   });
 
   @override
@@ -283,12 +294,12 @@ class ProfileHeaderSection extends StatelessWidget {
           ),
           const VerticalSpace(16),
           AppIconButton(
-            title: 'Connect Wallet',
+            title: isWalletConnected ? 'Wallet Connected' : 'Connect Wallet',
             titleStyle: s14W500(context, fontFamily: interFontFamily).copyWith(
-              color: AppColors.onBackgroundDark,
+              color: isWalletConnected ? AppColors.primaryLight : AppColors.onBackgroundDark,
             ),
             height: 48,
-            onTap: onWalletConnectTap,
+            onTap: isWalletConnected ? null : onWalletConnectTap,
             icon: SvgPicture.asset('assets/icons/link.svg'),
             radius: AppValues.borderRadiusLarge,
             color: AppColors.backgroundDark,
