@@ -11,14 +11,18 @@ import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/theme_toogle_button.dart';
 import '../../../../core/widgets/dialogs.dart';
+import '../../../../core/widgets/errors/when_error_widget.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/transaction_hash_text.dart';
 import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../../infrastructure/network/result.dart';
 import '../../../connect_wallet/presentation/providers/wallet_providers.dart';
 import '../../../home/presentation/providers/home_providers.dart';
 import '../../../connect_wallet/presentation/controllers/wallet_controller.dart';
+import '../../data/models/profile.dart';
+import '../providers/more_providers.dart';
 import '../widgets/menu_section.dart';
 
 class MoreScreen extends ConsumerStatefulWidget {
@@ -72,19 +76,30 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                 ),
               ),
               // Header Section
-              ProfileHeaderSection(
-                isWalletConnected: false,
-                onWalletConnectTap: () async {
-                  // showSuccessDialog(
-                  //   context: context,
-                  //   message: 'Wallet connected successfully.',
-                  //   otherWidget: const TransactionHashText(
-                  //     text: '0xfshstgwejbasdgsjfsjdavbdkisasdjfsjkabvjsa',
-                  //   ),
-                  // );
-                  await _walletController.connectWalletToServer();
-                },
-              ),
+              Consumer(builder: (context, ref, _) {
+                final asyncProfile = ref.watch(profileProvider);
+
+                return asyncProfile.when(
+                  data: (data) {
+                    Profile? profile;
+                    switch (data) {
+                      case Ok<Profile?>():
+                        profile = data.data;
+                      case Error<Profile?>():
+                    }
+
+                    return ProfileHeaderSection(
+                      profile: profile,
+                      isWalletConnected: false,
+                      onWalletConnectTap: () async {
+                        await _walletController.connectWalletToServer();
+                      },
+                    );
+                  },
+                  error: (err, stack) => WhenErrorWidget(error: err),
+                  loading: () => const SizedBox(),
+                );
+              }),
               const VerticalSpace(AppValues.paddingLarge),
               const DividerCustom(),
               const VerticalSpace(AppValues.paddingMedium),
@@ -237,12 +252,13 @@ class DividerCustom extends StatelessWidget {
 }
 
 class ProfileHeaderSection extends StatelessWidget {
-
+  final Profile? profile;
   final VoidCallback onWalletConnectTap;
   final bool isWalletConnected;
 
   const ProfileHeaderSection({
     super.key,
+    this.profile,
     required this.onWalletConnectTap, required this.isWalletConnected,
   });
 
@@ -263,19 +279,19 @@ class ProfileHeaderSection extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                'SH',
+                '${profile?.firstName?[0].toUpperCase() ?? ''}${profile?.lastName?[0].toUpperCase() ?? ''}',
                 style: s20W600(context, fontFamily: interFontFamily),
               ),
             ),
           ),
           const VerticalSpace(AppValues.paddingMedium),
           Text(
-            'Shakir Ahmed'.toUpperCase(),
+            '${profile?.firstName ?? ''} ${profile?.lastName ?? ''}'.toUpperCase(),
             style: s22W600(context),
           ),
           const VerticalSpace(16),
           Text(
-            'You are a borrower',
+            'You are a ${profile?.userType?.toLowerCase() ?? ''}',
             style: s11W400(context),
           ),
           const VerticalSpace(16),
@@ -286,7 +302,7 @@ class ProfileHeaderSection extends StatelessWidget {
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
-              'Not Verified',
+              profile?.isVerified() == true ? 'Verified' : 'Not Verified',
               style: s11W600(context).copyWith(
                 color: AppColors.c455468,
               ),

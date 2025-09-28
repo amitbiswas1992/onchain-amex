@@ -103,7 +103,7 @@ class WalletController {
     final publicAddress = await _getWalletPublicAddress();
     hideDialog();
     if (publicAddress == null) {
-      showErrorDialog(context: context, message: 'Unable to get wallet information');
+      // showErrorDialog(context: context, message: 'Unable to get wallet information');
       return;
     }
 
