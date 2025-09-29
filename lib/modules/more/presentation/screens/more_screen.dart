@@ -90,7 +90,6 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
 
                     return ProfileHeaderSection(
                       profile: profile,
-                      isWalletConnected: false,
                       onWalletConnectTap: () async {
                         await _walletController.connectWalletToServer();
                       },
@@ -254,12 +253,11 @@ class DividerCustom extends StatelessWidget {
 class ProfileHeaderSection extends StatelessWidget {
   final Profile? profile;
   final VoidCallback onWalletConnectTap;
-  final bool isWalletConnected;
 
   const ProfileHeaderSection({
     super.key,
     this.profile,
-    required this.onWalletConnectTap, required this.isWalletConnected,
+    required this.onWalletConnectTap,
   });
 
   @override
@@ -310,12 +308,12 @@ class ProfileHeaderSection extends StatelessWidget {
           ),
           const VerticalSpace(16),
           AppIconButton(
-            title: isWalletConnected ? 'Wallet Connected' : 'Connect Wallet',
+            title: profile?.wallet != null ? 'Wallet Connected' : 'Connect Wallet',
             titleStyle: s14W500(context, fontFamily: interFontFamily).copyWith(
-              color: isWalletConnected ? AppColors.primaryLight : AppColors.onBackgroundDark,
+              color: profile?.wallet != null ? AppColors.primaryLight : AppColors.onBackgroundDark,
             ),
             height: 48,
-            onTap: isWalletConnected ? null : onWalletConnectTap,
+            onTap: profile?.wallet != null ? null : onWalletConnectTap,
             icon: SvgPicture.asset('assets/icons/link.svg'),
             radius: AppValues.borderRadiusLarge,
             color: AppColors.backgroundDark,

@@ -38,6 +38,8 @@ class Profile {
   String? lastLoginAt;
   CreditAccountModel? creditAccount;
   YieldAccountModel? yieldAccount;
+  Wallet? wallet;
+
 
   Profile({
     this.id,
@@ -125,6 +127,7 @@ class Profile {
     yieldAccount = json['yieldAccount'] != null
         ? YieldAccountModel.fromJson(json['yieldAccount'])
         : null;
+    wallet = json['wallets'] != null && json['wallets'].isNotEmpty ? Wallet.fromJson(json['wallets'].first) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -171,6 +174,9 @@ class Profile {
     }
     if (yieldAccount != null) {
       data['yieldAccount'] = yieldAccount!.toJson();
+    }
+    if (wallet != null) {
+      data['wallets'] = [wallet!.toJson()];
     }
     return data;
   }
@@ -370,6 +376,52 @@ class YieldAccountModel {
     data['lastBlockchainSync'] = lastBlockchainSync;
     data['status'] = status;
     data['autoReinvest'] = autoReinvest;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    return data;
+  }
+}
+
+
+class Wallet {
+  String? id;
+  String? userId;
+  String? address;
+  String? network;
+  String? walletType;
+  bool? isActive;
+  String? createdAt;
+  String? updatedAt;
+
+  Wallet(
+      {this.id,
+        this.userId,
+        this.address,
+        this.network,
+        this.walletType,
+        this.isActive,
+        this.createdAt,
+        this.updatedAt});
+
+  Wallet.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['userId'];
+    address = json['address'];
+    network = json['network'];
+    walletType = json['walletType'];
+    isActive = json['isActive'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['userId'] = userId;
+    data['address'] = address;
+    data['network'] = network;
+    data['walletType'] = walletType;
+    data['isActive'] = isActive;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     return data;
