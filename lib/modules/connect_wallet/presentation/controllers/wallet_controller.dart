@@ -12,6 +12,7 @@ import '../../../../core/widgets/texts/transaction_hash_text.dart';
 import '../../../../infrastructure/network/result.dart';
 import '../../business/repository/wallet_repo_interface.dart';
 import '../../data/models/transaction_model.dart';
+import '../../data/models/wallet_info.dart';
 
 class WalletController {
   final BuildContext context;
@@ -30,7 +31,7 @@ class WalletController {
     _appKitModal?.dispose();
   }
 
-  Future<String?> _getWalletPublicAddress() async {
+  Future<WalletInfo?> _getWalletPublicAddress() async {
     try {
       // create the modal instance
       _appKitModal ??= ReownAppKitModal(
@@ -47,25 +48,37 @@ class WalletController {
         ),
       );
 
-      final completer = Completer<String?>();
+      final completer = Completer<WalletInfo?>();
 
       _appKitModal?.onModalConnect.subscribe((ModalConnect? event) {
         if (event == null) return;
 
-        // Extract accounts from namespaces
         final namespaces = event.session.namespaces;
         if (namespaces != null) {
-          for (final ns in namespaces.values) {
+          namespaces.forEach((network, ns) {
             for (final acc in ns.accounts) {
-              final parts = acc.split(':');
-              final address = parts.last;
-              if (!completer.isCompleted) {
-                completer.complete(address);
+              final parts = acc.split(':'); // e.g. ["eip155", "1", "0x123..."]
+              if (parts.length >= 3) {
+                final chainId = parts[1];
+                final address = parts[2];
+
+                final networkName = getNetworkName(chainId);
+
+                if (!completer.isCompleted) {
+                  completer.complete(
+                    WalletInfo(
+                      publicAddress: address,
+                      network: networkName, // human readable
+                      walletName: "Unknown", // not exposed by SDK
+                    ),
+                  );
+                }
               }
             }
-          }
+          });
         }
       });
+
 
       _appKitModal?.onModalError.subscribe((error) {
         if (!completer.isCompleted) {
@@ -78,7 +91,6 @@ class WalletController {
           completer.complete(null);
         }
       });
-
 
       await _appKitModal?.init();
 
@@ -98,6 +110,28 @@ class WalletController {
     return null;
   }
 
+  static const Map<String, String> chainNames = {
+    '1': 'Ethereum Mainnet',
+    '3': 'Ropsten Testnet',
+    '4': 'Rinkeby Testnet',
+    '5': 'Goerli Testnet',
+    '42': 'Kovan Testnet',
+    '56': 'Binance Smart Chain',
+    '97': 'BSC Testnet',
+    '137': 'Polygon Mainnet',
+    '80001': 'Polygon Mumbai Testnet',
+    '43114': 'Avalanche C-Chain',
+    '43113': 'Avalanche Fuji Testnet',
+    '42161': 'Arbitrum One',
+    '421613': 'Arbitrum Goerli',
+    '10': 'Optimism Mainnet',
+    '420': 'Optimism Goerli',
+  };
+
+  String getNetworkName(String chainId) {
+    return chainNames[chainId] ?? 'Unknown Network ($chainId)';
+  }
+
   Future<void> connectWalletToServer() async {
     showLoadingDialog(context: context, message: 'Getting things ready...');
     final publicAddress = await _getWalletPublicAddress();
@@ -110,7 +144,7 @@ class WalletController {
     showLoadingDialog(context: context, message: 'Connecting to your wallet.');
     final result = await walletRepo.connectWallet(
       payload: {
-        'borrower': publicAddress,
+        'borrower': publicAddress.publicAddress,
       },
     );
     hideDialog();
@@ -127,6 +161,5 @@ class WalletController {
         showErrorDialog(context: context, message: result.toString());
         break;
     }
-
   }
 }
