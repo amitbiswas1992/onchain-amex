@@ -96,7 +96,12 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                     );
                   },
                   error: (err, stack) => WhenErrorWidget(error: err),
-                  loading: () => const SizedBox(),
+                  loading: () => ProfileHeaderSection(
+                    profile: null,
+                    onWalletConnectTap: () async {
+                      await _walletController.connectWalletToServer();
+                    },
+                  ),
                 );
               }),
               const VerticalSpace(AppValues.paddingLarge),
@@ -277,7 +282,7 @@ class ProfileHeaderSection extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                '${profile?.firstName?[0].toUpperCase() ?? ''}${profile?.lastName?[0].toUpperCase() ?? ''}',
+                profile?.getShortName() ?? '',
                 style: s20W600(context, fontFamily: interFontFamily),
               ),
             ),

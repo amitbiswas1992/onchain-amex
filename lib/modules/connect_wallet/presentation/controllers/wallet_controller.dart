@@ -10,6 +10,7 @@ import '../../../../core/resources/app_secrets.dart';
 import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/transaction_hash_text.dart';
 import '../../../../infrastructure/network/result.dart';
+import '../../../more/presentation/providers/more_providers.dart';
 import '../../business/repository/wallet_repo_interface.dart';
 import '../../data/models/transaction_model.dart';
 import '../../data/models/wallet_info.dart';
@@ -133,7 +134,7 @@ class WalletController {
   }
 
   Future<void> connectWalletToServer() async {
-    showLoadingDialog(context: context, message: 'Getting things ready...');
+    showLoadingDialog(context: context, message: 'Getting things ready...', dismissible: true);
     final publicAddress = await _getWalletPublicAddress();
     hideDialog();
     if (publicAddress == null) {
@@ -156,6 +157,7 @@ class WalletController {
           message: 'Wallet connected successfully.',
           otherWidget: TransactionHashText(text: result.data?.transactionHash ?? ''),
         );
+        ref.invalidate(profileProvider);
         break;
       case Error<TransactionModel?>():
         showErrorDialog(context: context, message: result.toString());

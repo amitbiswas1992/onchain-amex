@@ -6,10 +6,14 @@ import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/containers/light_card.dart';
+import '../../../../core/widgets/errors/when_error_widget.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../../infrastructure/network/result.dart';
+import '../../../more/data/models/profile.dart';
+import '../../../more/presentation/providers/more_providers.dart';
 import '../../data/models/latest_transaction.dart';
 import '../resources/home_strings.dart';
 import '../widgets/home_app_bar.dart';
@@ -81,14 +85,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                   VerticalSpace(padding.top),
                   const VerticalSpace(AppValues.paddingMedium),
-                  HomeAppBar(
-                    onGiftTap: () {
-                      AppNav.goRouter.push(RtNm.rewardsScreen);
-                    },
-                    onNotificationTap: () {},
-                    onProfileTap: () {},
-                    profileName: 'SH',
-                  ),
+                  Consumer(builder: (context, ref, _) {
+                    final asyncProfile = ref.watch(profileProvider);
+
+                    return asyncProfile.when(
+                      data: (data) {
+                        Profile? profile;
+                        switch (data) {
+                          case Ok<Profile?>():
+                            profile = data.data;
+                          case Error<Profile?>():
+                        }
+
+                        return HomeAppBar(
+                          onGiftTap: () {
+                            AppNav.goRouter.push(RtNm.rewardsScreen);
+                          },
+                          onNotificationTap: () {},
+                          onProfileTap: () {},
+                          profileName: profile?.getShortName() ?? '',
+                        );
+                      },
+                      error: (err, stack) => WhenErrorWidget(error: err),
+                      loading: () => HomeAppBar(
+                        onGiftTap: () {
+                          AppNav.goRouter.push(RtNm.rewardsScreen);
+                        },
+                        onNotificationTap: () {},
+                        onProfileTap: () {},
+                        profileName: '',
+                      ),
+                    );
+                  }),
                   const VerticalSpace(AppValues.paddingMedium),
                   HomeAvailableToSpend(
                     onAddFound: () {

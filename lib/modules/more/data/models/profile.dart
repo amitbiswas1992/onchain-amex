@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Profile {
   String? id;
   String? email;
@@ -183,6 +185,16 @@ class Profile {
 
   bool isVerified() {
     return isEmailVerified == true || isPhoneVerified == true;
+  }
+
+  String getShortName() {
+    try {
+      return '${this.firstName?[0].toUpperCase() ?? ''}${this.lastName?[0].toUpperCase() ?? ''}';
+    } catch (error, stck) {
+      debugPrint(error.toString());
+      debugPrint(stck.toString());
+      return '-';
+    }
   }
 }
 
