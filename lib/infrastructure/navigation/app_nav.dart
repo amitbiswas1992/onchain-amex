@@ -17,6 +17,7 @@ import '../../modules/home/presentation/screens/shell_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_code_input_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_success_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invite_friend_screen.dart';
+import '../../modules/more/data/models/profile.dart';
 import '../../modules/more/presentation/screens/change_email_screen.dart';
 import '../../modules/more/presentation/screens/change_phone_screen.dart';
 import '../../modules/more/presentation/screens/more_screen.dart';
@@ -103,7 +104,7 @@ class AppNav {
     GoRoute(
       path: RtNm.personalDetailsScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const PersonalDetailsScreen(),
+        PersonalDetailsScreen(profile: state.extra as Profile),
         state,
       ),
     ),

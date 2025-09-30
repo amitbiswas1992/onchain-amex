@@ -33,7 +33,6 @@ class MoreScreen extends ConsumerStatefulWidget {
 }
 
 class _MoreScreenState extends ConsumerState<MoreScreen> {
-
   late final WalletController _walletController;
 
   @override
@@ -54,187 +53,200 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = MediaQuery.of(context).padding;
-
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              VerticalSpace(padding.top + AppValues.paddingSmall),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ThemeToggleButton(
-                  isDarkMode: isLightTheme(context) == false,
-                  onToggle: () {
-                    ref.read(themeModeProvider.notifier).state = isLightTheme(context)
-                        ? ThemeMode.dark
-                        : ThemeMode.light;
-                    ref.read(securedStorageService).saveThemeMode(ref.read(themeModeProvider)!);
-                  },
-                ),
-              ),
-              // Header Section
-              Consumer(builder: (context, ref, _) {
-                final asyncProfile = ref.watch(profileProvider);
+      body: Consumer(builder: (context, ref, _) {
+        final asyncProfile = ref.watch(profileProvider);
 
-                return asyncProfile.when(
-                  data: (data) {
-                    Profile? profile;
-                    switch (data) {
-                      case Ok<Profile?>():
-                        profile = data.data;
-                      case Error<Profile?>():
-                    }
+        return asyncProfile.when(
+          data: (data) {
+            Profile? profile;
+            switch (data) {
+              case Ok<Profile?>():
+                profile = data.data;
+              case Error<Profile?>():
+            }
 
-                    return ProfileHeaderSection(
-                      profile: profile,
-                      onWalletConnectTap: () async {
-                        await _walletController.connectWalletToServer();
-                      },
-                    );
-                  },
-                  error: (err, stack) => WhenErrorWidget(error: err),
-                  loading: () => ProfileHeaderSection(
-                    profile: null,
-                    onWalletConnectTap: () async {
-                      await _walletController.connectWalletToServer();
-                    },
-                  ),
-                );
-              }),
-              const VerticalSpace(AppValues.paddingLarge),
-              const DividerCustom(),
-              const VerticalSpace(AppValues.paddingMedium),
-              // Menu Sections
-              MenuSection(
-                title: 'Account Settings',
-                items: [
-                  MenuItem(
-                    icon: 'assets/icons/bank.svg',
-                    title: 'KYC Verification',
-                    arrowTopRight: true,
-                    subtitleWidget: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.errorLight.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Text(
-                        'KYC Not Verified',
-                        style: s12W500(context, fontFamily: interFontFamily).copyWith(
-                          color: AppColors.errorLight,
-                        ),
-                      ),
-                    ),
-                    onTap: () {},
-                  ),
-                  MenuItem(
-                    icon: 'assets/icons/key.svg',
-                    title: 'Security',
-                    subtitle: 'Change your security settings',
-                    onTap: () {
-                      AppNav.goRouter.push(RtNm.securityPrivacyScreen);
-                    },
-                  ),
-                ],
-              ),
-              const VerticalSpace(AppValues.paddingMedium),
-              const DividerCustom(),
+            return MoreBody(
+              profile: profile,
+              walletController: _walletController,
+            );
+          },
+          error: (err, stack) => WhenErrorWidget(error: err),
+          loading: () => MoreBody(
+            profile: null,
+            walletController: _walletController,
+          ),
+        );
+      }),
+    );
+  }
+}
 
-              const VerticalSpace(AppValues.paddingMedium),
+class MoreBody extends ConsumerWidget {
+  final Profile? profile;
+  final WalletController walletController;
 
-              // // General Settings Section
-              MenuSection(
-                title: 'Settings',
-                items: [
-                  MenuItem(
-                    icon: 'assets/icons/bank.svg',
-                    title: 'Personal Details',
-                    subtitle: 'Update your personal information',
-                    onTap: () {
-                      AppNav.goRouter.push(RtNm.personalDetailsScreen);
-                    },
-                  ),
-                  MenuItem(
-                    icon: 'assets/icons/bell.svg',
-                    title: 'Notifications',
-                    subtitle: 'Customize how you get updates',
-                    onTap: () {
-                      AppNav.goRouter.push(RtNm.notificationSettingsScreen);
-                    },
-                  ),
-                  MenuItem(
-                    icon: 'assets/icons/bank.svg',
-                    title: 'Payment methods',
-                    subtitle: 'Manage saved cards and bank accounts that linked to this account',
-                    onTap: () {
-                      AppNav.goRouter.push(RtNm.paymentMethodsScreen);
-                    },
-                  ),
-                  MenuItem(
-                    icon: 'assets/icons/circle_half.svg',
-                    title: 'Language & Appearance',
-                    subtitle: 'Customize language settings and which theme is used',
-                    onTap: () {},
-                  ),
-                ],
-              ),
+  const MoreBody({super.key, required this.profile, required this.walletController});
 
-              const VerticalSpace(AppValues.paddingMedium),
-              const DividerCustom(),
-
-              const VerticalSpace(AppValues.paddingMedium),
-
-              // // Support Section
-              MenuSection(
-                title: 'Action & Agreements',
-                items: [
-                  MenuItem(
-                    icon: 'assets/icons/bank.svg',
-                    title: 'Referrals and rewards',
-                    subtitle: 'Send and track referrals and manage your rewards',
-                    onTap: () {},
-                  ),
-                  MenuItem(
-                    icon: 'assets/icons/info.svg',
-                    title: 'Agreements',
-                    onTap: () {},
-                  ),
-                  MenuItem(
-                    icon: 'assets/icons/question_mark.svg',
-                    title: 'Help',
-                    subtitle: 'Write a review in the app store',
-                    onTap: () {},
-                  ),
-                  MenuItem(
-                    icon: 'assets/icons/delete.svg',
-                    title: 'Delete Account',
-                    subtitle: 'Close your borrower account',
-                    color: AppColors.errorLight,
-                    onTap: () {
-                      AppNav.goRouter.push(RtNm.deleteAccountScreen);
-                    },
-                  ),
-                ],
-              ),
-              MenuItem(
-                icon: 'assets/icons/log_out.svg',
-                title: 'Logout',
-                onTap: () async {
-                  await ref.read(securedStorageService).deleteUserTokens();
-                  AppNav.goRouter.go(RtNm.splashScreen);
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final padding = MediaQuery.of(context).padding;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            VerticalSpace(padding.top + AppValues.paddingSmall),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ThemeToggleButton(
+                isDarkMode: isLightTheme(context) == false,
+                onToggle: () {
+                  ref.read(themeModeProvider.notifier).state =
+                      isLightTheme(context) ? ThemeMode.dark : ThemeMode.light;
+                  ref.read(securedStorageService).saveThemeMode(ref.read(themeModeProvider)!);
                 },
               ),
-              // Logout Section
+            ),
+            // Header Section
+            ProfileHeaderSection(
+              profile: profile,
+              onWalletConnectTap: () async {
+                await walletController.connectWalletToServer();
+              },
+            ),
+            const VerticalSpace(AppValues.paddingLarge),
+            const DividerCustom(),
+            const VerticalSpace(AppValues.paddingMedium),
+            // Menu Sections
+            MenuSection(
+              title: 'Account Settings',
+              items: [
+                MenuItem(
+                  icon: 'assets/icons/bank.svg',
+                  title: 'KYC Verification',
+                  arrowTopRight: true,
+                  subtitleWidget: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.errorLight.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      'KYC Not Verified',
+                      style: s12W500(context, fontFamily: interFontFamily).copyWith(
+                        color: AppColors.errorLight,
+                      ),
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+                MenuItem(
+                  icon: 'assets/icons/key.svg',
+                  title: 'Security',
+                  subtitle: 'Change your security settings',
+                  onTap: () {
+                    AppNav.goRouter.push(RtNm.securityPrivacyScreen);
+                  },
+                ),
+              ],
+            ),
+            const VerticalSpace(AppValues.paddingMedium),
+            const DividerCustom(),
 
-              const VerticalSpace(AppValues.paddingLarge),
-            ],
-          ),
+            const VerticalSpace(AppValues.paddingMedium),
+
+            // // General Settings Section
+            MenuSection(
+              title: 'Settings',
+              items: [
+                MenuItem(
+                  icon: 'assets/icons/bank.svg',
+                  title: 'Personal Details',
+                  subtitle: 'Update your personal information',
+                  onTap: () {
+                    if (profile != null) {
+                      AppNav.goRouter.push(RtNm.personalDetailsScreen, extra: profile);
+                    }
+                  },
+                ),
+                MenuItem(
+                  icon: 'assets/icons/bell.svg',
+                  title: 'Notifications',
+                  subtitle: 'Customize how you get updates',
+                  onTap: () {
+                    AppNav.goRouter.push(RtNm.notificationSettingsScreen);
+                  },
+                ),
+                MenuItem(
+                  icon: 'assets/icons/bank.svg',
+                  title: 'Payment methods',
+                  subtitle: 'Manage saved cards and bank accounts that linked to this account',
+                  onTap: () {
+                    AppNav.goRouter.push(RtNm.paymentMethodsScreen);
+                  },
+                ),
+                MenuItem(
+                  icon: 'assets/icons/circle_half.svg',
+                  title: 'Language & Appearance',
+                  subtitle: 'Customize language settings and which theme is used',
+                  onTap: () {},
+                ),
+              ],
+            ),
+
+            const VerticalSpace(AppValues.paddingMedium),
+            const DividerCustom(),
+
+            const VerticalSpace(AppValues.paddingMedium),
+
+            // // Support Section
+            MenuSection(
+              title: 'Action & Agreements',
+              items: [
+                MenuItem(
+                  icon: 'assets/icons/bank.svg',
+                  title: 'Referrals and rewards',
+                  subtitle: 'Send and track referrals and manage your rewards',
+                  onTap: () {},
+                ),
+                MenuItem(
+                  icon: 'assets/icons/info.svg',
+                  title: 'Agreements',
+                  onTap: () {},
+                ),
+                MenuItem(
+                  icon: 'assets/icons/question_mark.svg',
+                  title: 'Help',
+                  subtitle: 'Write a review in the app store',
+                  onTap: () {},
+                ),
+                MenuItem(
+                  icon: 'assets/icons/delete.svg',
+                  title: 'Delete Account',
+                  subtitle: 'Close your borrower account',
+                  color: AppColors.errorLight,
+                  onTap: () {
+                    AppNav.goRouter.push(RtNm.deleteAccountScreen);
+                  },
+                ),
+              ],
+            ),
+            MenuItem(
+              icon: 'assets/icons/log_out.svg',
+              title: 'Logout',
+              onTap: () async {
+                await ref.read(securedStorageService).deleteUserTokens();
+                AppNav.goRouter.go(RtNm.splashScreen);
+              },
+            ),
+            // Logout Section
+
+            const VerticalSpace(AppValues.paddingLarge),
+          ],
         ),
       ),
     );
