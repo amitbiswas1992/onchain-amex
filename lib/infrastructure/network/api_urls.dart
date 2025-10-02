@@ -17,4 +17,7 @@ class ApiUrls {
   static const profile = '/api/v1/auth/profile';
   static const refreshToken = '/api/v1/auth/refresh';
 
+  static availableCredit(String publicAddress) => '/api/v1/blockchain/creditor/borrower/$publicAddress/available-credit';
+  static borrowerProfile(String publicAddress) => '/api/v1/blockchain/creditor/borrower/$publicAddress/profile';
+
 }
