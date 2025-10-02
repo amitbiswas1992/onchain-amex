@@ -52,12 +52,12 @@ class DioService {
             if (success) {
               final retryResponse = await _retryRequest(error.requestOptions);
               if (retryResponse.statusCode == 401) {
-                await _forceLogout(); // Only logout if retry is still 401
+                await _forceLogout(error.requestOptions); // Only logout if retry is still 401
                 return handler.reject(error);
               }
               return handler.resolve(retryResponse); // OK for 400/200/201 etc.
             } else {
-              await _forceLogout(); // Logout if refresh failed
+              await _forceLogout(error.requestOptions); // Logout if refresh failed
               return handler.reject(error);
             }
           }
@@ -135,7 +135,13 @@ class DioService {
     }
   }
 
-  Future<void> _forceLogout() async {
+  Future<void> _forceLogout(RequestOptions options) async {
+    final isEmailLogin = options.path.contains(ApiUrls.login);
+    final isPhoneLogin = options.path.contains(ApiUrls.loginWIthPhone);
+    final isEmailRegistration = options.path.contains(ApiUrls.register);
+    final isPhoneRegistration = options.path.contains(ApiUrls.registerWIthPhone);
+    if(isEmailLogin || isPhoneLogin || isEmailRegistration || isPhoneRegistration) return;
+
     await headersService.securedStorageService.deleteUserTokens();
     AppNav.goRouter.go(RtNm.splashScreen);
   }
