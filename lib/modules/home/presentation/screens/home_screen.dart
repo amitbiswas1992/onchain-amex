@@ -19,6 +19,7 @@ import '../resources/home_strings.dart';
 import '../widgets/home_app_bar.dart';
 import '../widgets/home_available_to_spend.dart';
 import '../widgets/home_credit_score_and_xp_points.dart';
+import '../widgets/home_wallet_section.dart';
 import '../widgets/latest_transaction_tile.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -72,62 +73,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final padding = MediaQuery.of(context).padding;
 
     return Scaffold(
-      backgroundColor: isLightTheme(context)
-          ? const Color(0xFFF5F5F5)
-          : const Color(0xFF121212),
+      backgroundColor: isLightTheme(context) ? const Color(0xFFF5F5F5) : const Color(0xFF121212),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppValues.paddingMedium),
+              padding: const EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
               child: Column(
                 children: [
                   VerticalSpace(padding.top),
                   const VerticalSpace(AppValues.paddingMedium),
-                  Consumer(builder: (context, ref, _) {
-                    final asyncProfile = ref.watch(profileProvider);
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final asyncProfile = ref.watch(profileProvider);
 
-                    return asyncProfile.when(
-                      data: (data) {
-                        Profile? profile;
-                        switch (data) {
-                          case Ok<Profile?>():
-                            profile = data.data;
-                          case Error<Profile?>():
-                        }
+                      return asyncProfile.when(
+                        data: (data) {
+                          Profile? profile;
+                          switch (data) {
+                            case Ok<Profile?>():
+                              profile = data.data;
+                            case Error<Profile?>():
+                          }
 
-                        return HomeAppBar(
-                          onGiftTap: () {
-                            AppNav.goRouter.push(RtNm.rewardsScreen);
-                          },
-                          onNotificationTap: () {},
-                          onProfileTap: () {},
-                          profileName: profile?.getShortName() ?? '',
-                        );
-                      },
-                      error: (err, stack) => WhenErrorWidget(error: err),
-                      loading: () => HomeAppBar(
-                        onGiftTap: () {
-                          AppNav.goRouter.push(RtNm.rewardsScreen);
+                          return HomeWalletSection(profile: profile);
                         },
-                        onNotificationTap: () {},
-                        onProfileTap: () {},
-                        profileName: '',
-                      ),
-                    );
-                  }),
-                  const VerticalSpace(AppValues.paddingMedium),
-                  HomeAvailableToSpend(
-                    onAddFound: () {
-                      AppNav.goRouter.push(RtNm.addFoundScreen);
-                    },
-                    onRepayFound: () {
-                      AppNav.goRouter.push(RtNm.replayFoundScreen);
+                        error: (err, stack) => WhenErrorWidget(error: err),
+                        loading: () => const HomeWalletSection(profile: null),
+                      );
                     },
                   ),
-                  const VerticalSpace(AppValues.paddingMedium),
-                  const HomeCreditScoreAndXpPoints(),
                 ],
               ),
             ),

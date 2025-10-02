@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/containers/light_card.dart';
 import '../../../../core/widgets/texts/large_number_text.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../resources/home_strings.dart';
 
 class HomeAvailableToSpend extends StatelessWidget {
-  final VoidCallback onAddFound;
-  final VoidCallback onRepayFound;
+  final num availableCreditAmount;
 
   const HomeAvailableToSpend({
     super.key,
-    required this.onAddFound,
-    required this.onRepayFound,
+    required this.availableCreditAmount,
   });
 
   @override
@@ -29,7 +30,12 @@ class HomeAvailableToSpend extends StatelessWidget {
         children: [
           const Text(availableToSPend),
           const VerticalSpace(AppValues.paddingSmall),
-          const LargeNumberText(text: '475.65', fontSize: 34),
+          LargeNumberText(
+            text: availableCreditAmount <= 0
+                ? availableCreditAmount.toString()
+                : (availableCreditAmount / oneMillion).toStringAsFixed(2),
+            fontSize: 34,
+          ),
           const VerticalSpace(AppValues.paddingMedium),
           Row(
             children: [
@@ -39,7 +45,9 @@ class HomeAvailableToSpend extends StatelessWidget {
                   showBorder: false,
                   deepColor: true,
                   rounded: true,
-                  onTap: onAddFound,
+                  onTap: () {
+                    AppNav.goRouter.push(RtNm.addFoundScreen);
+                  },
                 ),
               ),
               const HorizontalSpace(AppValues.paddingMedium),
@@ -49,7 +57,9 @@ class HomeAvailableToSpend extends StatelessWidget {
                   showBorder: false,
                   deepColor: true,
                   rounded: true,
-                  onTap: onRepayFound,
+                  onTap: () {
+                    AppNav.goRouter.push(RtNm.replayFoundScreen);
+                  },
                 ),
               ),
             ],
