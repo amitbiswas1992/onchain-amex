@@ -1,3 +1,4 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -5,43 +6,60 @@ import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
+import '../../../../core/widgets/app_picker_button.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../data/models/profile.dart';
+import '../controllers/profile_controller.dart';
+import '../providers/more_providers.dart';
 
 class PersonalInformationScreen extends ConsumerStatefulWidget {
-  const PersonalInformationScreen({super.key});
+  final Profile profile;
+
+  const PersonalInformationScreen({super.key, required this.profile});
 
   @override
   ConsumerState createState() => _PersonalInformationScreenState();
 }
 
-class _PersonalInformationScreenState
-    extends ConsumerState<PersonalInformationScreen> {
+class _PersonalInformationScreenState extends ConsumerState<PersonalInformationScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController(text: 'Shakir Ahmed');
-  final _preferredNameController = TextEditingController(text: 'Shakir');
-  final _dateOfBirthController = TextEditingController(text: '29 / 07 / 1996');
-  final _phoneController = TextEditingController(text: '+8801790300838');
-  final _addressController =
-      TextEditingController(text: 'House 09, Road 02, Section C, Mirpur');
-  final _cityController = TextEditingController(text: 'Dhaka');
-  final _zipcodeController = TextEditingController(text: '1221');
+  late final ProfileController _profileController;
 
-  String _selectedCountry = 'Bangladesh';
-  String _selectedNationality = 'Bangladesh';
+  final firstNameNode = FocusNode();
+  final lastNameNode = FocusNode();
+  final homeAddressNode = FocusNode();
+  final cityNode = FocusNode();
+  final stateNode = FocusNode();
+  final zipCodeNode = FocusNode();
+
+  String firstName = '';
+  String lastName = '';
+  String homeAddress = '';
+  String city = '';
+  String state = '';
+  String zipCode = '';
 
   @override
   void dispose() {
-    _fullNameController.dispose();
-    _preferredNameController.dispose();
-    _dateOfBirthController.dispose();
-    _phoneController.dispose();
-    _addressController.dispose();
-    _cityController.dispose();
-    _zipcodeController.dispose();
+    firstNameNode.dispose();
+    lastNameNode.dispose();
+    homeAddressNode.dispose();
+    cityNode.dispose();
+    stateNode.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    _profileController = ProfileController(
+      context: context,
+      ref: ref,
+      profileRepo: ref.read(profileRepo),
+    );
+    super.initState();
   }
 
   @override
@@ -67,88 +85,106 @@ class _PersonalInformationScreenState
                 // Country of residence
                 const FormFieldLabel(label: 'Country of residence'),
                 const VerticalSpace(AppValues.paddingSmall),
-                FormDropdownField(
-                  value: _selectedCountry,
-                  items: const ['Bangladesh', 'India', 'Pakistan', 'Nepal'],
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCountry = value!;
-                    });
-                  },
-                ),
+                Consumer(builder: (context, ref, _) {
+                  final selected = ref.watch(selectedCountryProvider);
+
+                  return AppPickerButton(
+                    hint: 'Country',
+                    value: selected?.name ?? widget.profile.country,
+                    onTap: () async {
+                      showCountryPicker(
+                        context: context,
+                        onSelect: (c) {
+                          ref.read(selectedCountryProvider.notifier).state = c;
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.arrow_drop_down_sharp),
+                  );
+                }),
                 const VerticalSpace(AppValues.paddingMedium),
 
                 // Full legal name
-                const FormFieldLabel(label: 'Full legal name'),
+                const FormFieldLabel(label: 'First Name'),
                 const VerticalSpace(AppValues.paddingSmall),
                 AppTextFormField(
-                  controller: _fullNameController,
-                  hintText: 'Enter your full legal name',
+                  focusNode: firstNameNode,
+                  hintText: 'Enter your first name',
+                  initialValue: widget.profile.firstName,
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
-                      return 'Full name is required';
+                      return 'First name is required';
                     }
                     return null;
                   },
+                  onSave: (val) {
+                    firstName = val ?? '';
+                  },
+                  onFieldSubmitted: (val) {
+                    firstNameNode.unfocus();
+                    lastNameNode.requestFocus();
+                  },
                 ),
                 const VerticalSpace(AppValues.paddingMedium),
-
-                // Preferred name
-                const PreferredNameLabel(),
+                const FormFieldLabel(label: 'Last Name'),
                 const VerticalSpace(AppValues.paddingSmall),
                 AppTextFormField(
-                  controller: _preferredNameController,
-                  hintText: 'Enter preferred name',
+                  focusNode: lastNameNode,
+                  hintText: 'Enter your last name',
+                  initialValue: widget.profile.lastName,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Last name is required';
+                    }
+                    return null;
+                  },
+                  onSave: (val) {
+                    lastName = val ?? '';
+                  },
+                  onFieldSubmitted: (val) {
+                    lastNameNode.unfocus();
+                    homeAddressNode.requestFocus();
+                  },
                 ),
                 const VerticalSpace(AppValues.paddingMedium),
 
                 // Date of birth
                 const FormFieldLabel(label: 'Date of birth'),
                 const VerticalSpace(AppValues.paddingSmall),
-                AppTextFormField(
-                  controller: _dateOfBirthController,
-                  hintText: 'DD / MM / YYYY',
-                  prefixIcon: const Icon(
-                    Icons.calendar_today_outlined,
-                    size: 20,
-                  ),
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Date of birth is required';
-                    }
-                    return null;
-                  },
-                ),
-                const VerticalSpace(AppValues.paddingMedium),
+                Consumer(builder: (context, ref, _) {
+                  final pickedDate = ref.watch(pickedDateProvider);
 
-                // Phone number
-                const FormFieldLabel(label: 'Phone number'),
-                const VerticalSpace(AppValues.paddingSmall),
-                AppTextFormField(
-                  controller: _phoneController,
-                  hintText: 'Enter phone number',
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Phone number is required';
-                    }
-                    return null;
-                  },
-                ),
+                  return AppPickerButton(
+                    icon: const Icon(Icons.calendar_month_rounded),
+                    hint: 'Pick date of birth',
+                    value: pickedDate == null ? null : pickedDate.toString().split(' ')[0],
+                    onTap: () {
+                      _selectDate(context);
+                    },
+                  );
+                }),
                 const VerticalSpace(AppValues.paddingMedium),
 
                 // Home Address
-                const FormFieldLabel(label: 'Home Address'),
+                const FormFieldLabel(label: 'Address'),
                 const VerticalSpace(AppValues.paddingSmall),
                 AppTextFormField(
-                  controller: _addressController,
-                  hintText: 'Enter your home address',
+                  focusNode: homeAddressNode,
+                  hintText: 'Enter your address',
+                  initialValue: widget.profile.address,
                   maxLines: 3,
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return 'Address is required';
                     }
                     return null;
+                  },
+                  onSave: (val) {
+                    homeAddress = val ?? '';
+                  },
+                  onFieldSubmitted: (val) {
+                    homeAddressNode.unfocus();
+                    cityNode.requestFocus();
                   },
                 ),
                 const VerticalSpace(AppValues.paddingMedium),
@@ -157,48 +193,67 @@ class _PersonalInformationScreenState
                 const FormFieldLabel(label: 'City'),
                 const VerticalSpace(AppValues.paddingSmall),
                 AppTextFormField(
-                  controller: _cityController,
+                  focusNode: cityNode,
                   hintText: 'Enter city',
+                  initialValue: widget.profile.city,
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return 'City is required';
                     }
                     return null;
                   },
-                ),
-                const VerticalSpace(AppValues.paddingMedium),
-
-                // Zipcode
-                const FormFieldLabel(label: 'Zipcode'),
-                const VerticalSpace(AppValues.paddingSmall),
-                AppTextFormField(
-                  controller: _zipcodeController,
-                  hintText: 'Enter zipcode',
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return 'Zipcode is required';
-                    }
-                    return null;
+                  onSave: (val) {
+                    city = val ?? '';
+                  },
+                  onFieldSubmitted: (val) {
+                    cityNode.unfocus();
+                    stateNode.requestFocus();
                   },
                 ),
                 const VerticalSpace(AppValues.paddingMedium),
 
-                // Nationality
-                const FormFieldLabel(label: 'Nationality'),
+                // City
+                const FormFieldLabel(label: 'State'),
                 const VerticalSpace(AppValues.paddingSmall),
-                FormDropdownField(
-                  value: _selectedNationality,
-                  items: const [
-                    'Bangladesh',
-                    'Indian',
-                    'Pakistani',
-                    'Nepalese',
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedNationality = value!;
-                    });
+                AppTextFormField(
+                  focusNode: stateNode,
+                  hintText: 'Enter state',
+                  initialValue: widget.profile.state,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'State is required';
+                    }
+                    return null;
+                  },
+                  onSave: (val) {
+                    state = val ?? '';
+                  },
+                  onFieldSubmitted: (val) {
+                    stateNode.unfocus();
+                    zipCodeNode.requestFocus();
+                  },
+                ),
+                const VerticalSpace(AppValues.paddingMedium),
+
+                // Zipcode
+                const FormFieldLabel(label: 'Postal Code'),
+                const VerticalSpace(AppValues.paddingSmall),
+                AppTextFormField(
+                  focusNode: zipCodeNode,
+                  hintText: 'Enter postal code',
+                  keyboardType: TextInputType.number,
+                  initialValue: widget.profile.postalCode,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Postal code is required';
+                    }
+                    return null;
+                  },
+                  onSave: (val) {
+                    zipCode = val ?? '';
+                  },
+                  onFieldSubmitted: (val) {
+                    zipCodeNode.unfocus();
                   },
                 ),
 
@@ -211,7 +266,27 @@ class _PersonalInformationScreenState
                   ),
                 ),
                 const VerticalSpace(AppValues.paddingSmall),
-                const AppPrimaryButton(title: 'Confirm'),
+                AppPrimaryButton(
+                  title: 'Confirm',
+                  onTap: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      _formKey.currentState?.save();
+                      _profileController.updateProfile(
+                        profile: widget.profile,
+                        userName: widget.profile.username ?? '',
+                        firstName: firstName,
+                        lastName: lastName,
+                        phoneNumber: widget.profile.phoneNumber ?? '',
+                        dateOfBirth: ref.read(pickedDateProvider),
+                        address: homeAddress,
+                        city: city,
+                        state: state,
+                        postalCode: zipCode,
+                        country: ref.read(selectedCountryProvider),
+                      );
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -228,10 +303,7 @@ class _PersonalInformationScreenState
       lastDate: DateTime.now(),
     );
     if (picked != null) {
-      setState(() {
-        _dateOfBirthController.text =
-            '${picked.day.toString().padLeft(2, '0')} / ${picked.month.toString().padLeft(2, '0')} / ${picked.year}';
-      });
+      ref.read(pickedDateProvider.notifier).state = picked;
     }
   }
 }

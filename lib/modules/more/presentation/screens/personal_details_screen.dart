@@ -28,7 +28,7 @@ class PersonalDetailsScreen extends ConsumerWidget {
                   title: 'Personal Information',
                   subtitle: 'Manage your personal information',
                   onTap: () {
-                    AppNav.goRouter.push(RtNm.personalInformationScreen);
+                    AppNav.goRouter.push(RtNm.personalInformationScreen, extra: profile);
                   },
                 ),
                 MenuItem(

@@ -111,7 +111,7 @@ class AppNav {
     GoRoute(
       path: RtNm.personalInformationScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const PersonalInformationScreen(),
+        PersonalInformationScreen(profile: state.extra as Profile),
         state,
       ),
     ),

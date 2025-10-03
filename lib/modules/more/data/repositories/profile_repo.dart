@@ -19,4 +19,19 @@ class ProfileRepo implements ProfileRepoInterface {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }
   }
+
+  @override
+  Future<Result> updateProfile({required Map<String, dynamic> payload}) async {
+    try {
+      final response = await dioService.patch(
+        ApiUrls.profile,
+        useTokenizeHeader: true,
+        body: payload
+      );
+
+      return response.toResult(dataHandler: null);
+    } catch (error, stck) {
+      return handleCatchAndReturnResult(error: error, stck: stck);
+    }
+  }
 }
