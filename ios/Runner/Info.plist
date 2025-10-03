@@ -58,7 +58,7 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>com.example.yourBundleId</string>
+        <string>com.nodecard.xyz</string>
         <key>CFBundleURLSchemes</key>
         <array>
           <!-- no :// here; this must match redirect.native without :// -->
