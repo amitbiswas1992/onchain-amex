@@ -39,18 +39,18 @@ class HomeAvailableToSpend extends StatelessWidget {
           const VerticalSpace(AppValues.paddingMedium),
           Row(
             children: [
-              Expanded(
-                child: AppSecondaryButton(
-                  title: add,
-                  showBorder: false,
-                  deepColor: true,
-                  rounded: true,
-                  onTap: () {
-                    AppNav.goRouter.push(RtNm.addFoundScreen);
-                  },
-                ),
-              ),
-              const HorizontalSpace(AppValues.paddingMedium),
+              // Expanded(
+              //   child: AppSecondaryButton(
+              //     title: add,
+              //     showBorder: false,
+              //     deepColor: true,
+              //     rounded: true,
+              //     onTap: () {
+              //       AppNav.goRouter.push(RtNm.addFoundScreen);
+              //     },
+              //   ),
+              // ),
+              // const HorizontalSpace(AppValues.paddingMedium),
               Expanded(
                 child: AppSecondaryButton(
                   title: repay,
