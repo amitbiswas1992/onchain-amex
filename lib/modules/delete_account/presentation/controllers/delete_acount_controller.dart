@@ -17,13 +17,15 @@ class DeleteAccountController {
 
   Future<void> deleteAccount({required Profile profile}) async {
     try {
+      showLoadingDialog(context: context, message: 'Deleting your account...');
       final response = await ref.read(dioService).delete(ApiUrls.deleteUser(profile.id ?? ''));
+      hideDialog();
       final result = response.toResult(dataHandler: (json) {});
       switch (result) {
         case Ok<Null>():
           showSuccessDialog(
             context: context,
-            message: result.message,
+            message: 'Account deleted successfully.',
             dismissible: false,
             onDone: () async {
               await ref.read(securedStorageService).deleteUserTokens();
@@ -31,7 +33,7 @@ class DeleteAccountController {
             },
           );
         case Error<Null>():
-          showErrorDialog(context: context, message: result.toString());
+          showErrorDialog(context: context, message: 'Failed to delete account. try again later.');
       }
     } catch (error, stck) {
       debugPrint(error.toString());

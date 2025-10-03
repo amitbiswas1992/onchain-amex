@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../core/services/secured_storage_service.dart';
 import '../../modules/signin/data/models/tokens_model.dart';
@@ -414,12 +415,18 @@ class DioService {
         data: body,
       );
 
-      Map<String, dynamic> jsonData = jsonDecode(response.data);
+      Map<String, dynamic> jsonData = {};
+      // try {
+      //   jsonData = jsonDecode(response.data);
+      // } catch (error, stck) {
+      //   debugPrint(error.toString());
+      //   debugPrint(stck.toString());
+      // }
 
       final obj = ResponseModel(
-        success: jsonData['success'] ?? false,
+        success: jsonData['success'] ?? [200, 201, 202].contains(response.statusCode),
         message: jsonData['message'] ?? '',
-        body: jsonData['data'],
+        body: jsonData['data'] ?? {},
       );
       return obj;
     } on DioException catch (e) {
