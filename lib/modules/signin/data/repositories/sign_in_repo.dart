@@ -34,7 +34,8 @@ class SignInRepo implements SignInRepoInterface {
   }
 
   @override
-  Future<Result> verifyEmailOtp({required Map<String, dynamic> payload, required bool isEmail}) async {
+  Future<Result> verifyEmailOtp(
+      {required Map<String, dynamic> payload, required bool isEmail}) async {
     try {
       final response = await dioService.post(
         isEmail ? ApiUrls.verifyOtpForEmail : ApiUrls.verifyOtpForPhone,
@@ -50,7 +51,8 @@ class SignInRepo implements SignInRepoInterface {
   }
 
   @override
-  Future<Result> resendOtpToEmail({required Map<String, dynamic> payload, required bool isEmail}) async {
+  Future<Result> resendOtpToEmail(
+      {required Map<String, dynamic> payload, required bool isEmail}) async {
     try {
       final response = await dioService.post(
         isEmail ? ApiUrls.resendOtpToEmail : ApiUrls.resendOtpToPhone,
@@ -66,7 +68,8 @@ class SignInRepo implements SignInRepoInterface {
   }
 
   @override
-  Future<Result<RegisterModel?>> login({required Map<String, dynamic> payload, required bool isEmail}) async {
+  Future<Result<RegisterModel?>> login(
+      {required Map<String, dynamic> payload, required bool isEmail}) async {
     try {
       final response = await dioService.post(
         isEmail ? ApiUrls.login : ApiUrls.loginWIthPhone,
@@ -81,6 +84,18 @@ class SignInRepo implements SignInRepoInterface {
           );
         },
       );
+    } catch (error, stck) {
+      return handleCatchAndReturnResult(error: error, stck: stck);
+    }
+  }
+
+  @override
+  Future<Result> logout() async {
+    try {
+      return (await dioService.post(
+        ApiUrls.logOut,
+        useTokenizeHeader: true,
+      )).toResult(dataHandler: null);
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }

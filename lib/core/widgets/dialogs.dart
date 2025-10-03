@@ -200,13 +200,13 @@ Future<bool> showPermissionDialog({
                   Expanded(
                     child: AppPrimaryButton(
                       title: 'Cancel',
-                      // color: AppColors.yellowGreen,
+                      color: AppColors.c455468,
                       verticalPadding: AppValues.paddingMedium - 4,
                       radius: 15,
                       titleStyle: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.primaryLight,
+                        color: Colors.white,
                       ),
                       onTap: () {
                         AppNav.goRouter.pop(false);

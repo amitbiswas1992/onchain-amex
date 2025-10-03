@@ -19,6 +19,7 @@ import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../../infrastructure/network/result.dart';
 import '../../../home/presentation/providers/home_providers.dart';
+import '../../../signin/presentation/providers/sign_in_providers.dart';
 import '../../../wallet/presentation/controllers/wallet_controller.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../../data/models/profile.dart';
@@ -243,8 +244,21 @@ class MoreBody extends ConsumerWidget {
               icon: 'assets/icons/log_out.svg',
               title: 'Logout',
               onTap: () async {
-                await ref.read(securedStorageService).deleteUserTokens();
-                AppNav.goRouter.go(RtNm.splashScreen);
+                final logout = await showPermissionDialog(
+                  context: context,
+                  message: 'Your account will be logged out.',
+                );
+                if (logout != true) return;
+                showLoadingDialog(context: context);
+                final result = await ref.read(signInRepoProvider).logout();
+                hideDialog();
+                switch (result) {
+                  case Ok():
+                    await ref.read(securedStorageService).deleteUserTokens();
+                    AppNav.goRouter.go(RtNm.splashScreen);
+                  case Error():
+                    showErrorDialog(context: context, message: result.toString());
+                }
               },
             ),
             // Logout Section
