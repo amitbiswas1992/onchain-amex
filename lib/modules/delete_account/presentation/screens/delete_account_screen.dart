@@ -10,16 +10,29 @@ import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../more/data/models/profile.dart';
+import '../controllers/delete_acount_controller.dart';
 import '../providers/delete_account_providers.dart';
 
 class DeleteAccountScreen extends ConsumerStatefulWidget {
-  const DeleteAccountScreen({super.key});
+  final Profile profile;
+
+  const DeleteAccountScreen({super.key, required this.profile});
 
   @override
   ConsumerState createState() => _DeleteAccountScreenState();
 }
 
 class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
+  late final DeleteAccountController _controller;
+
+  @override
+  void initState() {
+    _controller = DeleteAccountController(context: context, ref: ref);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +77,7 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
                           : const Color(0xFFE92215).withValues(alpha: .16),
                       onTap: () {
                         if (enabled) {
-                          AppNav.goRouter.pop();
+                          _controller.deleteAccount(profile: widget.profile);
                         } else {}
                       },
                     );

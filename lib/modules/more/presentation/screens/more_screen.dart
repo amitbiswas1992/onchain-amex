@@ -230,7 +230,11 @@ class MoreBody extends ConsumerWidget {
                   subtitle: 'Close your borrower account',
                   color: AppColors.errorLight,
                   onTap: () {
-                    AppNav.goRouter.push(RtNm.deleteAccountScreen);
+                    if (profile != null) {
+                      AppNav.goRouter.push(RtNm.deleteAccountScreen, extra: profile);
+                    } else {
+                      log('profile is null');
+                    }
                   },
                 ),
               ],

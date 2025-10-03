@@ -188,7 +188,7 @@ class AppNav {
     GoRoute(
       path: RtNm.deleteAccountScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const DeleteAccountScreen(),
+        DeleteAccountScreen(profile: state.extra as Profile),
         state,
       ),
     ),

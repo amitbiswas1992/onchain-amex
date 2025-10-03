@@ -393,6 +393,42 @@ class DioService {
     }
   }
 
+  Future<ResponseModel> delete(
+      String url, {
+        bool useTokenizeHeader = false,
+        Map<String, String>? headers,
+        Map? body,
+        Map<String, dynamic>? query,
+      }) async {
+    try {
+      if (await _hasConnection() == false) {
+        return ResponseModel().noInternetResponse;
+      }
+
+      final response = await dio.delete(
+        url,
+        queryParameters: query,
+        options: Options(
+          headers: headers ?? await _getHeaders(useTokenizeHeader: useTokenizeHeader),
+        ),
+        data: body,
+      );
+
+      Map<String, dynamic> jsonData = jsonDecode(response.data);
+
+      final obj = ResponseModel(
+        success: jsonData['success'] ?? false,
+        message: jsonData['message'] ?? '',
+        body: jsonData['data'],
+      );
+      return obj;
+    } on DioException catch (e) {
+      return _handleDioException(e);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
 // Future<ResponseModel> upload(
 //   String url, {
 //   required File file,

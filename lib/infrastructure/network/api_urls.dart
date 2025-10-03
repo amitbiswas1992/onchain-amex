@@ -16,6 +16,7 @@ class ApiUrls {
   static const connectWallet = '/api/v1/blockchain/creditor/admin/borrower/register';
   static const profile = '/api/v1/auth/profile';
   static const refreshToken = '/api/v1/auth/refresh';
+  static deleteUser(String userID) => '/api/v1/users/$userID';
 
   static availableCredit(String publicAddress) => '/api/v1/blockchain/creditor/borrower/$publicAddress/available-credit';
   static borrowerProfile(String publicAddress) => '/api/v1/blockchain/creditor/borrower/$publicAddress/profile';
