@@ -261,31 +261,33 @@ class _PersonalInformationScreenState extends ConsumerState<PersonalInformationS
                 Align(
                   child: Text(
                     'By continuing, you confirm this information is correct.',
-                    style: s11W400(context),
+                    style: s11W400(context),˚
                     textAlign: TextAlign.center,
                   ),
                 ),
                 const VerticalSpace(AppValues.paddingSmall),
-                AppPrimaryButton(
-                  title: 'Confirm',
-                  onTap: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      _formKey.currentState?.save();
-                      _profileController.updateProfile(
-                        profile: widget.profile,
-                        userName: widget.profile.username ?? '',
-                        firstName: firstName,
-                        lastName: lastName,
-                        phoneNumber: widget.profile.phoneNumber ?? '',
-                        dateOfBirth: ref.read(pickedDateProvider),
-                        address: homeAddress,
-                        city: city,
-                        state: state,
-                        postalCode: zipCode,
-                        country: ref.read(selectedCountryProvider),
-                      );
-                    }
-                  },
+                SafeArea(
+                  child: AppPrimaryButton(
+                    title: 'Confirm',
+                    onTap: () {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        _formKey.currentState?.save();
+                        _profileController.updateProfile(
+                          profile: widget.profile,
+                          userName: widget.profile.username ?? '',
+                          firstName: firstName,
+                          lastName: lastName,
+                          phoneNumber: widget.profile.phoneNumber ?? '',
+                          dateOfBirth: ref.read(pickedDateProvider),
+                          address: homeAddress,
+                          city: city,
+                          state: state,
+                          postalCode: zipCode,
+                          country: ref.read(selectedCountryProvider),
+                        );
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
