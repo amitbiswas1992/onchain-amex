@@ -261,7 +261,7 @@ class _PersonalInformationScreenState extends ConsumerState<PersonalInformationS
                 Align(
                   child: Text(
                     'By continuing, you confirm this information is correct.',
-                    style: s11W400(context),˚
+                    style: s11W400(context),
                     textAlign: TextAlign.center,
                   ),
                 ),
