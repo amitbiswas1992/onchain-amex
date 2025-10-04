@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../modules/add_and_repay/presentation/screens/add_found_screen.dart';
 import '../../modules/add_and_repay/presentation/screens/replay_found_screen.dart';
 import '../../modules/cards/data/models/choose_card_extra.dart';
@@ -35,11 +36,11 @@ import '../../modules/payment_methods/presentation/screens/payment_methods_scree
 import '../../modules/payment_methods/presentation/screens/saved_cards_screen.dart';
 import '../../modules/rewards/presentation/screens/rewards_screen.dart';
 import '../../modules/signin/presentation/screens/login_with_email_screen.dart';
+import '../../modules/signin/presentation/screens/login_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/otp_input_screen.dart';
+import '../../modules/signin/presentation/screens/register_with_email_screen.dart';
 import '../../modules/signin/presentation/screens/register_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
-import '../../modules/signin/presentation/screens/register_with_email_screen.dart';
-import '../../modules/signin/presentation/screens/login_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/user_info_input_screen.dart';
 import '../../modules/spends/data/models/payment_success_extra.dart';
 import '../../modules/spends/presentation/screens/payment_success_screen.dart';
@@ -88,7 +89,8 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation: kDebugMode == false ? RtNm.splashScreen : RtNm.splashScreen,
+    initialLocation:
+        kDebugMode == false ? RtNm.splashScreen : RtNm.splashScreen,
     routes: [
       _shellRoutes,
       ..._authRoutes,
@@ -307,7 +309,10 @@ class AppNav {
       pageBuilder: (context, state) {
         final extraMap = state.extra as Map<String, dynamic>;
         return fadeTransitionPageBuilder(
-          OtpInputScreen(emailOrPhone: extraMap['emailOrPhone'], isEmail: extraMap['isEmail']),
+          OtpInputScreen(
+            emailOrPhone: extraMap['emailOrPhone'],
+            isEmail: extraMap['isEmail'],
+          ),
           state,
         );
       },
@@ -317,7 +322,10 @@ class AppNav {
       pageBuilder: (context, state) {
         final extras = state.extra as Map<String, dynamic>;
         return fadeTransitionPageBuilder(
-          UserInfoInputScreen(email: extras['email'], password: extras['password']),
+          UserInfoInputScreen(
+            email: extras['email'],
+            password: extras['password'],
+          ),
           state,
         );
       },

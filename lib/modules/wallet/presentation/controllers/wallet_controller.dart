@@ -1,11 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reown_appkit/reown_appkit.dart';
 
-import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_secrets.dart';
 import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/transaction_hash_text.dart';
@@ -39,11 +38,11 @@ class WalletController {
         context: context,
         projectId: reownProjectId,
         logLevel: LogLevel.error,
-        metadata: const PairingMetadata(
+        metadata: PairingMetadata(
           name: 'TMRW',
           description: 'TMRW App',
           redirect: Redirect(
-            native: 'tmrw://',
+            native: Platform.isIOS ? 'tmrw:///more-screen' : 'tmrw://',
             linkMode: false,
           ),
         ),
@@ -79,7 +78,6 @@ class WalletController {
           });
         }
       });
-
 
       _appKitModal?.onModalError.subscribe((error) {
         if (!completer.isCompleted) {
@@ -134,7 +132,10 @@ class WalletController {
   }
 
   Future<void> connectWalletToServer() async {
-    showLoadingDialog(context: context, message: 'Getting things ready...', dismissible: true);
+    showLoadingDialog(
+        context: context,
+        message: 'Getting things ready...',
+        dismissible: true);
     final publicAddress = await _getWalletPublicAddress();
     hideDialog();
     if (publicAddress == null) {
@@ -155,7 +156,8 @@ class WalletController {
         showSuccessDialog(
           context: context,
           message: 'Wallet connected successfully.',
-          otherWidget: TransactionHashText(text: result.data?.transactionHash ?? ''),
+          otherWidget:
+              TransactionHashText(text: result.data?.transactionHash ?? ''),
         );
         ref.invalidate(profileProvider);
         break;
