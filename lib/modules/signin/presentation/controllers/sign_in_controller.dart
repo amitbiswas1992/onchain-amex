@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/string_extension.dart';
+import '../../../../core/services/device_info_service.dart';
 import '../../../../core/utils/string_utils.dart';
 import '../../../../core/widgets/dialogs.dart';
 import '../../../../infrastructure/di/global_providers.dart';
@@ -20,11 +21,13 @@ class SignInController {
   final BuildContext context;
   final WidgetRef ref;
   final SignInRepoInterface signInRepo;
+  final DeviceInfoService deviceInfoService;
 
   const SignInController({
     required this.context,
     required this.ref,
     required this.signInRepo,
+    required this.deviceInfoService,
   });
 
   void _handleLoginRegisterResponse({
@@ -71,7 +74,8 @@ class SignInController {
       payload: {
         isEmail ? "email": 'phoneNumber': email,
         "password": password,
-        // "twoFactorCode": "123456"
+        // "twoFactorCode": "123456",
+        "deviceInfo": await deviceInfoService.getLoginTimeDeviceInfo(),
       },
       isEmail: isEmail,
     );

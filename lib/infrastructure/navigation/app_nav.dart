@@ -20,6 +20,7 @@ import '../../modules/invite_friend/presentation/screens/invite_friend_screen.da
 import '../../modules/more/data/models/profile.dart';
 import '../../modules/more/presentation/screens/change_email_screen.dart';
 import '../../modules/more/presentation/screens/change_phone_screen.dart';
+import '../../modules/more/presentation/screens/manage_devices_screen.dart';
 import '../../modules/more/presentation/screens/more_screen.dart';
 import '../../modules/more/presentation/screens/notification_settings_screen.dart';
 import '../../modules/more/presentation/screens/personal_details_screen.dart';
@@ -192,6 +193,14 @@ class AppNav {
         state,
       ),
     ),
+    GoRoute(
+      path: RtNm.manageDevicesScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ManageDevicesScreen(),
+        state,
+      ),
+    ),
+
   ];
 
   static final _rewardsRoutes = [

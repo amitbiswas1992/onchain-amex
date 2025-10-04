@@ -21,4 +21,6 @@ class ApiUrls {
   static availableCredit(String publicAddress) => '/api/v1/blockchain/creditor/borrower/$publicAddress/available-credit';
   static borrowerProfile(String publicAddress) => '/api/v1/blockchain/creditor/borrower/$publicAddress/profile';
   static const logOut = '/api/v1/auth/logout';
+  static const deviceSessions = '/api/v1/users/devices/sessions';
+  static deleteDeviceSession(String deviceId) => '/api/v1/users/devices/$deviceId';
 }

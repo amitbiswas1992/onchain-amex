@@ -10,6 +10,7 @@ import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
+import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../controllers/sign_in_controller.dart';
 import '../providers/sign_in_providers.dart';
@@ -43,6 +44,7 @@ class _OtpInputScreenState extends ConsumerState<OtpInputScreen> {
       context: context,
       signInRepo: ref.read(signInRepoProvider),
       ref: ref,
+      deviceInfoService: ref.read(deviceInfoService),
     );
     super.initState();
   }

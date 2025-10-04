@@ -12,6 +12,7 @@ import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
+import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../controllers/sign_in_controller.dart';
@@ -46,6 +47,7 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
       context: context,
       ref: ref,
       signInRepo: ref.read(signInRepoProvider),
+      deviceInfoService: ref.read(deviceInfoService),
     );
   }
 

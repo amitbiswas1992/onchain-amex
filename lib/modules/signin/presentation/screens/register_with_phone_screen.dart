@@ -13,6 +13,7 @@ import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/phone_number_text_field.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
+import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../controllers/sign_in_controller.dart';
@@ -48,6 +49,7 @@ class _RegisterWithPhoneScreenState extends ConsumerState<RegisterWithPhoneScree
       context: context,
       ref: ref,
       signInRepo: ref.read(signInRepoProvider),
+      deviceInfoService: ref.read(deviceInfoService),
     );
   }
 

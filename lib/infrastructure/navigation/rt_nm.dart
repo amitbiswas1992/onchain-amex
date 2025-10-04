@@ -45,4 +45,5 @@ class RtNm {
   static const deleteAccountScreen = '/delete-account-screen';
 
   static const rewardsScreen = '/rewards-screen';
+  static const manageDevicesScreen = '/manage-devices-screen';
 }

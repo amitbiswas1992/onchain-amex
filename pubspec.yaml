@@ -48,7 +48,8 @@ dependencies:
   country_code_picker: ^3.3.0
   country_picker: ^2.0.27
   clipboard: ^2.0.2
-#  firebase_core: ^3.15.2
+  device_info_plus: ^12.1.0
+  package_info_plus: ^8.1.2
 
 #dependency_overrides:
 #  uuid: ^4.5.1

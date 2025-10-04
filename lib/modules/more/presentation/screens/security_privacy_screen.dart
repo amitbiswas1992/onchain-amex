@@ -9,6 +9,8 @@ import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../widgets/menu_section.dart';
 
 class SecurityPrivacyScreen extends ConsumerStatefulWidget {
@@ -77,20 +79,20 @@ class SecuritySettingsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return MenuSection(
       items: [
-        MenuItem(
-          icon: 'assets/icons/fingerprint.svg',
-          title: '2-step verification',
-          subtitle: 'Status: on',
-          onTap: () {
-            // Navigate to 2-step verification settings
-          },
-        ),
+        // MenuItem(
+        //   icon: 'assets/icons/fingerprint.svg',
+        //   title: '2-step verification',
+        //   subtitle: 'Status: on',
+        //   onTap: () {
+        //     // Navigate to 2-step verification settings
+        //   },
+        // ),
         MenuItem(
           icon: 'assets/icons/phone.svg',
           title: 'Devices',
           subtitle: 'Manage your devices',
           onTap: () {
-            // Navigate to device management
+            AppNav.goRouter.push(RtNm.manageDevicesScreen);
           },
         ),
         MenuItem(
