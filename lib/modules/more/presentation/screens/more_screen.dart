@@ -10,6 +10,7 @@ import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/theme_toogle_button.dart';
+import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/errors/when_error_widget.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/di/global_providers.dart';

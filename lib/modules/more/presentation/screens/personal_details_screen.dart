@@ -36,16 +36,18 @@ class PersonalDetailsScreen extends ConsumerWidget {
                   title: 'Email address',
                   subtitle: profile.email ?? '',
                   onTap: () {
-                    AppNav.goRouter.push(RtNm.changeEmailScreen);
+                    // AppNav.goRouter.push(RtNm.changeEmailScreen);
                   },
+                  showTrailingIcon: false,
                 ),
                 MenuItem(
                   icon: 'assets/icons/phone.svg',
                   title: 'Phone number',
                   subtitle: profile.phoneNumber ?? '',
                   onTap: () {
-                    AppNav.goRouter.push(RtNm.changePhoneScreen);
+                    // AppNav.goRouter.push(RtNm.changePhoneScreen);
                   },
+                  showTrailingIcon: false,
                 ),
               ],
             ),
