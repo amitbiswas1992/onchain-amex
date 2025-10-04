@@ -21,7 +21,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>onchain amex</string>
+	<string>tmrw</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -66,6 +66,15 @@
         </array>
       </dict>
     </array>
+
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	<string>metamask</string>
+	<string>trust</string>
+	<string>safe</string>
+	<string>rainbow</string>
+	<!-- Add other wallet schemes names here -->
+	</array>
 
     <key>NSCameraUsageDescription</key>
     <string>This app needs camera access to scan QR codes</string>

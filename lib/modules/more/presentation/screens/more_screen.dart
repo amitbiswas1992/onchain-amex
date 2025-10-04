@@ -10,10 +10,8 @@ import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/theme_toogle_button.dart';
-import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/errors/when_error_widget.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
-import '../../../../core/widgets/texts/transaction_hash_text.dart';
 import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
@@ -54,30 +52,32 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer(builder: (context, ref, _) {
-        final asyncProfile = ref.watch(profileProvider);
+      body: Consumer(
+        builder: (context, ref, _) {
+          final asyncProfile = ref.watch(profileProvider);
 
-        return asyncProfile.when(
-          data: (data) {
-            Profile? profile;
-            switch (data) {
-              case Ok<Profile?>():
-                profile = data.data;
-              case Error<Profile?>():
-            }
+          return asyncProfile.when(
+            data: (data) {
+              Profile? profile;
+              switch (data) {
+                case Ok<Profile?>():
+                  profile = data.data;
+                case Error<Profile?>():
+              }
 
-            return MoreBody(
-              profile: profile,
+              return MoreBody(
+                profile: profile,
+                walletController: _walletController,
+              );
+            },
+            error: (err, stack) => WhenErrorWidget(error: err),
+            loading: () => MoreBody(
+              profile: null,
               walletController: _walletController,
-            );
-          },
-          error: (err, stack) => WhenErrorWidget(error: err),
-          loading: () => MoreBody(
-            profile: null,
-            walletController: _walletController,
-          ),
-        );
-      }),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -86,7 +86,11 @@ class MoreBody extends ConsumerWidget {
   final Profile? profile;
   final WalletController walletController;
 
-  const MoreBody({super.key, required this.profile, required this.walletController});
+  const MoreBody({
+    super.key,
+    required this.profile,
+    required this.walletController,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -104,7 +108,9 @@ class MoreBody extends ConsumerWidget {
                 onToggle: () {
                   ref.read(themeModeProvider.notifier).state =
                       isLightTheme(context) ? ThemeMode.dark : ThemeMode.light;
-                  ref.read(securedStorageService).saveThemeMode(ref.read(themeModeProvider)!);
+                  ref
+                      .read(securedStorageService)
+                      .saveThemeMode(ref.read(themeModeProvider)!);
                 },
               ),
             ),
@@ -137,7 +143,8 @@ class MoreBody extends ConsumerWidget {
                     ),
                     child: Text(
                       'KYC Not Verified',
-                      style: s12W500(context, fontFamily: interFontFamily).copyWith(
+                      style: s12W500(context, fontFamily: interFontFamily)
+                          .copyWith(
                         color: AppColors.errorLight,
                       ),
                     ),
@@ -169,7 +176,8 @@ class MoreBody extends ConsumerWidget {
                   subtitle: 'Update your personal information',
                   onTap: () {
                     if (profile != null) {
-                      AppNav.goRouter.push(RtNm.personalDetailsScreen, extra: profile);
+                      AppNav.goRouter
+                          .push(RtNm.personalDetailsScreen, extra: profile);
                     }
                   },
                 ),
@@ -184,7 +192,8 @@ class MoreBody extends ConsumerWidget {
                 MenuItem(
                   icon: 'assets/icons/bank.svg',
                   title: 'Payment methods',
-                  subtitle: 'Manage saved cards and bank accounts that linked to this account',
+                  subtitle:
+                      'Manage saved cards and bank accounts that linked to this account',
                   onTap: () {
                     AppNav.goRouter.push(RtNm.paymentMethodsScreen);
                   },
@@ -192,7 +201,8 @@ class MoreBody extends ConsumerWidget {
                 MenuItem(
                   icon: 'assets/icons/circle_half.svg',
                   title: 'Language & Appearance',
-                  subtitle: 'Customize language settings and which theme is used',
+                  subtitle:
+                      'Customize language settings and which theme is used',
                   onTap: () {},
                 ),
               ],
@@ -231,7 +241,8 @@ class MoreBody extends ConsumerWidget {
                   color: AppColors.errorLight,
                   onTap: () {
                     if (profile != null) {
-                      AppNav.goRouter.push(RtNm.deleteAccountScreen, extra: profile);
+                      AppNav.goRouter
+                          .push(RtNm.deleteAccountScreen, extra: profile);
                     } else {
                       log('profile is null');
                     }
@@ -305,7 +316,8 @@ class ProfileHeaderSection extends StatelessWidget {
           ),
           const VerticalSpace(AppValues.paddingMedium),
           Text(
-            '${profile?.firstName ?? ''} ${profile?.lastName ?? ''}'.toUpperCase(),
+            '${profile?.firstName ?? ''} ${profile?.lastName ?? ''}'
+                .toUpperCase(),
             style: s22W600(context),
           ),
           const VerticalSpace(16),
@@ -329,9 +341,12 @@ class ProfileHeaderSection extends StatelessWidget {
           ),
           const VerticalSpace(16),
           AppIconButton(
-            title: profile?.wallet != null ? 'Wallet Connected' : 'Connect Wallet',
+            title:
+                profile?.wallet != null ? 'Wallet Connected' : 'Connect Wallet',
             titleStyle: s14W500(context, fontFamily: interFontFamily).copyWith(
-              color: profile?.wallet != null ? AppColors.primaryLight : AppColors.onBackgroundDark,
+              color: profile?.wallet != null
+                  ? AppColors.primaryLight
+                  : AppColors.onBackgroundDark,
             ),
             height: 48,
             onTap: profile?.wallet != null ? null : onWalletConnectTap,
