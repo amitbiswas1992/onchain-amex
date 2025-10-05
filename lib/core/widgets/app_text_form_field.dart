@@ -29,6 +29,9 @@ class AppTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? formatters;
   final bool? autoFocus;
   final double borderRadius;
+  final TextCapitalization textCapitalization;
+  final TextAlign textAlign;
+  final int? maxLength;
 
   const AppTextFormField({
     super.key,
@@ -55,6 +58,9 @@ class AppTextFormField extends StatelessWidget {
     this.errorColor,
     this.formatters, this.autoFocus,
     this.borderRadius = 6,
+    this.textCapitalization = TextCapitalization.none,
+    this.textAlign = TextAlign.start,
+    this.maxLength,
   });
 
   @override
@@ -76,14 +82,17 @@ class AppTextFormField extends StatelessWidget {
         keyboardType: keyboardType,
         validator: validator,
         onChanged: onChanged,
+        textAlign: textAlign,
         onSaved: onSave,
         onFieldSubmitted: onFieldSubmitted,
         initialValue: initialValue,
         maxLines: obscureText ? 1 : maxLines,
         minLines: minLines,
+        maxLength: maxLength,
         style: textStyle ??
             s14W500(context).copyWith(color: theme.colorScheme.onSurface),
         inputFormatters: formatters,
+        textCapitalization: textCapitalization,
         decoration: InputDecoration(
           isDense: true,
           hintText: hintText,

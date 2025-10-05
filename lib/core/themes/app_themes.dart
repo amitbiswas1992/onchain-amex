@@ -225,5 +225,11 @@ class AppThemes {
         color: AppColors.onSurfaceDark, // Black text
       ),
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.white, // applies to 'Cancel' and 'OK' buttons
+        textStyle: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+    ),
   );
 }

@@ -8,10 +8,13 @@ import '../../../../core/widgets/texts/large_number_text.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../wallet/data/models/borrower_profile.dart';
 import '../resources/home_strings.dart';
 
 class HomeCreditScoreAndXpPoints extends StatelessWidget {
-  const HomeCreditScoreAndXpPoints({super.key});
+  final BorrowerProfile? borrowerProfile;
+
+  const HomeCreditScoreAndXpPoints({super.key, this.borrowerProfile});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,7 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
                     ),
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
-                  const LargeNumberText(text: '750', fontSize: 34,),
+                  LargeNumberText(text: num.parse(borrowerProfile?.creditScore ?? '0').toStringAsFixed(2), fontSize: 34,),
                   const VerticalSpace(32),
                 ],
               ),
@@ -65,14 +68,14 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
                   SvgPicture.asset('assets/icons/star_with_bg.svg'),
                   const VerticalSpace(AppValues.paddingSmall),
                   Text(
-                    xpPoints,
+                    'Transaction Count',
                     style: s14W500(
                       context,
                       fontFamily: interFontFamily,
                     ),
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
-                  const LargeNumberText(text: '750', fontSize: 34,),
+                  LargeNumberText(text: borrowerProfile?.spendingCount ?? '0', fontSize: 34,),
                   const VerticalSpace(32),
                 ],
               ),

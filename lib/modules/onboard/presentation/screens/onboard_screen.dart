@@ -9,6 +9,7 @@ import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/buttons/app_text_utton.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../splash/presentation/providers/onboard_providers.dart';
@@ -43,7 +44,8 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                   text: 'SKIP',
                   textStyle: s14W600(context),
                   onPressed: () {
-                    AppNav.goRouter.go(RtNm.signInWithEmailScreen);
+                    ref.read(securedStorageService).markAsOnboarded();
+                    AppNav.goRouter.go(RtNm.registerWithEmailScreen);
                   },
                 ),
               ),
@@ -98,7 +100,8 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                         return AppPrimaryButton(
                           title: getStarted,
                           onTap: () {
-                            AppNav.goRouter.go(RtNm.signInWithEmailScreen);
+                            ref.read(securedStorageService).markAsOnboarded();
+                            AppNav.goRouter.go(RtNm.registerWithEmailScreen);
                           },
                         );
                       }
@@ -115,17 +118,6 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
                           );
                         },
                       );
-
-                      // return AppTextButton(
-                      //   text: next,
-                      //   onPressed: () {
-                      //     _pageController.nextPage(
-                      //       duration: const Duration(milliseconds: 300),
-                      //       curve: Curves.easeInOut,
-                      //     );
-                      //   },
-                      //   textStyle: s16W500(context),
-                      // );
                     },
                   ),
                 ),

@@ -2,8 +2,13 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
-import '../di/get_it_service.dart';
+import '../../core/services/secured_storage_service.dart';
+import '../../modules/signin/data/models/tokens_model.dart';
+import '../navigation/app_nav.dart';
+import '../navigation/rt_nm.dart';
+import 'api_urls.dart';
 import 'connectivity_service.dart';
 import 'headers_service.dart';
 import 'response_model.dart';
@@ -11,21 +16,23 @@ import 'response_model.dart';
 class DioService {
   late final Dio dio;
   final HeadersService headersService;
+  final ConnectivityService connectivityService;
 
-  DioService({required this.headersService}) {
+  DioService({required this.headersService, required this.connectivityService}) {
     _initialize();
   }
 
   void _initialize() {
     BaseOptions options = BaseOptions(
-      connectTimeout: const Duration(seconds: 120),
-      receiveTimeout: const Duration(seconds: 120),
+      baseUrl: ApiUrls.base,
+      connectTimeout: const Duration(seconds: 45),
+      receiveTimeout: const Duration(seconds: 45),
     );
 
-    dio = Dio();
+    dio = Dio(options);
     dio.interceptors.add(
       InterceptorsWrapper(
-        onError: (error, handler) {
+        onError: (error, handler) async {
           final data = error.requestOptions.data;
           final payloadLog = data is FormData ? 'FormData(...)' : jsonEncode(data);
 
@@ -38,6 +45,23 @@ class DioService {
       🌐 response: ${jsonEncode(error.response?.data)}
       ''',
           );
+
+          // 🔑 handle 401 here
+          log('handling 401');
+          if (error.response?.statusCode == 401 && !_isRefreshRequest(error.requestOptions)) {
+            final success = await _refreshAuthTokens();
+            if (success) {
+              final retryResponse = await _retryRequest(error.requestOptions);
+              if (retryResponse.statusCode == 401) {
+                await _forceLogout(error.requestOptions); // Only logout if retry is still 401
+                return handler.reject(error);
+              }
+              return handler.resolve(retryResponse); // OK for 400/200/201 etc.
+            } else {
+              await _forceLogout(error.requestOptions); // Logout if refresh failed
+              return handler.reject(error);
+            }
+          }
 
           return handler.next(error);
         },
@@ -65,8 +89,70 @@ class DioService {
     log('dio initialized');
   }
 
+  Future<Response<dynamic>> _retryRequest(RequestOptions requestOptions) async {
+    final tokens = await headersService.securedStorageService.getUserTokens();
+    final headers = {
+      ...requestOptions.headers,
+      if (tokens != null) 'Authorization': 'Bearer ${tokens.accessToken}',
+    };
+
+    final options = Options(
+      method: requestOptions.method,
+      headers: headers,
+      responseType: requestOptions.responseType,
+      contentType: requestOptions.contentType,
+      validateStatus: (status) => status != null, // Treat all HTTP status codes as valid
+    );
+
+    return dio.request<dynamic>(
+      requestOptions.path,
+      data: requestOptions.data,
+      queryParameters: requestOptions.queryParameters,
+      options: options,
+    );
+  }
+
+
+  Future<bool> _refreshAuthTokens() async {
+    try {
+      final tokens = await headersService.securedStorageService.getUserTokens();
+      if (tokens == null) return false;
+
+      final response = await dio.post(
+        ApiUrls.refreshToken,
+        data: {'refreshToken': tokens.refreshToken},
+        options: Options(headers: headersService.defaultHeaders),
+      );
+
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        final newTokens = TokensModel.fromJson(response.data['data']);
+        await headersService.securedStorageService.saveUserTokens(newTokens);
+        return true;
+      }
+
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<void> _forceLogout(RequestOptions options) async {
+    final isEmailLogin = options.path.contains(ApiUrls.login);
+    final isPhoneLogin = options.path.contains(ApiUrls.loginWIthPhone);
+    final isEmailRegistration = options.path.contains(ApiUrls.register);
+    final isPhoneRegistration = options.path.contains(ApiUrls.registerWIthPhone);
+    if(isEmailLogin || isPhoneLogin || isEmailRegistration || isPhoneRegistration) return;
+
+    await headersService.securedStorageService.deleteUserTokens();
+    AppNav.goRouter.go(RtNm.splashScreen);
+  }
+
+  bool _isRefreshRequest(RequestOptions options) {
+    return options.path.contains(ApiUrls.refreshToken);
+  }
+
   Future<bool> _hasConnection() async {
-    return await getIt<ConnectivityService>().checkInternet();
+    return await connectivityService.checkInternet();
   }
 
   Future<Map<String, String>?> _getHeaders({bool useTokenizeHeader = false}) async {
@@ -154,7 +240,7 @@ class DioService {
     Map<String, dynamic>? query,
   }) async {
     try {
-      if (await getIt<ConnectivityService>().checkInternet() == false) {
+      if (await connectivityService.checkInternet() == false) {
         return ResponseModel().noInternetResponse;
       }
 
@@ -299,6 +385,48 @@ class DioService {
         success: jsonData['success'] ?? false,
         message: jsonData['message'] ?? '',
         body: jsonData['data'],
+      );
+      return obj;
+    } on DioException catch (e) {
+      return _handleDioException(e);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ResponseModel> delete(
+      String url, {
+        bool useTokenizeHeader = false,
+        Map<String, String>? headers,
+        Map? body,
+        Map<String, dynamic>? query,
+      }) async {
+    try {
+      if (await _hasConnection() == false) {
+        return ResponseModel().noInternetResponse;
+      }
+
+      final response = await dio.delete(
+        url,
+        queryParameters: query,
+        options: Options(
+          headers: headers ?? await _getHeaders(useTokenizeHeader: useTokenizeHeader),
+        ),
+        data: body,
+      );
+
+      Map<String, dynamic> jsonData = {};
+      // try {
+      //   jsonData = jsonDecode(response.data);
+      // } catch (error, stck) {
+      //   debugPrint(error.toString());
+      //   debugPrint(stck.toString());
+      // }
+
+      final obj = ResponseModel(
+        success: jsonData['success'] ?? [200, 201, 202].contains(response.statusCode),
+        message: jsonData['message'] ?? '',
+        body: jsonData['data'] ?? {},
       );
       return obj;
     } on DioException catch (e) {

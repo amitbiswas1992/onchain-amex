@@ -21,7 +21,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>onchain amex</string>
+	<string>tmrw</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -52,24 +52,29 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 
-	<key>NSCameraUsageDescription</key>
-    <string>This app needs access to your camera to take photos for customized contents.</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>This app needs access to your photo library to select images for customized contents.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>This app needs access to your microphone to record videos with sound for processing.</string>
-
     <key>CFBundleURLTypes</key>
     <array>
       <dict>
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>com.nodecard.xyz</string>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>com.googleusercontent.apps.748918869384-cor4rm29qblo7dodd6qt4k2q8410qfdn</string>
+          <!-- no :// here; this must match redirect.native without :// -->
+          <string>tmrw</string>
         </array>
       </dict>
     </array>
+
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	<string>metamask</string>
+	<string>trust</string>
+	<string>safe</string>
+	<string>rainbow</string>
+	<!-- Add other wallet schemes names here -->
+	</array>
 
     <key>NSCameraUsageDescription</key>
     <string>This app needs camera access to scan QR codes</string>

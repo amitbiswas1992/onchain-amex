@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../modules/add_and_repay/presentation/screens/add_found_screen.dart';
 import '../../modules/add_and_repay/presentation/screens/replay_found_screen.dart';
 import '../../modules/cards/data/models/choose_card_extra.dart';
@@ -17,8 +18,10 @@ import '../../modules/home/presentation/screens/shell_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_code_input_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_success_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invite_friend_screen.dart';
+import '../../modules/more/data/models/profile.dart';
 import '../../modules/more/presentation/screens/change_email_screen.dart';
 import '../../modules/more/presentation/screens/change_phone_screen.dart';
+import '../../modules/more/presentation/screens/manage_devices_screen.dart';
 import '../../modules/more/presentation/screens/more_screen.dart';
 import '../../modules/more/presentation/screens/notification_settings_screen.dart';
 import '../../modules/more/presentation/screens/personal_details_screen.dart';
@@ -32,10 +35,12 @@ import '../../modules/payment_methods/presentation/screens/connected_bank_accoun
 import '../../modules/payment_methods/presentation/screens/payment_methods_screen.dart';
 import '../../modules/payment_methods/presentation/screens/saved_cards_screen.dart';
 import '../../modules/rewards/presentation/screens/rewards_screen.dart';
+import '../../modules/signin/presentation/screens/login_with_email_screen.dart';
+import '../../modules/signin/presentation/screens/login_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/otp_input_screen.dart';
+import '../../modules/signin/presentation/screens/register_with_email_screen.dart';
+import '../../modules/signin/presentation/screens/register_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
-import '../../modules/signin/presentation/screens/sign_in_with_email_screen.dart';
-import '../../modules/signin/presentation/screens/sign_in_with_phone_screen.dart';
 import '../../modules/signin/presentation/screens/user_info_input_screen.dart';
 import '../../modules/spends/data/models/payment_success_extra.dart';
 import '../../modules/spends/presentation/screens/payment_success_screen.dart';
@@ -84,7 +89,8 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation: kDebugMode == false ? RtNm.splashScreen : RtNm.homeScreen,
+    initialLocation:
+        kDebugMode == false ? RtNm.splashScreen : RtNm.splashScreen,
     routes: [
       _shellRoutes,
       ..._authRoutes,
@@ -101,14 +107,14 @@ class AppNav {
     GoRoute(
       path: RtNm.personalDetailsScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const PersonalDetailsScreen(),
+        PersonalDetailsScreen(profile: state.extra as Profile),
         state,
       ),
     ),
     GoRoute(
       path: RtNm.personalInformationScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const PersonalInformationScreen(),
+        PersonalInformationScreen(profile: state.extra as Profile),
         state,
       ),
     ),
@@ -185,10 +191,18 @@ class AppNav {
     GoRoute(
       path: RtNm.deleteAccountScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const DeleteAccountScreen(),
+        DeleteAccountScreen(profile: state.extra as Profile),
         state,
       ),
     ),
+    GoRoute(
+      path: RtNm.manageDevicesScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ManageDevicesScreen(),
+        state,
+      ),
+    ),
+
   ];
 
   static final _rewardsRoutes = [
@@ -256,16 +270,30 @@ class AppNav {
       ),
     ),
     GoRoute(
-      path: RtNm.signInWithEmailScreen,
+      path: RtNm.registerWithEmailScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const SignInWithEmailScreen(),
+        const RegisterWithEmailScreen(),
         state,
       ),
     ),
     GoRoute(
-      path: RtNm.signInWithPhoneScreen,
+      path: RtNm.registerWithPhoneScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const SignInWithPhoneScreen(),
+        const RegisterWithPhoneScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.loginWithEmailScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const LoginWithEmailScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.loginWithPhoneScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const LogInWithPhoneScreen(),
         state,
       ),
     ),
@@ -278,17 +306,29 @@ class AppNav {
     ),
     GoRoute(
       path: RtNm.otpInputScreen,
-      pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const OtpInputScreen(),
-        state,
-      ),
+      pageBuilder: (context, state) {
+        final extraMap = state.extra as Map<String, dynamic>;
+        return fadeTransitionPageBuilder(
+          OtpInputScreen(
+            emailOrPhone: extraMap['emailOrPhone'],
+            isEmail: extraMap['isEmail'],
+          ),
+          state,
+        );
+      },
     ),
     GoRoute(
       path: RtNm.userInfoInputScreen,
-      pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const UserInfoInputScreen(),
-        state,
-      ),
+      pageBuilder: (context, state) {
+        final extras = state.extra as Map<String, dynamic>;
+        return fadeTransitionPageBuilder(
+          UserInfoInputScreen(
+            email: extras['email'],
+            password: extras['password'],
+          ),
+          state,
+        );
+      },
     ),
   ];
 

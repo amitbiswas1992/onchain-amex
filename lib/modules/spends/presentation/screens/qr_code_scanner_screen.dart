@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../../../core/utils/log_util.dart';
+import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 
 class QrCodeScannerScreen extends StatefulWidget {
@@ -38,114 +39,117 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> with SingleTi
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: MobileScanner(
-        onDetectError: (error, stck) {
-          catchLog(error: error, stck: stck);
-        },
-        overlayBuilder: (context, constraints) {
-          final scanWindowSize = constraints.biggest.shortestSide * 0.7;
+      body: Scaffold(
+        appBar: const PrimaryAppBar(),
+        body: MobileScanner(
+          onDetectError: (error, stck) {
+            catchLog(error: error, stck: stck);
+          },
+          overlayBuilder: (context, constraints) {
+            final scanWindowSize = constraints.biggest.shortestSide * 0.7;
 
-          return Stack(
-            fit: StackFit.expand,
-            children: [
-              // Blurred background outside scan window
-              ClipPath(
-                clipper: _ScanWindowClipper(
-                  scanWindowSize: Size(scanWindowSize, scanWindowSize),
-                ),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                  child: Container(
-                    color: Colors.black.withOpacity(0.5),
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                // Blurred background outside scan window
+                ClipPath(
+                  clipper: _ScanWindowClipper(
+                    scanWindowSize: Size(scanWindowSize, scanWindowSize),
+                  ),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                    child: Container(
+                      color: Colors.black.withOpacity(0.5),
+                    ),
                   ),
                 ),
-              ),
-              // Scan window with rounded corners
-              Center(
-                child: CustomPaint(
-                  size: Size(scanWindowSize, scanWindowSize),
-                  painter: _ScanWindowPainter(),
+                // Scan window with rounded corners
+                Center(
+                  child: CustomPaint(
+                    size: Size(scanWindowSize, scanWindowSize),
+                    painter: _ScanWindowPainter(),
+                  ),
                 ),
-              ),
-              // Animated scan line
-              Center(
-                child: SizedBox(
-                  width: scanWindowSize,
-                  height: scanWindowSize,
-                  child: AnimatedBuilder(
-                    animation: _scanLineAnimation,
-                    builder: (context, child) {
-                      return Stack(
-                        children: [
-                          Positioned(
-                            top: _scanLineAnimation.value * scanWindowSize,
-                            child: Container(
-                              width: scanWindowSize,
-                              height: 2,
-                              decoration: BoxDecoration(
-                                color: Colors.greenAccent,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.greenAccent.withOpacity(0.5),
-                                    blurRadius: 8,
-                                    spreadRadius: 2,
-                                  ),
-                                ],
+                // Animated scan line
+                Center(
+                  child: SizedBox(
+                    width: scanWindowSize,
+                    height: scanWindowSize,
+                    child: AnimatedBuilder(
+                      animation: _scanLineAnimation,
+                      builder: (context, child) {
+                        return Stack(
+                          children: [
+                            Positioned(
+                              top: _scanLineAnimation.value * scanWindowSize,
+                              child: Container(
+                                width: scanWindowSize,
+                                height: 2,
+                                decoration: BoxDecoration(
+                                  color: Colors.greenAccent,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.greenAccent.withOpacity(0.5),
+                                      blurRadius: 8,
+                                      spreadRadius: 2,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              // Instruction text
-              Positioned(
-                bottom: 50,
-                left: 0,
-                right: 0,
-                child: Column(
-                  children: [
-                    Text(
-                      'Scan QR Code',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 4,
-                            color: Colors.black.withOpacity(0.3),
-                            offset: const Offset(2, 2),
-                          ),
-                        ],
+                // Instruction text
+                Positioned(
+                  bottom: 50,
+                  left: 0,
+                  right: 0,
+                  child: Column(
+                    children: [
+                      Text(
+                        'Scan QR Code',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 4,
+                              color: Colors.black.withOpacity(0.3),
+                              offset: const Offset(2, 2),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Align the QR code within the frame',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 16,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 4,
-                            color: Colors.black.withOpacity(0.3),
-                            offset: const Offset(2, 2),
-                          ),
-                        ],
+                      const SizedBox(height: 8),
+                      Text(
+                        'Align the QR code within the frame',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 16,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 4,
+                              color: Colors.black.withOpacity(0.3),
+                              offset: const Offset(2, 2),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
-        onDetect: (capture) {
-          AppNav.goRouter.pop(capture.barcodes.first.rawValue);
-        },
+              ],
+            );
+          },
+          onDetect: (capture) {
+            AppNav.goRouter.pop(capture.barcodes.first.rawValue);
+          },
+        ),
       ),
     );
   }

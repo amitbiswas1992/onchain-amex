@@ -4,10 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../data/models/profile.dart';
 import '../widgets/menu_section.dart';
 
 class PersonalDetailsScreen extends ConsumerWidget {
-  const PersonalDetailsScreen({super.key});
+  final Profile profile;
+
+  const PersonalDetailsScreen({super.key, required this.profile});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,24 +28,26 @@ class PersonalDetailsScreen extends ConsumerWidget {
                   title: 'Personal Information',
                   subtitle: 'Manage your personal information',
                   onTap: () {
-                    AppNav.goRouter.push(RtNm.personalInformationScreen);
+                    AppNav.goRouter.push(RtNm.personalInformationScreen, extra: profile);
                   },
                 ),
                 MenuItem(
                   icon: 'assets/icons/email.svg',
                   title: 'Email address',
-                  subtitle: 'mtoshakir@gmail.com (Verified)',
+                  subtitle: profile.email ?? '',
                   onTap: () {
-                    AppNav.goRouter.push(RtNm.changeEmailScreen);
+                    // AppNav.goRouter.push(RtNm.changeEmailScreen);
                   },
+                  showTrailingIcon: false,
                 ),
                 MenuItem(
                   icon: 'assets/icons/phone.svg',
                   title: 'Phone number',
-                  subtitle: '+8801790300838',
+                  subtitle: profile.phoneNumber ?? '',
                   onTap: () {
-                    AppNav.goRouter.push(RtNm.changePhoneScreen);
+                    // AppNav.goRouter.push(RtNm.changePhoneScreen);
                   },
+                  showTrailingIcon: false,
                 ),
               ],
             ),

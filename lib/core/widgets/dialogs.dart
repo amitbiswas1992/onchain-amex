@@ -14,6 +14,7 @@ Future<void> showSuccessDialog({
   required String message,
   Function()? onDone,
   bool dismissible = false,
+  Widget? otherWidget,
 }) async {
   return statusDialogBase(
     context: context,
@@ -22,6 +23,7 @@ Future<void> showSuccessDialog({
     icon: SvgPicture.asset('assets/icons/check_circle_green.svg'),
     onDone: onDone,
     dismissible: dismissible,
+    otherWidget: otherWidget,
   );
 }
 
@@ -64,6 +66,7 @@ Future<void> statusDialogBase({
   required Widget icon,
   Function()? onDone,
   bool dismissible = false,
+  Widget? otherWidget,
 }) async {
   return await showDialog(
     context: context,
@@ -94,32 +97,37 @@ Future<void> statusDialogBase({
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  icon,
+                  // icon,
                   const VerticalSpace(AppValues.paddingSmall),
                   TitleText(
                     text: title,
-                    color: AppColors.primaryLight,
+                    // color: AppColors.primaryLight,
                     textAlign: TextAlign.center,
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
                   SingleChildScrollView(
                     child: SubTitleText(
                       text: message,
-                      color: Colors.black54,
+                      // color: Colors.black54,
                       textAlign: TextAlign.center,
                     ),
                   ),
                 ],
               ),
               const VerticalSpace(AppValues.paddingLarge + AppValues.paddingMedium),
+              if (otherWidget != null)
+                otherWidget,
+              const VerticalSpace(AppValues.paddingLarge + AppValues.paddingMedium),
               AppPrimaryButton(
                 title: 'Done',
                 color: AppColors.primaryLight,
+                titleColor: Colors.white,
                 verticalPadding: AppValues.paddingMedium - 4,
                 radius: 15,
                 titleStyle: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
+                  color: Colors.white,
                 ),
                 onTap: () {
                   onDone?.call();
@@ -192,13 +200,13 @@ Future<bool> showPermissionDialog({
                   Expanded(
                     child: AppPrimaryButton(
                       title: 'Cancel',
-                      // color: AppColors.yellowGreen,
+                      color: AppColors.c455468,
                       verticalPadding: AppValues.paddingMedium - 4,
                       radius: 15,
                       titleStyle: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.primaryLight,
+                        color: Colors.white,
                       ),
                       onTap: () {
                         AppNav.goRouter.pop(false);
@@ -210,11 +218,13 @@ Future<bool> showPermissionDialog({
                     child: AppPrimaryButton(
                       title: 'Yes',
                       color: AppColors.primaryLight,
+                      titleColor: Colors.white,
                       verticalPadding: AppValues.paddingMedium - 4,
                       radius: 15,
                       titleStyle: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
+                        color: Colors.white,
                         // color: AppColors.yellowGreen,
                       ),
                       onTap: () async {

@@ -92,7 +92,7 @@ class PhoneNumberTextField extends StatelessWidget {
               ),
           child: CountryCodePicker(
             onChanged: onCountryCodeChanged,
-            favorite: const ['FR', 'IT', 'CA', 'UK', 'US'],
+            favorite: const ['BD', 'FR', 'IT', 'CA', 'UK', 'US'],
             initialSelection: 'US',
             flagWidth: 24,
             headerText: 'Select Code',

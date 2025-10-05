@@ -1,0 +1,1 @@
+const reownProjectId = '520ee95ea7ffe12bc7bbc2bbc4a03dd8';

@@ -6,15 +6,20 @@ import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/containers/light_card.dart';
+import '../../../../core/widgets/errors/when_error_widget.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../../infrastructure/network/result.dart';
+import '../../../more/data/models/profile.dart';
+import '../../../more/presentation/providers/more_providers.dart';
 import '../../data/models/latest_transaction.dart';
 import '../resources/home_strings.dart';
 import '../widgets/home_app_bar.dart';
 import '../widgets/home_available_to_spend.dart';
 import '../widgets/home_credit_score_and_xp_points.dart';
+import '../widgets/home_wallet_section.dart';
 import '../widgets/latest_transaction_tile.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -68,38 +73,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final padding = MediaQuery.of(context).padding;
 
     return Scaffold(
-      backgroundColor: isLightTheme(context)
-          ? const Color(0xFFF5F5F5)
-          : const Color(0xFF121212),
+      backgroundColor: isLightTheme(context) ? const Color(0xFFF5F5F5) : const Color(0xFF121212),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppValues.paddingMedium),
+              padding: const EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
               child: Column(
                 children: [
                   VerticalSpace(padding.top),
                   const VerticalSpace(AppValues.paddingMedium),
-                  HomeAppBar(
-                    onGiftTap: () {
-                      AppNav.goRouter.push(RtNm.rewardsScreen);
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final asyncProfile = ref.watch(profileProvider);
+
+                      return asyncProfile.when(
+                        data: (data) {
+                          Profile? profile;
+                          switch (data) {
+                            case Ok<Profile?>():
+                              profile = data.data;
+                            case Error<Profile?>():
+                          }
+
+                          return HomeWalletSection(profile: profile);
+                        },
+                        error: (err, stack) => WhenErrorWidget(error: err),
+                        loading: () => const HomeWalletSection(profile: null),
+                      );
                     },
-                    onNotificationTap: () {},
-                    onProfileTap: () {},
-                    profileName: 'SH',
                   ),
-                  const VerticalSpace(AppValues.paddingMedium),
-                  HomeAvailableToSpend(
-                    onAddFound: () {
-                      AppNav.goRouter.push(RtNm.addFoundScreen);
-                    },
-                    onRepayFound: () {
-                      AppNav.goRouter.push(RtNm.replayFoundScreen);
-                    },
-                  ),
-                  const VerticalSpace(AppValues.paddingMedium),
-                  const HomeCreditScoreAndXpPoints(),
                 ],
               ),
             ),
