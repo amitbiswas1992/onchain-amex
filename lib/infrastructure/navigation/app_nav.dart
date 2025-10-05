@@ -18,6 +18,9 @@ import '../../modules/home/presentation/screens/shell_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_code_input_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_success_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invite_friend_screen.dart';
+import '../../modules/kyc/presentation/screens/id_check_kyc_options_screen.dart';
+import '../../modules/kyc/presentation/screens/kyc_screen.dart';
+import '../../modules/kyc/presentation/screens/kyc_success_screen.dart';
 import '../../modules/more/data/models/profile.dart';
 import '../../modules/more/presentation/screens/change_email_screen.dart';
 import '../../modules/more/presentation/screens/change_phone_screen.dart';
@@ -89,8 +92,7 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation:
-        kDebugMode == false ? RtNm.splashScreen : RtNm.splashScreen,
+    initialLocation: kDebugMode == false ? RtNm.splashScreen : RtNm.splashScreen,
     routes: [
       _shellRoutes,
       ..._authRoutes,
@@ -202,7 +204,27 @@ class AppNav {
         state,
       ),
     ),
-
+    GoRoute(
+      path: RtNm.kycScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const KycScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.idCheckKycOptionsScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const IdCheckKycOptionsScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.kycSuccessScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const KycSuccessScreen(),
+        state,
+      ),
+    ),
   ];
 
   static final _rewardsRoutes = [

@@ -46,4 +46,8 @@ class RtNm {
 
   static const rewardsScreen = '/rewards-screen';
   static const manageDevicesScreen = '/manage-devices-screen';
+
+  static const kycScreen = '/kyc-screen';
+  static const idCheckKycOptionsScreen = '/id-check-kyc-options-screen';
+  static const kycSuccessScreen = '/kyc-success-screen';
 }

@@ -18,6 +18,7 @@ import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../../infrastructure/network/result.dart';
 import '../../../home/presentation/providers/home_providers.dart';
+import '../../../kyc/presentation/screens/kyc_screen.dart';
 import '../../../signin/presentation/providers/sign_in_providers.dart';
 import '../../../wallet/presentation/controllers/wallet_controller.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
@@ -151,7 +152,9 @@ class MoreBody extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    AppNav.goRouter.push(RtNm.kycScreen);
+                  },
                 ),
                 MenuItem(
                   icon: 'assets/icons/key.svg',
