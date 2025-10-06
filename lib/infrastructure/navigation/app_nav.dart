@@ -24,6 +24,7 @@ import '../../modules/kyc/presentation/screens/kyc_success_screen.dart';
 import '../../modules/more/data/models/profile.dart';
 import '../../modules/more/presentation/screens/change_email_screen.dart';
 import '../../modules/more/presentation/screens/change_phone_screen.dart';
+import '../../modules/more/presentation/screens/language_and_appearance_screen.dart';
 import '../../modules/more/presentation/screens/manage_devices_screen.dart';
 import '../../modules/more/presentation/screens/more_screen.dart';
 import '../../modules/more/presentation/screens/notification_settings_screen.dart';
@@ -222,6 +223,13 @@ class AppNav {
       path: RtNm.kycSuccessScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         const KycSuccessScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.languageAndAppearanceScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const LanguageAndAppearanceScreen(),
         state,
       ),
     ),

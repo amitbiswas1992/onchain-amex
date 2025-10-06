@@ -153,7 +153,7 @@ class MoreBody extends ConsumerWidget {
                     ),
                   ),
                   onTap: () {
-                    if (profile?.kycStatus == "APPROVED") return;
+                    // if (profile?.kycStatus == "APPROVED") return;
                     AppNav.goRouter.push(RtNm.kycScreen);
                   },
                 ),
@@ -209,7 +209,9 @@ class MoreBody extends ConsumerWidget {
                   title: 'Language & Appearance',
                   subtitle:
                       'Customize language settings and which theme is used',
-                  onTap: () {},
+                  onTap: () {
+                    AppNav.goRouter.push(RtNm.languageAndAppearanceScreen);
+                  },
                 ),
               ],
             ),

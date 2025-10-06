@@ -50,4 +50,5 @@ class RtNm {
   static const kycScreen = '/kyc-screen';
   static const idCheckKycOptionsScreen = '/id-check-kyc-options-screen';
   static const kycSuccessScreen = '/kyc-success-screen';
+  static const languageAndAppearanceScreen = '/language-and-appearance-screen';
 }
