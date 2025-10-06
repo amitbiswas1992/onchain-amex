@@ -15,6 +15,8 @@ import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../more/presentation/providers/more_providers.dart';
+import '../controllers/kyc_controller.dart';
+import '../providers/kyc_providers.dart';
 
 class IdCheckKycOptionsScreen extends ConsumerStatefulWidget {
   const IdCheckKycOptionsScreen({super.key});
@@ -24,6 +26,19 @@ class IdCheckKycOptionsScreen extends ConsumerStatefulWidget {
 }
 
 class _IdCheckKycOptionsScreenState extends ConsumerState<IdCheckKycOptionsScreen> {
+
+  late final KycController _controller;
+
+  @override
+  void initState() {
+    _controller = KycController(
+      context: context,
+      ref: ref,
+      kycRepo: ref.read(kycRepo),
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,7 +132,7 @@ class _IdCheckKycOptionsScreenState extends ConsumerState<IdCheckKycOptionsScree
       );
     }
     if (xFile != null) {
-      AppNav.goRouter.push(RtNm.kycSuccessScreen);
+      _controller.updateKycStatus();
     }
   }
 

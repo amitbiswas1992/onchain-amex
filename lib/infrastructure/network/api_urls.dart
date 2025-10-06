@@ -23,4 +23,5 @@ class ApiUrls {
   static const logOut = '/api/v1/auth/logout';
   static const deviceSessions = '/api/v1/users/devices/sessions';
   static deleteDeviceSession(String deviceId) => '/api/v1/users/devices/$deviceId';
+  static const updateKycStatus = '/api/v1/kyc/update-status';
 }

@@ -145,14 +145,15 @@ class MoreBody extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      'KYC Not Verified',
+                      profile?.kycStatus == "APPROVED" ? 'Verified' : 'KYC Not Verified',
                       style: s12W500(context, fontFamily: interFontFamily)
                           .copyWith(
-                        color: AppColors.errorLight,
+                        color: profile?.kycStatus == "APPROVED" ? AppColors.primaryVariantLight : AppColors.errorLight,
                       ),
                     ),
                   ),
                   onTap: () {
+                    if (profile?.kycStatus == "APPROVED") return;
                     AppNav.goRouter.push(RtNm.kycScreen);
                   },
                 ),

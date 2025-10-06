@@ -22,3 +22,5 @@ final deviceSessionsProvider = FutureProvider.autoDispose((ref) async {
 final deviceFingerprintProvider = FutureProvider.autoDispose((ref) async {
   return await ref.read(deviceInfoService).getDeviceFingerprint();
 });
+
+final notificationEnabledProvider = StateProvider<bool>((ref) => true);
