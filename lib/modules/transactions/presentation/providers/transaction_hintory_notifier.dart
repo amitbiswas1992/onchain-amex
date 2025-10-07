@@ -2,15 +2,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../infrastructure/network/result.dart';
 import '../../data/models/transaction.dart';
+import 'transaction_history_state.dart';
 import 'transaction_providers.dart';
 
-class TransactionHistoryNotifier extends StateNotifier<List<Transaction>> {
+class TransactionHistoryNotifier extends StateNotifier<TransactionHistoryState> {
   final Ref ref;
   final String publicAddress;
   int page = 1;
   int perPage = 10;
 
-  TransactionHistoryNotifier(this.ref, this.publicAddress) : super([]) {
+  TransactionHistoryNotifier(this.ref, this.publicAddress)
+      : super(
+          const TransactionHistoryState(transactionHistory: [], isLoading: true),
+        ) {
     _init();
   }
 
@@ -25,7 +29,7 @@ class TransactionHistoryNotifier extends StateNotifier<List<Transaction>> {
 
     switch (result) {
       case Ok<List<Transaction>?>():
-        state = result.data!;
+        state = TransactionHistoryState(transactionHistory: [...result.data!], isLoading: false);
       case Error<List<Transaction>?>():
     }
   }
@@ -41,7 +45,10 @@ class TransactionHistoryNotifier extends StateNotifier<List<Transaction>> {
 
     switch (result) {
       case Ok<List<Transaction>?>():
-        state = [...state, ...result.data!];
+        state = TransactionHistoryState(
+          transactionHistory: [...state.transactionHistory, ...result.data!],
+          isLoading: false,
+        );
       case Error<List<Transaction>?>():
     }
   }

@@ -26,8 +26,12 @@ class TransactionRepo implements TransactionRepoInterface {
         },
       );
       return response.toResult(
-        dataHandler: (jsonList) {
-          return jsonList.map((json) => Transaction.fromJson(json)).toList();
+        dataHandler: (jsonData) {
+          final list = <Transaction>[];
+          for (var json in jsonData['transactions']) {
+            list.add(Transaction.fromJson(json));
+          }
+          return list;
         },
       );
     } catch (error, stck) {
