@@ -24,4 +24,5 @@ class ApiUrls {
   static const deviceSessions = '/api/v1/users/devices/sessions';
   static deleteDeviceSession(String deviceId) => '/api/v1/users/devices/$deviceId';
   static const updateKycStatus = '/api/v1/kyc/update-status';
+  static transactionsHistory(String publicAddress) => '/api/v1/blockchain/creditor/borrower/$publicAddress/transactions';
 }
