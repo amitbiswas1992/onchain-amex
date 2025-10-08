@@ -13,7 +13,7 @@ class TransactionRepo implements TransactionRepoInterface {
   @override
   Future<Result<List<Transaction>?>> getTransactions({
     required String publicAddress,
-    required int page,
+    required int skipItem,
     required int perPage,
   }) async {
     try {
@@ -22,7 +22,7 @@ class TransactionRepo implements TransactionRepoInterface {
         useTokenizeHeader: true,
         query: {
           'limit': perPage.toString(),
-          'offset': page.toString(),
+          'offset': skipItem.toString(),
         },
       );
       return response.toResult(

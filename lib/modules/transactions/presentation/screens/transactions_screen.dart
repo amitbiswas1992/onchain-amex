@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/big_int_extensions.dart';
+import '../../../../core/extensions/string_extension.dart';
 import '../../../../core/resources/app_values.dart';
+import '../../../../core/utils/date_util.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/dividers/app_divider.dart';
@@ -25,78 +28,13 @@ class TransactionsScreen extends ConsumerStatefulWidget {
 }
 
 class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
-  final _latestTransactions = [
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Book Worm',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 2.3,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'J&G Cinema',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 8.5,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0x................3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'J&G Cinema',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 8.5,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0x................3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0x................3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-  ];
+
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +57,13 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                   if (result.data!.wallet == null) {
                     return const Center(child: Text('You did not connected any wallet yet.'),);
                   }
+
+                  _scrollController.addListener((){
+                    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+                      ref.read(transactionHistoryProvider(result.data!.wallet?.address ?? '').notifier).getMoreData();
+                    }
+                  });
+
                   return Column(
                     children: [
                       VerticalSpace(padding.top),
@@ -183,6 +128,8 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                           padding: const EdgeInsets.all(
                             AppValues.paddingMedium,
                           ),
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          controller: _scrollController,
                           itemBuilder: (context, index) {
 
                             final transaction = transactionsState.transactionHistory[index];
@@ -191,9 +138,9 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                               latestTransaction: LatestTransaction(
                                 title: transaction.merchantName,
                                 address: transaction.merchantAddress,
-                                amount: double.parse(transaction.amount ?? '0'),
+                                amount: transaction.amount?.toBigInt().blockchainToActual() ?? 0.0,
                                 currency: '',
-                                date: transaction.timestamp,
+                                date:transaction.timestamp == null ? null : uiDateTimeFormat.format(transaction.timestamp!.toDateFromMillisecondsSinceEpoch()!),
                               ),
                             );
                           },

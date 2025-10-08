@@ -8,8 +8,10 @@ import 'transaction_providers.dart';
 class TransactionHistoryNotifier extends StateNotifier<TransactionHistoryState> {
   final Ref ref;
   final String publicAddress;
-  int page = 1;
-  int perPage = 10;
+  int skipItem = 0;
+  int perPage = 1;
+  bool allDataLoaded = false;
+
 
   TransactionHistoryNotifier(this.ref, this.publicAddress)
       : super(
@@ -19,32 +21,26 @@ class TransactionHistoryNotifier extends StateNotifier<TransactionHistoryState> 
   }
 
   Future<void> _init() async {
-    final result = await ref.read(transactionRepo).getTransactions(
-          publicAddress: publicAddress,
-          page: page,
-          perPage: perPage,
-        );
-
-    page++;
-
-    switch (result) {
-      case Ok<List<Transaction>?>():
-        state = TransactionHistoryState(transactionHistory: [...result.data!], isLoading: false);
-      case Error<List<Transaction>?>():
-    }
+    getMoreData();
   }
 
   Future<void> getMoreData() async {
+    if (allDataLoaded) {
+      return;
+    }
     final result = await ref.read(transactionRepo).getTransactions(
           publicAddress: publicAddress,
-          page: page,
+          skipItem: skipItem,
           perPage: perPage,
         );
 
-    page++;
+    skipItem+=perPage;
 
     switch (result) {
       case Ok<List<Transaction>?>():
+        if (result.data!.length < perPage) {
+          allDataLoaded = true;
+        }
         state = TransactionHistoryState(
           transactionHistory: [...state.transactionHistory, ...result.data!],
           isLoading: false,
