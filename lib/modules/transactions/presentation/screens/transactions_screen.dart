@@ -28,7 +28,6 @@ class TransactionsScreen extends ConsumerStatefulWidget {
 }
 
 class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
-
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -55,12 +54,18 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                   return const SizedBox();
                 case Ok<Profile?>():
                   if (result.data!.wallet == null) {
-                    return const Center(child: Text('You did not connected any wallet yet.'),);
+                    return const Center(
+                      child: Text('You did not connected any wallet yet.'),
+                    );
                   }
 
-                  _scrollController.addListener((){
-                    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-                      ref.read(transactionHistoryProvider(result.data!.wallet?.address ?? '').notifier).getMoreData();
+                  _scrollController.addListener(() {
+                    if (_scrollController.position.pixels ==
+                        _scrollController.position.maxScrollExtent) {
+                      ref
+                          .read(transactionHistoryProvider(result.data!.wallet?.address ?? '')
+                              .notifier)
+                          .getMoreData();
                     }
                   });
 
@@ -68,84 +73,116 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                     children: [
                       VerticalSpace(padding.top),
                       const VerticalSpace(AppValues.paddingMedium),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: AppValues.paddingMedium,
                         ),
                         child: AppTextFormField(
                           borderRadius: 56,
                           hintText: search,
-                          prefixIcon: Icon(CupertinoIcons.search),
+                          prefixIcon: const Icon(CupertinoIcons.search),
+                          onChanged: (val) {
+                            ref.read(transactionSearchKey.notifier).state = val;
+                          },
                         ),
                       ),
-                      const VerticalSpace(20),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            ...['Date', 'Type', 'Category', 'Currency', 'Others'].map((e) {
-                              return Container(
-                                margin: const EdgeInsets.only(left: AppValues.paddingMedium),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(56),
-                                  border: Border.all(
-                                    color: Colors.grey.shade300,
-                                  ),
-                                ),
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 14,
-                                  vertical: AppValues.paddingSmall,
-                                ),
-                                child: Text(
-                                  e,
-                                  style: s14W500(context),
-                                ),
-                              );
-                            }),
-                          ],
-                        ),
-                      ),
+                      // const VerticalSpace(20),
+                      // SingleChildScrollView(
+                      //   scrollDirection: Axis.horizontal,
+                      //   child: Row(
+                      //     children: [
+                      //       ...['Date', 'Type', 'Category', 'Currency', 'Others'].map((e) {
+                      //         return Container(
+                      //           margin: const EdgeInsets.only(left: AppValues.paddingMedium),
+                      //           decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(56),
+                      //             border: Border.all(
+                      //               color: Colors.grey.shade300,
+                      //             ),
+                      //           ),
+                      //           alignment: Alignment.center,
+                      //           padding: const EdgeInsets.symmetric(
+                      //             horizontal: 14,
+                      //             vertical: AppValues.paddingSmall,
+                      //           ),
+                      //           child: Text(
+                      //             e,
+                      //             style: s14W500(context),
+                      //           ),
+                      //         );
+                      //       }),
+                      //     ],
+                      //   ),
+                      // ),
                       const VerticalSpace(20),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
                         child: AppDivider(),
                       ),
                       const VerticalSpace(AppValues.paddingMedium),
-                      Expanded(child: Consumer(builder: (context, ref, _) {
-                        final transactionsState = ref.watch(transactionHistoryProvider(result.data?.wallet?.address ?? ''));
+                      Expanded(
+                        child: Consumer(builder: (context, ref, _) {
+                          final transactionsState = ref.watch(
+                              transactionHistoryProvider(result.data?.wallet?.address ?? ''));
 
-                        if (transactionsState.isLoading && transactionsState.transactionHistory.isEmpty) {
-                          return const WhenLoadingWidget(message: 'Loading transactions...',);
-                        }
-
-                        if (transactionsState.transactionHistory.isEmpty) {
-                          return const Center(child: Text('No transactions yet.'),);
-                        }
-
-                        return ListView.builder(
-                          itemCount: transactionsState.transactionHistory.length,
-                          padding: const EdgeInsets.all(
-                            AppValues.paddingMedium,
-                          ),
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          controller: _scrollController,
-                          itemBuilder: (context, index) {
-
-                            final transaction = transactionsState.transactionHistory[index];
-
-                            return LatestTransactionTile(
-                              latestTransaction: LatestTransaction(
-                                title: transaction.merchantName,
-                                address: transaction.merchantAddress,
-                                amount: transaction.amount?.toBigInt().blockchainToActual() ?? 0.0,
-                                currency: '',
-                                date:transaction.timestamp == null ? null : uiDateTimeFormat.format(transaction.timestamp!.toDateFromMillisecondsSinceEpoch()!),
-                              ),
+                          if (transactionsState.isLoading &&
+                              transactionsState.transactionHistory.isEmpty) {
+                            return const WhenLoadingWidget(
+                              message: 'Loading transactions...',
                             );
-                          },
-                        );
-                      }),),
+                          }
+
+                          if (transactionsState.transactionHistory.isEmpty) {
+                            return const Center(
+                              child: Text('No transactions yet.'),
+                            );
+                          }
+
+                          final searchKey = ref.watch(transactionSearchKey);
+
+                          return ListView.builder(
+                            itemCount: transactionsState.transactionHistory.length,
+                            padding: const EdgeInsets.all(
+                              AppValues.paddingMedium,
+                            ),
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            controller: _scrollController,
+                            itemBuilder: (context, index) {
+                              final transaction = transactionsState.transactionHistory[index];
+                              final merchantName = transaction.merchantName ?? '';
+                              final merchantAddress = transaction.merchantAddress ?? '';
+                              final amount =
+                                  transaction.amount?.toBigInt().blockchainToActual() ?? 0.0;
+                              const currency = '';
+                              final date = transaction.timestamp == null
+                                  ? ''
+                                  : uiDateTimeFormat.format(
+                                      transaction.timestamp!.toDateFromMillisecondsSinceEpoch()!);
+
+                              if (searchKey.isNotEmpty) {
+                                if (!merchantName.toLowerCase().contains(searchKey.toLowerCase()) &&
+                                    !merchantAddress
+                                        .toLowerCase()
+                                        .contains(searchKey.toLowerCase()) &&
+                                    !date.toLowerCase().contains(searchKey.toLowerCase())) {
+                                  return const SizedBox();
+                                }
+                              }
+
+                              return LatestTransactionTile(
+                                latestTransaction: LatestTransaction(
+                                  title: merchantName,
+                                  address: merchantAddress,
+                                  amount: amount,
+                                  currency: '',
+                                  date: date,
+                                  match: searchKey,
+                                ),
+                              );
+                            },
+                          );
+                        }),
+                      ),
                     ],
                   );
               }

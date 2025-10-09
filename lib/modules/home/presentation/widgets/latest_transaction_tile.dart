@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/containers/icon_outer_circle.dart';
+import '../../../../core/widgets/texts/highlighted_text.dart';
 import '../../../../core/widgets/texts/large_number_text.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
@@ -35,8 +36,10 @@ class LatestTransactionTile extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: SubTitleText(
+                      child: HighlightedText(
                         text: latestTransaction.title ?? '',
+                        matchText: latestTransaction.match ?? '',
+                        style: s16W500(context).copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
                     const HorizontalSpace(AppValues.paddingSmall),
@@ -47,14 +50,16 @@ class LatestTransactionTile extends StatelessWidget {
                   ],
                 ),
                 const VerticalSpace(6),
-                Text(
-                  latestTransaction.address ?? '',
+                HighlightedText(
+                  text: latestTransaction.address ?? '',
                   style: s11W400(context),
+                  matchText: latestTransaction.match ?? '',
                 ),
                 const VerticalSpace(6),
-                Text(
-                  latestTransaction.date ?? '',
+                HighlightedText(
+                  text: latestTransaction.date ?? '',
                   style: s11W600(context),
+                  matchText: latestTransaction.match ?? '',
                 ),
               ],
             ),

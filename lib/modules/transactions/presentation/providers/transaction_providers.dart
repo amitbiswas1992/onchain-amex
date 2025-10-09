@@ -13,3 +13,5 @@ final transactionRepo = Provider<TransactionRepo>(
 final transactionHistoryProvider = StateNotifierProvider.family<TransactionHistoryNotifier, TransactionHistoryState ,String>((ref, publicAddress) {
   return TransactionHistoryNotifier(ref, publicAddress);
 });
+
+final transactionSearchKey = StateProvider.autoDispose<String>((ref) => '');

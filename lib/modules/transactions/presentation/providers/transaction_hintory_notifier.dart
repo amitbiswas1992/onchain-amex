@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../infrastructure/network/result.dart';
@@ -9,7 +11,7 @@ class TransactionHistoryNotifier extends StateNotifier<TransactionHistoryState> 
   final Ref ref;
   final String publicAddress;
   int skipItem = 0;
-  int perPage = 1;
+  int perPage = 10;
   bool allDataLoaded = false;
 
 
@@ -26,6 +28,7 @@ class TransactionHistoryNotifier extends StateNotifier<TransactionHistoryState> 
 
   Future<void> getMoreData() async {
     if (allDataLoaded) {
+      log('All data loaded');
       return;
     }
     final result = await ref.read(transactionRepo).getTransactions(
