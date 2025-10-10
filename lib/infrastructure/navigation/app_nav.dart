@@ -421,7 +421,7 @@ class AppNav {
     GoRoute(
       path: RtNm.replayFoundScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const ReplayFoundScreen(),
+        ReplayFoundScreen(profile: state.extra as Profile),
         state,
       ),
     ),

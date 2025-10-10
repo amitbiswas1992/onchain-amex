@@ -52,11 +52,13 @@ class HomeWalletSection extends ConsumerWidget {
 
             return HomeAvailableToSpend(
               availableCreditAmount: availableCreditAmount,
+              profile: profile,
             );
           },
           error: (error, stck) => WhenErrorWidget(error: error),
-          loading: () => const HomeAvailableToSpend(
+          loading: () => HomeAvailableToSpend(
             availableCreditAmount: 0,
+            profile: profile,
           ),
         ),
         const VerticalSpace(AppValues.paddingMedium),

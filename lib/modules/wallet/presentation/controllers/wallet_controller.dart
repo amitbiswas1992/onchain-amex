@@ -13,13 +13,14 @@ import '../../../more/presentation/providers/more_providers.dart';
 import '../../business/repository/wallet_repo_interface.dart';
 import '../../data/models/transaction_model.dart';
 import '../../data/models/wallet_info.dart';
+import '../providers/wallet_providers.dart';
 
 class WalletController {
   final BuildContext context;
   final WidgetRef ref;
   final WalletRepoInterface walletRepo;
 
-  ReownAppKitModal? _appKitModal;
+  ReownAppKitModal? appKitModal;
 
   WalletController({
     required this.context,
@@ -28,13 +29,84 @@ class WalletController {
   });
 
   void dispose() {
-    _appKitModal?.dispose();
+    appKitModal?.dispose();
+  }
+
+  Future<void> _initializeModel() async {
+    ref.read(modelInitialized.notifier).state = false;
+    appKitModal ??= ReownAppKitModal(
+      context: context,
+      projectId: reownProjectId,
+      logLevel: LogLevel.error,
+      metadata: PairingMetadata(
+        name: 'TMRW',
+        description: 'TMRW App',
+        redirect: Redirect(
+          native: Platform.isIOS ? 'tmrw:///more-screen' : 'tmrw://',
+          linkMode: false,
+        ),
+      ),
+    );
+
+    await appKitModal?.init();
+    ref.read(modelInitialized.notifier).state = true;
+
+    appKitModal?.onModalConnect.subscribe((ModalConnect? event) async {
+      if (event == null) return;
+
+      final namespaces = event.session.namespaces;
+      if (namespaces != null) {
+        namespaces.forEach((network, ns) async {
+          for (final acc in ns.accounts) {
+            final parts = acc.split(':'); // e.g. ["eip155", "1", "0x123..."]
+            if (parts.length >= 3) {
+              final chainId = parts[1];
+              final address = parts[2];
+
+              final networkName = getNetworkName(chainId);
+
+              showLoadingDialog(context: context, message: 'Connecting to your wallet.');
+              final result = await walletRepo.connectWallet(
+                payload: {
+                  'borrower': address,
+                },
+              );
+              hideDialog();
+
+              switch (result) {
+                case Ok<TransactionModel?>():
+                  showSuccessDialog(
+                    context: context,
+                    message: 'Wallet connected successfully.',
+                    otherWidget:
+                    TransactionHashText(text: result.data?.transactionHash ?? ''),
+                  );
+                  ref.invalidate(profileProvider);
+                  break;
+                case Error<TransactionModel?>():
+                  showErrorDialog(context: context, message: result.toString());
+                  break;
+              }
+
+            }
+          }
+        });
+      }
+    });
+
+    appKitModal?.onModalError.subscribe((error) {
+
+    });
+
+    appKitModal?.onModalDisconnect.subscribe((_) {
+    });
+
   }
 
   Future<WalletInfo?> _getWalletPublicAddress() async {
     try {
       // create the modal instance
-      _appKitModal ??= ReownAppKitModal(
+      appKitModal ??= ReownAppKitModal(
         context: context,
         projectId: reownProjectId,
         logLevel: LogLevel.error,
@@ -50,7 +122,7 @@ class WalletController {
 
       final completer = Completer<WalletInfo?>();
 
-      _appKitModal?.onModalConnect.subscribe((ModalConnect? event) {
+      appKitModal?.onModalConnect.subscribe((ModalConnect? event) {
         if (event == null) return;
 
         final namespaces = event.session.namespaces;
@@ -79,22 +151,22 @@ class WalletController {
         }
       });
 
-      _appKitModal?.onModalError.subscribe((error) {
+      appKitModal?.onModalError.subscribe((error) {
         if (!completer.isCompleted) {
           completer.complete(null);
         }
       });
 
-      _appKitModal?.onModalDisconnect.subscribe((_) {
+      appKitModal?.onModalDisconnect.subscribe((_) {
         if (!completer.isCompleted) {
           completer.complete(null);
         }
       });
 
-      await _appKitModal?.init();
+      await appKitModal?.init();
 
       // open modal UI to connect wallet
-      await _appKitModal?.openModalView();
+      await appKitModal?.openModalView();
 
       // if (completer.isCompleted == false) {
       //   completer.complete(null);

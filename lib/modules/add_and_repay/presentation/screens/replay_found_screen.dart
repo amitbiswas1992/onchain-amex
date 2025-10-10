@@ -18,12 +18,15 @@ import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../home/presentation/resources/home_strings.dart';
+import '../../../more/data/models/profile.dart';
 import '../../../spends/data/models/payment_success_extra.dart';
 import '../../../spends/presentation/providers/spend_providers.dart';
 import '../../../spends/presentation/resources/spends_strings.dart';
 
 class ReplayFoundScreen extends ConsumerStatefulWidget {
-  const ReplayFoundScreen({super.key});
+  final Profile profile;
+
+  const ReplayFoundScreen({super.key, required this.profile});
 
   @override
   ConsumerState createState() => _ReplayFoundScreenState();
