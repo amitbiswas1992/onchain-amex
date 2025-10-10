@@ -19,6 +19,7 @@ import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../home/presentation/resources/home_strings.dart';
 import '../../../more/data/models/profile.dart';
+import '../../../more/presentation/widgets/connect_wallet_button.dart';
 import '../../../spends/data/models/payment_success_extra.dart';
 import '../../../spends/presentation/providers/spend_providers.dart';
 import '../../../spends/presentation/resources/spends_strings.dart';
@@ -52,54 +53,55 @@ class _ReplayFoundScreenState extends ConsumerState<ReplayFoundScreen> {
                   child: Column(
                     children: [
                       const VerticalSpace(AppValues.paddingSmall),
-                      Row(
-                        children: [
-                          const HorizontalSpace(12),
-                          IconOuterCircle(
-                            size: 40,
-                            icon: SvgPicture.asset(
-                              'assets/icons/visa.svg',
-                              height: 24,
-                              width: 24,
-                            ),
-                          ),
-                          const HorizontalSpace(12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SubTitleText(text: 'Starbucks'),
-                                const VerticalSpace(AppValues.paddingSmall),
-                                Text(
-                                  '0123....................................3456',
-                                  style: s11W600(context),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {},
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: AppValues.paddingMedium - 4,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryLight,
-                                borderRadius: BorderRadius.circular(56),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                change,
-                                style: s14W500(context).copyWith(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const HorizontalSpace(12),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     const HorizontalSpace(12),
+                      //     IconOuterCircle(
+                      //       size: 40,
+                      //       icon: SvgPicture.asset(
+                      //         'assets/icons/visa.svg',
+                      //         height: 24,
+                      //         width: 24,
+                      //       ),
+                      //     ),
+                      //     const HorizontalSpace(12),
+                      //     Expanded(
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           const SubTitleText(text: 'Starbucks'),
+                      //           const VerticalSpace(AppValues.paddingSmall),
+                      //           Text(
+                      //             '0123....................................3456',
+                      //             style: s11W600(context),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     InkWell(
+                      //       onTap: () {},
+                      //       child: Container(
+                      //         padding: const EdgeInsets.symmetric(
+                      //           horizontal: AppValues.paddingMedium - 4,
+                      //           vertical: 4,
+                      //         ),
+                      //         decoration: BoxDecoration(
+                      //           color: AppColors.primaryLight,
+                      //           borderRadius: BorderRadius.circular(56),
+                      //         ),
+                      //         alignment: Alignment.center,
+                      //         child: Text(
+                      //           change,
+                      //           style: s14W500(context).copyWith(
+                      //             color: Colors.white,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     const HorizontalSpace(12),
+                      //   ],
+                      // ),
+                      ConnectWalletButton(profile: widget.profile),
                       const VerticalSpace(12),
                       const AppDivider(),
                       const VerticalSpace(32),
