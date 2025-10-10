@@ -32,7 +32,6 @@ final borrowerProfileProvider =
   return await ref.read(walletRepoProvider).getBorrowerProfile(publicAddress: pId);
 });
 
-
 final appkitModalProvider = FutureProvider((ref) async {
   final appKitModal = ReownAppKitModal(
     context: AppNav.navKey.currentContext!,
@@ -50,6 +49,5 @@ final appkitModalProvider = FutureProvider((ref) async {
 
   await appKitModal.init();
   ref.read(modelInitialized.notifier).state = true;
-
   return appKitModal;
 });

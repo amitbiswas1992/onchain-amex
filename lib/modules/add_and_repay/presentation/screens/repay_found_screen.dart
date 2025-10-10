@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:reown_appkit/reown_appkit.dart';
 
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
@@ -13,6 +14,7 @@ import '../../../../core/widgets/containers/app_chip.dart';
 import '../../../../core/widgets/containers/deem_card.dart';
 import '../../../../core/widgets/containers/icon_outer_circle.dart';
 import '../../../../core/widgets/dividers/app_divider.dart';
+import '../../../../core/widgets/loaders/when_loading_widget.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
@@ -23,17 +25,35 @@ import '../../../more/presentation/widgets/connect_wallet_button.dart';
 import '../../../spends/data/models/payment_success_extra.dart';
 import '../../../spends/presentation/providers/spend_providers.dart';
 import '../../../spends/presentation/resources/spends_strings.dart';
+import '../../../wallet/business/services/wallet_service.dart';
+import '../../../wallet/presentation/providers/wallet_providers.dart';
+import '../../../wallet/presentation/widgets/metamask_header_widget.dart';
+import '../controllers/add_and_repay_controller.dart';
 
-class ReplayFoundScreen extends ConsumerStatefulWidget {
+class RepayFoundScreen extends ConsumerStatefulWidget {
   final Profile profile;
 
-  const ReplayFoundScreen({super.key, required this.profile});
+  const RepayFoundScreen({super.key, required this.profile});
 
   @override
   ConsumerState createState() => _ReplayFoundScreenState();
 }
 
-class _ReplayFoundScreenState extends ConsumerState<ReplayFoundScreen> {
+class _ReplayFoundScreenState extends ConsumerState<RepayFoundScreen> {
+  AddAndRepayController? _controller;
+  final _amountController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -101,6 +121,7 @@ class _ReplayFoundScreenState extends ConsumerState<ReplayFoundScreen> {
                       //     const HorizontalSpace(12),
                       //   ],
                       // ),
+                      const MetamaskHeaderWidget(),
                       ConnectWalletButton(profile: widget.profile),
                       const VerticalSpace(12),
                       const AppDivider(),
@@ -108,6 +129,7 @@ class _ReplayFoundScreenState extends ConsumerState<ReplayFoundScreen> {
                       const SubTitleText(text: enterAmount),
                       const VerticalSpace(AppValues.paddingMedium),
                       TextFormField(
+                        controller: _amountController,
                         style: s54w600(context),
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
@@ -165,35 +187,51 @@ class _ReplayFoundScreenState extends ConsumerState<ReplayFoundScreen> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: AppValues.paddingMedium),
-                child: Consumer(
-                  builder: (context, ref, _) {
-                    final input = ref.watch(inputDetectorProvider);
+              ref.watch(appkitModalProvider).when(
+                    data: (appKitModal) {
 
-                    if (input.isEmpty) {
-                      return AppSecondaryButton(
-                        title: makePayment,
-                        rounded: false,
-                        showBorder: false,
-                        deepColor: false,
-                        titleColor: AppColors.surfaceLight,
-                        onTap: () {},
+                      _controller ??= AddAndRepayController(
+                        context: context,
+                        ref: ref,
+                        walletService: WalletService(appKitModal),
                       );
-                    }
 
-                    return AppPrimaryButton(
-                      title: makePayment,
-                      onTap: () {
-                        AppNav.goRouter.push(
-                          RtNm.paymentSuccessScreen,
-                          extra: PaymentSuccessExtra.dummay(ref: ref),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: AppValues.paddingMedium),
+                        child: Consumer(
+                          builder: (context, ref, _) {
+                            final input = ref.watch(inputDetectorProvider);
+
+                            if (input.isEmpty) {
+                              return AppSecondaryButton(
+                                title: makePayment,
+                                rounded: false,
+                                showBorder: false,
+                                deepColor: false,
+                                titleColor: AppColors.surfaceLight,
+                                onTap: () {},
+                              );
+                            }
+
+                            return AppPrimaryButton(
+                              title: makePayment,
+                              onTap: () {
+                                log('repay');
+                                print  ('repay');
+                                _controller?.repay(_amountController.text.trim());
+                                // AppNav.goRouter.push(
+                                //   RtNm.paymentSuccessScreen,
+                                //   extra: PaymentSuccessExtra.dummay(ref: ref),
+                                // );
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    error: (error, stck) => const SizedBox(),
+                    loading: () => const WhenLoadingWidget(),
+                  ),
             ],
           ),
         ),

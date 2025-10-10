@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../modules/add_and_repay/presentation/screens/add_found_screen.dart';
-import '../../modules/add_and_repay/presentation/screens/replay_found_screen.dart';
+import '../../modules/add_and_repay/presentation/screens/repay_found_screen.dart';
 import '../../modules/cards/data/models/choose_card_extra.dart';
 import '../../modules/cards/presentation/screens/cards_screen.dart';
 import '../../modules/cards/presentation/screens/choose_card_details_screen.dart';
@@ -421,7 +421,7 @@ class AppNav {
     GoRoute(
       path: RtNm.replayFoundScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        ReplayFoundScreen(profile: state.extra as Profile),
+        RepayFoundScreen(profile: state.extra as Profile),
         state,
       ),
     ),
