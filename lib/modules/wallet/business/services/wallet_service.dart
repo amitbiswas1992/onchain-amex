@@ -6,6 +6,7 @@ import 'package:reown_appkit/reown_appkit.dart';
 
 import '../../../../core/constants/contract_constants.dart';
 import '../../../../core/extensions/big_int_extensions.dart';
+import 'dart:developer' as dev;
 
 class WalletService {
   final ReownAppKitModal appKitModal;
@@ -29,9 +30,9 @@ class WalletService {
       _creditorContract = DeployedContract(
         ContractAbi.fromJson(
           json.encode(creditorAbiJson['abi'] ?? creditorAbiJson),
-          'USDC',
+          'Creditor',
         ),
-        EthereumAddress.fromHex(ContractConstants.usdcAddress),
+        EthereumAddress.fromHex(ContractConstants.creditorAddress),
       );
       print('Creditor USDC contract loaded');
 
@@ -171,6 +172,7 @@ class WalletService {
   /// Approve Vault to spend USDC
   /// @param amount The amount of USDC to approve (in UI format)
   Future<String> approveUsdc(double amount) async {
+    dev.log('approval amount => ${amount}');
     // Wait for contracts to load
     await _ensureInitialized();
 
@@ -226,7 +228,7 @@ class WalletService {
         functionName: 'repay',
         parameters: [
           contractAmount,
-          ethereumAddress, // receiver
+          EthereumAddress.fromHex(ContractConstants.usdcAddress), // receiver
         ],
         transaction: Transaction(from: ethereumAddress),
       );
