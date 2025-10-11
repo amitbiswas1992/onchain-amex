@@ -4,6 +4,8 @@ import 'package:reown_appkit/reown_appkit.dart';
 
 import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/transaction_hash_text.dart';
+import '../../../../infrastructure/navigation/app_nav.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../wallet/business/services/wallet_service.dart';
 import '../../../wallet/business/services/wallet_service_interface.dart';
 import 'dart:developer' as dev;
@@ -39,10 +41,9 @@ class AddAndRepayController {
         }
         await walletService.approveUsdc(amount);
         showLoadingDialog(context: context, message: 'Waiting for approval...');
-        await Future.delayed(const Duration(seconds: 5));
+        await Future.delayed(const Duration(seconds: 2));
         hideDialog();
       }
-
 
       final txHash = await walletService.repay(amount);
 
@@ -51,6 +52,9 @@ class AddAndRepayController {
         message: 'Wallet connected successfully.',
         otherWidget:
         TransactionHashText(text: txHash),
+        onDone: () {
+          AppNav.goRouter.go(RtNm.homeScreen);
+        },
       );
     } catch (error, stck) {
       debugPrint(error.toString());

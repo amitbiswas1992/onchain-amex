@@ -130,8 +130,8 @@ Future<void> statusDialogBase({
                   color: Colors.white,
                 ),
                 onTap: () {
-                  onDone?.call();
                   AppNav.goRouter.pop();
+                  onDone?.call();
                 },
               ),
             ],
