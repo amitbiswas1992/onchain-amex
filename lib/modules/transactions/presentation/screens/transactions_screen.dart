@@ -152,7 +152,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                               final merchantName = transaction.merchantName ?? '';
                               final merchantAddress = transaction.merchantAddress ?? '';
                               final amount =
-                                  transaction.amount?.toBigInt().blockchainToActual() ?? 0.0;
+                                  transaction.amount?.toBigInt().dividedByMillion() ?? 0.0;
                               const currency = '';
                               final date = transaction.timestamp == null
                                   ? ''

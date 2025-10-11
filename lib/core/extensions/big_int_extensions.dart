@@ -1,7 +1,7 @@
 import '../constants/app_constants.dart';
 
 extension BigIntExtensions on BigInt {
-  double blockchainToActual () {
+  double dividedByMillion () {
     if (this == BigInt.zero) {
       return 0.0;
     }
@@ -10,7 +10,7 @@ extension BigIntExtensions on BigInt {
 }
 
 extension DoubleExtension on double {
-  BigInt toBlockchainValue() {
+  BigInt multiplyByMillion() {
     return BigInt.from(this * oneMillion);
   }
 }

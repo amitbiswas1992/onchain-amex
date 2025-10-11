@@ -6,13 +6,13 @@ import 'package:reown_appkit/reown_appkit.dart';
 
 import '../../../../core/constants/contract_constants.dart';
 import '../../../../core/extensions/big_int_extensions.dart';
-import 'wallet_service_interface.dart';
 
-class WalletService implements WalletServiceInterface {
+class WalletService {
   final ReownAppKitModal appKitModal;
   bool _isInitialized = false;
   Future<void>? _loadingFuture;
   DeployedContract? _creditorContract;
+  DeployedContract? _usdcContract;
 
   WalletService(this.appKitModal) {
     _loadingFuture = _loadContracts();
@@ -22,7 +22,7 @@ class WalletService implements WalletServiceInterface {
     try {
       print('Starting to load contracts...');
 
-      // Load USDC/Creditor Contract (Creditor.json)
+      // Load Creditor Contract (Creditor.json)
       final creditorAbi = await rootBundle.loadString('assets/contracts/Creditor.json');
       final creditorAbiJson = json.decode(creditorAbi);
 
@@ -34,6 +34,20 @@ class WalletService implements WalletServiceInterface {
         EthereumAddress.fromHex(ContractConstants.usdcAddress),
       );
       print('Creditor USDC contract loaded');
+
+      // Load USDC Contract (usdc.json)
+      final usdcAbi = await rootBundle.loadString('assets/contracts/usdc.json');
+      final usdcAbiJson = json.decode(usdcAbi);
+
+      _usdcContract = DeployedContract(
+        ContractAbi.fromJson(
+          json.encode(usdcAbiJson['abi'] ?? usdcAbiJson),
+          'USDC',
+        ),
+        EthereumAddress.fromHex(ContractConstants.usdcAddress),
+      );
+      print('USDC contract loaded');
+
 
       _isInitialized = true;
       print('All contracts loaded successfully');
@@ -103,9 +117,91 @@ class WalletService implements WalletServiceInterface {
   // Get session topic
   String? get sessionTopic => appKitModal.session?.topic;
 
+  /// Mint USDC tokens (for testing only)
+  /// @param amount The amount of USDC to mint (in UI format, e.g., 1000)
+  Future<String> mintUsdc(double amount) async {
+    // Wait for contracts to load
+    await _ensureInitialized();
+
+    if (!isConnected || _usdcContract == null || sessionTopic == null) {
+      throw Exception('Wallet not connected');
+    }
+
+    final contractAmount = amount.multiplyByMillion();
+
+    final txHash = await appKitModal.requestWriteContract(
+      topic: sessionTopic!,
+      chainId: currentChainId,
+      deployedContract: _usdcContract!,
+      functionName: 'mint',
+      parameters: [ethereumAddress, contractAmount],
+      transaction: Transaction(from: ethereumAddress),
+    );
+    // return '0xMockTransactionHashForMinting'; // Mock transaction hash for illustration
+    return txHash;
+  }
+
+  Future<double> getUsdcAllowance() async {
+    // Wait for contracts to load
+    await _ensureInitialized();
+
+    if (!isConnected || _usdcContract == null || sessionTopic == null)
+      return 0.0;
+
+    try {
+      final result = await appKitModal.requestReadContract(
+        topic: sessionTopic!,
+        chainId: currentChainId,
+        deployedContract: _usdcContract!,
+        functionName: 'allowance',
+        parameters: [
+          ethereumAddress,
+          EthereumAddress.fromHex(ContractConstants.vaultAddress),
+        ],
+      );
+
+      final allowance = result.first as BigInt;
+      return allowance.dividedByMillion();
+    } catch (e) {
+      print('Error getting USDC allowance: $e');
+      return 0.0;
+    }
+  }
+
+  /// Approve Vault to spend USDC
+  /// @param amount The amount of USDC to approve (in UI format)
+  Future<String> approveUsdc(double amount) async {
+    // Wait for contracts to load
+    await _ensureInitialized();
+
+    if (!isConnected || _usdcContract == null || sessionTopic == null) {
+      throw Exception('Wallet not connected');
+    }
+
+    final contractAmount = amount.multiplyByMillion();
+
+    try {
+      final txHash = await appKitModal.requestWriteContract(
+        topic: sessionTopic!,
+        chainId: currentChainId,
+        deployedContract: _usdcContract!,
+        functionName: 'approve',
+        parameters: [
+          EthereumAddress.fromHex(ContractConstants.creditorAddress),
+          contractAmount,
+        ],
+        transaction: Transaction(from: ethereumAddress),
+      );
+
+      return txHash;
+    } catch (e) {
+      print('Error approving USDC: $e');
+      throw Exception('Failed to approve USDC: ${e.toString()}');
+    }
+  }
+
   /// Repay USDC into vault
   /// @param amount USDC amount to deposit (in UI format)
-  @override
   Future<String> repay(double amount) async {
     // Wait for contracts to load
     await _ensureInitialized();
@@ -120,7 +216,7 @@ class WalletService implements WalletServiceInterface {
     //   throw Exception('Insufficient allowance. Please approve USDC first.');
     // }
 
-    final contractAmount = amount.toBlockchainValue();
+    final contractAmount = amount.multiplyByMillion();
 
     try {
       final txHash = await appKitModal.requestWriteContract(
