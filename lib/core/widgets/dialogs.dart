@@ -117,7 +117,8 @@ Future<void> statusDialogBase({
               const VerticalSpace(AppValues.paddingLarge + AppValues.paddingMedium),
               if (otherWidget != null)
                 otherWidget,
-              const VerticalSpace(AppValues.paddingLarge + AppValues.paddingMedium),
+              if (otherWidget != null)
+                const VerticalSpace(AppValues.paddingLarge + AppValues.paddingMedium),
               AppPrimaryButton(
                 title: 'Done',
                 color: AppColors.primaryLight,

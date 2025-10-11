@@ -32,7 +32,7 @@ final borrowerProfileProvider =
   return await ref.read(walletRepoProvider).getBorrowerProfile(publicAddress: pId);
 });
 
-final appkitModalProvider = FutureProvider.family<ReownAppKitModal, String?>((ref, redirectRoute) async {
+final appkitModalProvider = FutureProvider.family.autoDispose<ReownAppKitModal, String?>((ref, redirectRoute) async {
   final appKitModal = ReownAppKitModal(
     context: AppNav.navKey.currentContext!,
     projectId: reownProjectId,

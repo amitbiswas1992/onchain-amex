@@ -14,11 +14,13 @@ import '../resources/home_strings.dart';
 class HomeAvailableToSpend extends StatelessWidget {
   final num availableCreditAmount;
   final Profile? profile;
+  final VoidCallback onRepayTap;
 
   const HomeAvailableToSpend({
     super.key,
     required this.availableCreditAmount,
     required this.profile,
+    required this.onRepayTap,
   });
 
   @override
@@ -60,11 +62,7 @@ class HomeAvailableToSpend extends StatelessWidget {
                   showBorder: false,
                   deepColor: true,
                   rounded: true,
-                  onTap: () {
-                    if (profile != null) {
-                      AppNav.goRouter.push(RtNm.replayFoundScreen, extra: profile);
-                    }
-                  },
+                  onTap: onRepayTap,
                 ),
               ),
             ],

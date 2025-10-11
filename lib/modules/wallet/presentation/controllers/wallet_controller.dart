@@ -8,6 +8,7 @@ import 'package:reown_appkit/reown_appkit.dart';
 import '../../../../core/resources/app_secrets.dart';
 import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/transaction_hash_text.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../../infrastructure/network/result.dart';
 import '../../../more/presentation/providers/more_providers.dart';
 import '../../business/repository/wallet_repo_interface.dart';

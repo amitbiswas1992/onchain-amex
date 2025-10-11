@@ -108,7 +108,7 @@ class _ConnectWalletButtonState extends ConsumerState<ConnectWalletButton> {
         return AppKitModalConnectButton(appKit: model);
       },
       error: (error, stck) => const SizedBox(),
-      loading: () => const SizedBox(),
+      loading: () => const Center(child: Text('Getting wallet info...'),),
     );
   }
 }

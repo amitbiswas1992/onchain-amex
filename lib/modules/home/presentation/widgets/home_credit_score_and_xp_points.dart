@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../core/extensions/string_extension.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/containers/light_card.dart';
@@ -34,7 +35,7 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const VerticalSpace(12),
-                  SvgPicture.asset('assets/icons/usd_with_bg.svg'),
+                  SvgPicture.asset('assets/icons/star_with_bg.svg'),
                   const VerticalSpace(AppValues.paddingSmall),
                   Text(
                     creditScore,
@@ -65,17 +66,17 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const VerticalSpace(12),
-                  SvgPicture.asset('assets/icons/star_with_bg.svg'),
+                  SvgPicture.asset('assets/icons/usd_with_bg.svg'),
                   const VerticalSpace(AppValues.paddingSmall),
                   Text(
-                    'Transaction Count',
+                    'Current Outstanding',
                     style: s14W500(
                       context,
                       fontFamily: interFontFamily,
                     ),
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
-                  LargeNumberText(text: borrowerProfile?.spendingCount ?? '0', fontSize: 34,),
+                  LargeNumberText(text: borrowerProfile?.outstandingDebt?.toBigInt().toDouble().toStringAsFixed(2) ?? '0', fontSize: 34,),
                   const VerticalSpace(32),
                 ],
               ),

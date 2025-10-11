@@ -19,6 +19,7 @@ import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../home/presentation/providers/home_providers.dart';
 import '../../../home/presentation/resources/home_strings.dart';
 import '../../../more/data/models/profile.dart';
 import '../../../more/presentation/widgets/connect_wallet_button.dart';
@@ -72,6 +73,23 @@ class _ReplayFoundScreenState extends ConsumerState<RepayFoundScreen> {
                 ref: ref,
                 walletService: WalletService(appKitModal),
               );
+
+              if (appKitModal.isConnected == false) {
+                return  Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Wallet not connected'),
+                      const VerticalSpace(AppValues.paddingMedium),
+                      AppPrimaryButton(title: 'Go to profile to connect wallet.', onTap: () {
+                        AppNav.goRouter.go(RtNm.moreScreen);
+                        ref.read(bottomNavSelectedIndexProvider.notifier).state = 4;
+                      }),
+                    ],
+                  ),
+                );
+              }
 
               return Column(
                 mainAxisSize: MainAxisSize.max,
@@ -131,7 +149,8 @@ class _ReplayFoundScreenState extends ConsumerState<RepayFoundScreen> {
                           //   ],
                           // ),
                           const MetamaskHeaderWidget(),
-                          ConnectWalletButton(profile: widget.profile),
+                          // ConnectWalletButton(profile: widget.profile),
+                          const VerticalSpace(AppValues.paddingMedium),
                           MintUsdcButton(walletService: WalletService(appKitModal)),
                           const VerticalSpace(12),
                           const AppDivider(),
@@ -161,21 +180,21 @@ class _ReplayFoundScreenState extends ConsumerState<RepayFoundScreen> {
                             },
                           ),
                           const VerticalSpace(4),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ...['1/4', '2/4', '3/4', 'Full'].map((e) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 4,
-                                  ),
-                                  child: AppChip(
-                                    text: e,
-                                  ),
-                                );
-                              }),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.center,
+                          //   children: [
+                          //     ...['1/4', '2/4', '3/4', 'Full'].map((e) {
+                          //       return Padding(
+                          //         padding: const EdgeInsets.symmetric(
+                          //           horizontal: 4,
+                          //         ),
+                          //         child: AppChip(
+                          //           text: e,
+                          //         ),
+                          //       );
+                          //     }),
+                          //   ],
+                          // ),
                           const VerticalSpace(32),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
