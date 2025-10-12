@@ -54,6 +54,7 @@ import '../../modules/spends/presentation/screens/spends_screen.dart';
 import '../../modules/splash/presentation/screens/nowhere_screen.dart';
 import '../../modules/splash/presentation/screens/splash_screen.dart';
 import '../../modules/transactions/presentation/screens/transactions_screen.dart';
+import '../../modules/wallet/data/models/borrower_profile.dart';
 import 'rt_nm.dart';
 
 class AppNav {
@@ -421,7 +422,7 @@ class AppNav {
     GoRoute(
       path: RtNm.replayFoundScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        RepayFoundScreen(profile: state.extra as Profile),
+        RepayFoundScreen(borrowerProfile: state.extra as BorrowerProfile),
         state,
       ),
     ),

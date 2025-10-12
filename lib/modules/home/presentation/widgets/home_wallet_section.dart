@@ -70,7 +70,7 @@ class HomeWalletSection extends ConsumerWidget {
                                 }
 
                                 if (profile != null) {
-                                  AppNav.goRouter.push(RtNm.replayFoundScreen, extra: profile);
+                                  AppNav.goRouter.push(RtNm.replayFoundScreen, extra: borrowerProfileResult.data);
                                 }
                               },
                             ),

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:reown_appkit/reown_appkit.dart';
 
+import '../../../../core/extensions/big_int_extensions.dart';
+import '../../../../core/extensions/string_extension.dart';
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
@@ -27,15 +29,16 @@ import '../../../spends/data/models/payment_success_extra.dart';
 import '../../../spends/presentation/providers/spend_providers.dart';
 import '../../../spends/presentation/resources/spends_strings.dart';
 import '../../../wallet/business/services/wallet_service.dart';
+import '../../../wallet/data/models/borrower_profile.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../../../wallet/presentation/widgets/metamask_header_widget.dart';
 import '../../../wallet/presentation/widgets/mint_usdc_button.dart';
 import '../controllers/add_and_repay_controller.dart';
 
 class RepayFoundScreen extends ConsumerStatefulWidget {
-  final Profile profile;
+  final BorrowerProfile borrowerProfile;
 
-  const RepayFoundScreen({super.key, required this.profile});
+  const RepayFoundScreen({super.key, required this.borrowerProfile});
 
   @override
   ConsumerState createState() => _ReplayFoundScreenState();
@@ -203,11 +206,11 @@ class _ReplayFoundScreenState extends ConsumerState<RepayFoundScreen> {
                               const Icon(Icons.info_outline, size: 12),
                               const HorizontalSpace(4),
                               Text(
-                                replayDueIn,
+                                'Current outstanding',
                                 style: s12W500(context),
                               ),
                               Text(
-                                ' 22 days',
+                                ' ${widget.borrowerProfile.outstandingDebt?.toBigInt().dividedByMillion().toStringAsFixed(2) ?? '0'}',
                                 style: s12W500(context).copyWith(color: AppColors.primaryVariantLight),
                               ),
                             ],
@@ -237,7 +240,7 @@ class _ReplayFoundScreenState extends ConsumerState<RepayFoundScreen> {
                           onTap: () {
                             log('repay');
                             print  ('repay');
-                            _controller?.repay(_amountController.text.trim());
+                            _controller?.repay(_amountController.text.trim(), widget.borrowerProfile);
                             // AppNav.goRouter.push(
                             //   RtNm.paymentSuccessScreen,
                             //   extra: PaymentSuccessExtra.dummay(ref: ref),

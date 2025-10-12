@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../core/extensions/big_int_extensions.dart';
 import '../../../../core/extensions/string_extension.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
@@ -69,14 +70,14 @@ class HomeCreditScoreAndXpPoints extends StatelessWidget {
                   SvgPicture.asset('assets/icons/usd_with_bg.svg'),
                   const VerticalSpace(AppValues.paddingSmall),
                   Text(
-                    'Current Outstanding',
+                    'Outstanding',
                     style: s14W500(
                       context,
                       fontFamily: interFontFamily,
                     ),
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
-                  LargeNumberText(text: borrowerProfile?.outstandingDebt?.toBigInt().toDouble().toStringAsFixed(2) ?? '0', fontSize: 34,),
+                  LargeNumberText(text: borrowerProfile?.outstandingDebt?.toBigInt().dividedByMillion().toStringAsFixed(2) ?? '0', fontSize: 34,),
                   const VerticalSpace(32),
                 ],
               ),
