@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -57,54 +59,81 @@ class HomeWalletSection extends ConsumerWidget {
                             availableCreditAmount = result.data ?? 0;
                           case Error<num?>():
                         }
-
-                        return Column(
-                          children: [
-                            HomeAvailableToSpend(
-                              availableCreditAmount: availableCreditAmount,
-                              profile: profile,
-                              onRepayTap: () {
-                                if ((borrowerProfileResult.data?.outstandingDebt?.toBigInt().toDouble() ?? 0.0) <= 0.0) {
-                                  showWarningDialog(context: context, message: 'You have no outstanding to repay');
-                                  return;
-                                }
-
-                                if (profile != null) {
-                                  AppNav.goRouter.push(RtNm.replayFoundScreen, extra: borrowerProfileResult.data);
-                                }
-                              },
-                            ),
-                            const VerticalSpace(AppValues.paddingMedium),
-                            HomeCreditScoreAndXpPoints(borrowerProfile: borrowerProfileResult.data),
-                          ],
+                        log('Shaiful 1');
+                        return _loadingWidget(
+                          context: context,
+                          profile: profile,
+                          availableCreditAmount: availableCreditAmount,
+                          borrowerProfile: borrowerProfileResult.data,
                         );
                       },
                       error: (error, stck) => WhenErrorWidget(error: error),
-                      loading: () => _loadingWidget(),
+                      loading: () => _loadingWidget(
+                        context: context,
+                        availableCreditAmount: 0,
+                        borrowerProfile: borrowerProfileResult.data,
+                        profile: profile,
+                      ),
                     ),
                   ],
                 );
               case Error<BorrowerProfile?>():
-                return const HomeCreditScoreAndXpPoints();
+                return Column(
+                  children: [
+                    HomeAvailableToSpend(
+                      availableCreditAmount: 0,
+                      profile: profile,
+                      onRepayTap: () {},
+                    ),
+                    const VerticalSpace(AppValues.paddingMedium),
+                    const HomeCreditScoreAndXpPoints(),
+                  ],
+                );
             }
           },
           error: (error, stck) => WhenErrorWidget(error: error),
-          loading: () => _loadingWidget(),
+          loading: () => _loadingWidget(
+            context: context,
+            profile: null,
+            availableCreditAmount: null,
+            borrowerProfile: null,
+          ),
         ),
       ],
     );
   }
 
-  _loadingWidget() {
+  _loadingWidget({
+    required BuildContext context,
+    required Profile? profile,
+    required num? availableCreditAmount,
+    required BorrowerProfile? borrowerProfile,
+  }) {
     return Column(
       children: [
         HomeAvailableToSpend(
           availableCreditAmount: 0,
           profile: profile,
-          onRepayTap: () {},
-        ),
+      onRepayTap: () {
+        if ((borrowerProfile?.outstandingDebt
+            ?.toBigInt()
+            .toDouble() ??
+            0.0) <=
+            0.0) {
+          showWarningDialog(
+              context: context,
+              message: 'You have no outstanding to repay');
+          return;
+        }
+
+        if (profile != null) {
+          AppNav.goRouter.push(RtNm.replayFoundScreen,
+              extra: borrowerProfile);
+        }
+      },
+    ),
         const VerticalSpace(AppValues.paddingMedium),
-        const HomeCreditScoreAndXpPoints(),
+        HomeCreditScoreAndXpPoints(borrowerProfile: borrowerProfile),
       ],
     );
   }

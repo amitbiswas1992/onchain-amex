@@ -32,16 +32,16 @@ final borrowerProfileProvider =
   return await ref.read(walletRepoProvider).getBorrowerProfile(publicAddress: pId);
 });
 
-final appkitModalProvider = FutureProvider.family.autoDispose<ReownAppKitModal, String?>((ref, redirectRoute) async {
+final appkitModalProvider = FutureProvider<ReownAppKitModal>((ref) async {
   final appKitModal = ReownAppKitModal(
     context: AppNav.navKey.currentContext!,
     projectId: reownProjectId,
     logLevel: LogLevel.error,
-    metadata: PairingMetadata(
+    metadata: const PairingMetadata(
       name: 'TMRW',
       description: 'TMRW App',
       redirect: Redirect(
-        native: Platform.isIOS ? 'tmrw://${redirectRoute ?? '/more-screen'}' : 'tmrw://',
+        native: 'tmrw://',
         linkMode: false,
       ),
     ),

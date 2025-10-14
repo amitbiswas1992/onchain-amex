@@ -97,7 +97,7 @@ class _ConnectWalletButtonState extends ConsumerState<ConnectWalletButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ref.watch(appkitModalProvider(null)).when(
+    return ref.watch(appkitModalProvider).when(
       data: (model) {
         appKitModal = model;
         appKitModal?.onModalConnect.subscribe(_onModalConnect);

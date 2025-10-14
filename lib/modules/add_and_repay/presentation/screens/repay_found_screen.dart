@@ -69,7 +69,7 @@ class _ReplayFoundScreenState extends ConsumerState<RepayFoundScreen> {
         ),
         body: Padding(
           padding: const EdgeInsetsGeometry.all(AppValues.paddingMedium),
-          child: ref.watch(appkitModalProvider(RtNm.replayFoundScreen)).when(
+          child: ref.watch(appkitModalProvider).when(
             data: (appKitModal) {
               _controller ??= AddAndRepayController(
                 context: context,
