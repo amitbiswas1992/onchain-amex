@@ -20,14 +20,14 @@ import '../../data/models/payment_success_extra.dart';
 import '../providers/spend_providers.dart';
 import '../resources/spends_strings.dart';
 
-class SpendAfterScanAmountInputScreen extends ConsumerStatefulWidget {
-  const SpendAfterScanAmountInputScreen({super.key});
+class PaymentScreen extends ConsumerStatefulWidget {
+  const PaymentScreen({super.key});
 
   @override
   ConsumerState createState() => _SpendAfterScanAmountInputScreenState();
 }
 
-class _SpendAfterScanAmountInputScreenState extends ConsumerState<SpendAfterScanAmountInputScreen> {
+class _SpendAfterScanAmountInputScreenState extends ConsumerState<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

@@ -49,7 +49,7 @@ import '../../modules/signin/presentation/screens/user_info_input_screen.dart';
 import '../../modules/spends/data/models/payment_success_extra.dart';
 import '../../modules/spends/presentation/screens/payment_success_screen.dart';
 import '../../modules/spends/presentation/screens/qr_code_scanner_screen.dart';
-import '../../modules/spends/presentation/screens/spend_after_scan_amount_input_screen.dart';
+import '../../modules/spends/presentation/screens/payment_screen.dart';
 import '../../modules/spends/presentation/screens/spends_screen.dart';
 import '../../modules/splash/presentation/screens/nowhere_screen.dart';
 import '../../modules/splash/presentation/screens/splash_screen.dart';
@@ -398,7 +398,7 @@ class AppNav {
     GoRoute(
       path: RtNm.spendAfterScanAmountInputScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const SpendAfterScanAmountInputScreen(),
+        const PaymentScreen(),
         state,
       ),
     ),

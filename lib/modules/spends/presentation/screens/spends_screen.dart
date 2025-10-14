@@ -84,6 +84,7 @@ class _SpendsScreenState extends ConsumerState<SpendsScreen> with TickerProvider
                       if (index == 1) {
                         final dcc = await AppNav.goRouter.push(RtNm.qrCodeScannerScreen);
                         print(dcc);
+                        AppNav.goRouter.push(RtNm.spendAfterScanAmountInputScreen);
                       }
                       // _pageController.animateToPage(
                       //   index,
