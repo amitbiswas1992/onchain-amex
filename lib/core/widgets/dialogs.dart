@@ -9,6 +9,24 @@ import '../utils/sizebox_util.dart';
 import 'buttons/app_primary_button.dart';
 import 'texts/title_text.dart';
 
+Future<void> showInfoDialog({
+  required BuildContext context,
+  required String message,
+  Function()? onDone,
+  bool dismissible = false,
+  Widget? otherWidget,
+}) async {
+  return statusDialogBase(
+    context: context,
+    title: 'Info',
+    message: message,
+    icon: SvgPicture.asset('assets/icons/check_circle_green.svg'),
+    onDone: onDone,
+    dismissible: dismissible,
+    otherWidget: otherWidget,
+  );
+}
+
 Future<void> showSuccessDialog({
   required BuildContext context,
   required String message,

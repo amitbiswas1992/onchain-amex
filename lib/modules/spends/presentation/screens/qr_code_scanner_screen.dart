@@ -134,7 +134,7 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> with SingleTi
                           shadows: [
                             Shadow(
                               blurRadius: 4,
-                              color: Colors.black.withOpacity(0.3),
+                              color: Colors.black.withValues(alpha: 0.3),
                               offset: const Offset(2, 2),
                             ),
                           ],

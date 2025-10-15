@@ -51,6 +51,7 @@ import '../../modules/spends/presentation/screens/payment_success_screen.dart';
 import '../../modules/spends/presentation/screens/qr_code_scanner_screen.dart';
 import '../../modules/spends/presentation/screens/payment_screen.dart';
 import '../../modules/spends/presentation/screens/spends_screen.dart';
+import '../../modules/spends/presentation/widgets/scan_and_pay_page.dart';
 import '../../modules/splash/presentation/screens/nowhere_screen.dart';
 import '../../modules/splash/presentation/screens/splash_screen.dart';
 import '../../modules/transactions/presentation/screens/transactions_screen.dart';
@@ -94,6 +95,7 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
+    observers: [routeObserver],
     initialLocation: kDebugMode == false ? RtNm.splashScreen : RtNm.splashScreen,
     routes: [
       _shellRoutes,
