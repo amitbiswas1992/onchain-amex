@@ -18,11 +18,11 @@ class ApiUrls {
   static const refreshToken = '/api/v1/auth/refresh';
   static deleteUser(String userID) => '/api/v1/users/$userID';
 
-  static availableCredit(String publicAddress) => '/api/v1/blockchain/creditor/borrower/$publicAddress/available-credit';
-  static borrowerProfile(String publicAddress) => '/api/v1/blockchain/creditor/borrower/$publicAddress/profile';
+  static availableCredit(String publicAddress) => '/api/v1/blockchain/creditor/borrower/available-credit';
+  static borrowerProfile(String publicAddress) => '/api/v1/blockchain/creditor/borrower/profile';
   static const logOut = '/api/v1/auth/logout';
   static const deviceSessions = '/api/v1/users/devices/sessions';
   static deleteDeviceSession(String deviceId) => '/api/v1/users/devices/$deviceId';
   static const updateKycStatus = '/api/v1/kyc/update-status';
-  static transactionsHistory(String publicAddress) => '/api/v1/blockchain/creditor/borrower/$publicAddress/transactions';
+  static transactionsHistory(String publicAddress) => '/api/v1/blockchain/creditor/borrower/transactions';
 }
