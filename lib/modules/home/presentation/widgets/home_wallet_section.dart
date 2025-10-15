@@ -112,7 +112,7 @@ class HomeWalletSection extends ConsumerWidget {
     return Column(
       children: [
         HomeAvailableToSpend(
-          availableCreditAmount: 0,
+          availableCreditAmount: availableCreditAmount ?? 0,
           profile: profile,
       onRepayTap: () {
         if ((borrowerProfile?.outstandingDebt
