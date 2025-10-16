@@ -26,7 +26,7 @@ class HomeWalletSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final asyncCreditAmount = ref.watch(
-      availableCreditProvider(profile?.wallet?.address ?? ''),
+      availableCreditProvider/*(profile?.wallet?.address ?? '')*/,
     );
 
     final asyncBorrowerProfile = ref.watch(

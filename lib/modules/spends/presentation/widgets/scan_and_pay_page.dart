@@ -239,7 +239,7 @@ class _ScanAndPayPageState extends State<ScanAndPayPage> with SingleTickerProvid
       controller.pause();
       final dataStr = utf8.decode(base64Url.decode(uri.queryParameters['data']!));
       dev.log('data => ${dataStr.runtimeType} => ' +dataStr);
-      await AppNav.goRouter.push(RtNm.spendAfterScanAmountInputScreen, extra: ScannedData.fromJson(jsonDecode(dataStr)));
+      await AppNav.goRouter.push(RtNm.paymentScreen, extra: ScannedData.fromJson(jsonDecode(dataStr)));
     } catch (error, stck) {
       debugPrint(error.toString());
       debugPrint(stck.toString());

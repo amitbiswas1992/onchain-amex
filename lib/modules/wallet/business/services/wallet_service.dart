@@ -240,4 +240,43 @@ class WalletService {
     }
   }
 
+  /// Repay USDC into vault
+  /// @param amount USDC amount to deposit (in UI format)
+  Future<String> spend({required double amount, required String merchantPublicAddress}) async {
+    // Wait for contracts to load
+    await _ensureInitialized();
+
+    if (!isConnected || _creditorContract == null || sessionTopic == null) {
+      throw Exception('Wallet not connected');
+    }
+
+    // // Check allowance first
+    // final allowance = await getUsdcAllowance();
+    // if (allowance < amount) {
+    //   throw Exception('Insufficient allowance. Please approve USDC first.');
+    // }
+
+    final contractAmount = amount.multiplyByMillion();
+
+    try {
+      final txHash = await appKitModal.requestWriteContract(
+        topic: sessionTopic!,
+        chainId: currentChainId,
+        deployedContract: _creditorContract!,
+        functionName: 'spend',
+        parameters: [
+          ethereumAddress, // borrower address
+          EthereumAddress.fromHex(merchantPublicAddress),
+          contractAmount,
+        ],
+        transaction: Transaction(from: ethereumAddress),
+      );
+
+      return txHash;
+    } catch (e) {
+      print('Error depositing: $e');
+      throw Exception('Failed to deposit: ${e.toString()}');
+    }
+  }
+
 }

@@ -18,7 +18,7 @@ class ApiUrls {
   static const refreshToken = '/api/v1/auth/refresh';
   static deleteUser(String userID) => '/api/v1/users/$userID';
 
-  static availableCredit(String publicAddress) => '/api/v1/blockchain/creditor/borrower/available-credit';
+  static const availableCredit = '/api/v1/blockchain/creditor/borrower/available-credit';
   static borrowerProfile(String publicAddress) => '/api/v1/blockchain/creditor/borrower/profile';
   static const logOut = '/api/v1/auth/logout';
   static const deviceSessions = '/api/v1/users/devices/sessions';

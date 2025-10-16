@@ -30,7 +30,7 @@ class WalletRepo implements WalletRepoInterface {
   Future<Result<num?>> getAvailableCredit({required String publicAddress}) async {
     try {
       final response = await dioService.get(
-        ApiUrls.availableCredit(publicAddress),
+        ApiUrls.availableCredit,
         useTokenizeHeader: true,
       );
 

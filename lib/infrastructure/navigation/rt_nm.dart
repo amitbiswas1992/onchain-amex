@@ -20,7 +20,7 @@ class RtNm {
   static const transactionsScreen = '/transactions-screen';
   static const moreScreen = '/more-screen';
   static const qrCodeScannerScreen = '/qr-code-scanner-screen';
-  static const spendAfterScanAmountInputScreen = '/payment-screen';
+  static const paymentScreen = '/payment-screen';
   static const paymentSuccessScreen = '/payment-success-screen';
   static const addFoundScreen = '/add-found-screen';
   static const replayFoundScreen = '/replay-found-screen';

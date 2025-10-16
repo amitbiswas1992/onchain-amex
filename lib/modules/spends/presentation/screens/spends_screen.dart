@@ -152,7 +152,7 @@ class _SpendsScreenState extends ConsumerState<SpendsScreen> with TickerProvider
       utf8.decode(base64Url.decode(uri.queryParameters['data']!));
       dev.log('data => ${dataStr.runtimeType} => ' + dataStr);
       showInfoDialog(context: context, message: dataStr, dismissible: false);
-      // AppNav.goRouter.push(RtNm.spendAfterScanAmountInputScreen, extra: ScannedData.fromJson(jsonDecode(dataStr)));
+      AppNav.goRouter.push(RtNm.paymentScreen, extra: ScannedData.fromJson(jsonDecode(dataStr)));
     } catch (error, stck) {
       debugPrint(error.toString());
       debugPrint(stck.toString());
