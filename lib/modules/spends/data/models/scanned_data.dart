@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 
+import '../../../more/data/models/profile.dart';
+
 class ScannedData {
   num? amount;
   String? walletAddress;
   String? merchantName;
+  Profile? profile;
 
-  ScannedData({this.amount, this.walletAddress, this.merchantName});
+  ScannedData({this.amount, this.walletAddress, this.merchantName, this.profile});
 
-  ScannedData.fromJson(Map<String, dynamic> json) {
+  ScannedData.fromJson(Map<String, dynamic> json, this.profile) {
     amount = json['amount'];
     walletAddress = json['walletAddress'];
     merchantName = json['merchantName'];
@@ -18,6 +21,7 @@ class ScannedData {
     data['amount'] = amount;
     data['walletAddress'] = walletAddress;
     data['merchantName'] = merchantName;
+    data['profile'] = profile.toString();
     return data;
   }
 

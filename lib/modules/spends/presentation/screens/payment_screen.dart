@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
@@ -19,6 +20,7 @@ import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../../infrastructure/network/result.dart';
+import '../../../more/presentation/widgets/connect_wallet_button.dart';
 import '../../../wallet/business/services/wallet_service.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../../data/models/payment_success_extra.dart';
@@ -26,6 +28,7 @@ import '../../data/models/scanned_data.dart';
 import '../controllers/payment_controller.dart';
 import '../providers/spend_providers.dart';
 import '../resources/spends_strings.dart';
+import 'dart:developer'as dev;
 
 class PaymentScreen extends ConsumerStatefulWidget {
   final ScannedData scannedData;
@@ -124,7 +127,9 @@ class _SpendAfterScanAmountInputScreenState extends ConsumerState<PaymentScreen>
                                     ),
                                   ),
                                   const VerticalSpace(32),
-                                  const SubTitleText(text: enterAmount),
+                                  if (appKitModal.isConnected == false && widget.scannedData.profile != null)
+                                    ConnectWalletButton(profile: widget.scannedData.profile!),
+                                  // const SubTitleText(text: enterAmount),
                                   const VerticalSpace(24),
                                   TextFormField(
                                     controller: _inputController,
@@ -150,10 +155,10 @@ class _SpendAfterScanAmountInputScreenState extends ConsumerState<PaymentScreen>
                                     },
                                   ),
                                   const VerticalSpace(12),
-                                  const Align(
+                                  Align(
                                     alignment: Alignment.center,
                                     child: AppChip(
-                                      text: max,
+                                      text: 'Available credit ${(availableCreditLimit / oneMillion)} USDC',
                                     ),
                                   ),
                                 ],

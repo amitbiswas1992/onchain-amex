@@ -4,8 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/big_int_extensions.dart';
 import '../../../../core/extensions/string_extension.dart';
+import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/date_util.dart';
+import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/dividers/app_divider.dart';
@@ -133,53 +135,73 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                           }
 
                           if (transactionsState.transactionHistory.isEmpty) {
-                            return const Center(
-                              child: Text('No transactions yet.'),
+                            return Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkResponse(
+                                    child: const Icon(Icons.refresh),
+                                    onTap: () {
+                                      ref.invalidate(transactionHistoryProvider);
+                                    },
+                                  ),
+                                  const VerticalSpace(AppValues.paddingMedium),
+                                  const Text('No transactions yet.'),
+                                ],
+                              ),
                             );
                           }
 
                           final searchKey = ref.watch(transactionSearchKey);
 
-                          return ListView.builder(
-                            itemCount: transactionsState.transactionHistory.length,
-                            padding: const EdgeInsets.all(
-                              AppValues.paddingMedium,
-                            ),
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            controller: _scrollController,
-                            itemBuilder: (context, index) {
-                              final transaction = transactionsState.transactionHistory[index];
-                              final merchantName = transaction.merchantName ?? '';
-                              final merchantAddress = transaction.merchantAddress ?? '';
-                              final amount =
-                                  transaction.amount?.toBigInt().dividedByMillion() ?? 0.0;
-                              const currency = '';
-                              final date = transaction.timestamp == null
-                                  ? ''
-                                  : uiDateTimeFormat.format(
-                                      transaction.timestamp!.toDateFromMillisecondsSinceEpoch()!);
-
-                              if (searchKey.isNotEmpty) {
-                                if (!merchantName.toLowerCase().contains(searchKey.toLowerCase()) &&
-                                    !merchantAddress
-                                        .toLowerCase()
-                                        .contains(searchKey.toLowerCase()) &&
-                                    !date.toLowerCase().contains(searchKey.toLowerCase())) {
-                                  return const SizedBox();
-                                }
-                              }
-
-                              return LatestTransactionTile(
-                                latestTransaction: LatestTransaction(
-                                  title: merchantName,
-                                  address: merchantAddress,
-                                  amount: amount,
-                                  currency: '',
-                                  date: date,
-                                  match: searchKey,
-                                ),
-                              );
+                          return RefreshIndicator(
+                            color: isLightTheme(context) ? AppColors.primaryLight : Colors.white,
+                            onRefresh: () async {
+                              ref.invalidate(transactionHistoryProvider);
+                              return;
                             },
+                            child: ListView.builder(
+                              itemCount: transactionsState.transactionHistory.length,
+                              padding: const EdgeInsets.all(
+                                AppValues.paddingMedium,
+                              ),
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              controller: _scrollController,
+                              itemBuilder: (context, index) {
+                                final transaction = transactionsState.transactionHistory[index];
+                                final merchantName = transaction.merchantName ?? '';
+                                final merchantAddress = transaction.merchantAddress ?? '';
+                                final amount =
+                                    transaction.amount?.toBigInt().dividedByMillion() ?? 0.0;
+                                const currency = '';
+                                final date = transaction.timestamp == null
+                                    ? ''
+                                    : uiDateTimeFormat.format(
+                                        transaction.timestamp!.toDateFromMillisecondsSinceEpoch()!);
+
+                                if (searchKey.isNotEmpty) {
+                                  if (!merchantName.toLowerCase().contains(searchKey.toLowerCase()) &&
+                                      !merchantAddress
+                                          .toLowerCase()
+                                          .contains(searchKey.toLowerCase()) &&
+                                      !date.toLowerCase().contains(searchKey.toLowerCase())) {
+                                    return const SizedBox();
+                                  }
+                                }
+
+                                return LatestTransactionTile(
+                                  latestTransaction: LatestTransaction(
+                                    title: merchantName,
+                                    address: merchantAddress,
+                                    amount: amount,
+                                    currency: '',
+                                    date: date,
+                                    match: searchKey,
+                                  ),
+                                );
+                              },
+                            ),
                           );
                         }),
                       ),

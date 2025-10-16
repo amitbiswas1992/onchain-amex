@@ -28,24 +28,6 @@ class PaymentController {
     required ScannedData scannedData,
     required String amountStr,
   }) async {
-    AppNav.goRouter.pushReplacement(
-      RtNm.paymentSuccessScreen,
-      extra: PaymentSuccessExtra(
-        amount: 100,
-        transactionHash: '0x23jshdh73456sadhbf7r3463uhf74756',
-        paymentTo: scannedData.merchantName ?? 'Unknown Merchant',
-        currency: 'USDC',
-        onButtonTap: () {
-          AppNav.goRouter.go(RtNm.homeScreen);
-          ref.invalidate(bottomNavSelectedIndexProvider);
-          ref.invalidate(profileProvider);
-          ref.invalidate(availableCreditProvider);
-          ref.invalidate(borrowerProfileProvider);
-        },
-      ),
-    );
-    return;
-
     final amount = double.tryParse(amountStr) ?? 0.0;
 
     if (amount <= 0) {
@@ -55,7 +37,9 @@ class PaymentController {
 
     if (amount > availableCredit) {
       showWarningDialog(
-          context: context, message: 'Amount must be less than or equal to available credit');
+        context: context,
+        message: 'Amount must be less than or equal to available credit',
+      );
       return;
     }
 

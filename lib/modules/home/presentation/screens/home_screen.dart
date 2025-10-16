@@ -19,6 +19,7 @@ import '../../../../infrastructure/network/result.dart';
 import '../../../more/data/models/profile.dart';
 import '../../../more/presentation/providers/more_providers.dart';
 import '../../../transactions/presentation/providers/transaction_providers.dart';
+import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../../data/models/latest_transaction.dart';
 import '../providers/home_providers.dart';
 import '../resources/home_strings.dart';
@@ -42,127 +43,150 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Scaffold(
       backgroundColor: isLightTheme(context) ? const Color(0xFFF5F5F5) : const Color(0xFF121212),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
-              child: Column(
-                children: [
-                  VerticalSpace(padding.top),
-                  const VerticalSpace(AppValues.paddingMedium),
-                  Consumer(
-                    builder: (context, ref, _) {
-                      Profile? profile;
-                      final asyncProfile = ref.watch(profileProvider);
+            VerticalSpace(padding.top),
+            const VerticalSpace(AppValues.paddingMedium),
+            Expanded(
+              child: Consumer(
+                builder: (context, ref, _) {
+                  Profile? profile;
+                  final asyncProfile = ref.watch(profileProvider);
 
-                      return asyncProfile.when(
-                        data: (data) {
-                          switch (data) {
-                            case Ok<Profile?>():
-                              profile = data.data;
-                            case Error<Profile?>():
-                          }
+                  return asyncProfile.when(
+                    data: (data) {
+                      switch (data) {
+                        case Ok<Profile?>():
+                          profile = data.data;
+                        case Error<Profile?>():
+                      }
 
-                          return Column(
-                            children: [
-                              HomeWalletSection(profile: profile),
-                              const VerticalSpace(AppValues.paddingMedium),
-                              LightCard(
-                                radius: 0,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: AppValues.paddingMedium,
-                                ),
+                      return Column(
+                        children: [
+                          HomeAppBar(
+                            onGiftTap: () {
+                              AppNav.goRouter.push(RtNm.rewardsScreen);
+                            },
+                            onNotificationTap: () {},
+                            onProfileTap: () {},
+                            profileName: profile?.getShortName() ?? '',
+                          ),
+                          const VerticalSpace(AppValues.paddingMedium),
+                          Expanded(
+                            child: RefreshIndicator(
+                              color: isLightTheme(context) ? AppColors.primaryLight : Colors.white,
+                              onRefresh: () async {
+                                ref.invalidate(availableCreditProvider);
+                                ref.invalidate(borrowerProfileProvider);
+                                ref.invalidate(transactionHistoryProvider);
+                              },
+
+                              child: SingleChildScrollView(
+                                physics: const AlwaysScrollableScrollPhysics(),
                                 child: Column(
                                   children: [
-                                    const VerticalSpace(20),
-                                    Row(
-                                      children: [
-                                        const Expanded(
-                                          child: TitleText(text: latestTransactions),
-                                        ),
-                                        InkResponse(
-                                          onTap: () {
-                                            ref.read(bottomNavSelectedIndexProvider.notifier).state = 3;
-                                            AppNav.goRouter.go(RtNm.transactionsScreen);
-                                          },
-                                          child: Text(
-                                            seeAll,
-                                            style: s14W600(
-                                              context,
-                                              fontFamily: interFontFamily,
-                                            ).copyWith(
-                                              color: AppColors.primaryVariantLight,
-                                              decoration: TextDecoration.underline,
-                                              decorationColor: AppColors.primaryVariantLight,
-                                            ),
+                                    HomeWalletSection(profile: profile),
+                                    const VerticalSpace(AppValues.paddingMedium),
+                                    LightCard(
+                                      radius: 0,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: AppValues.paddingMedium,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          const VerticalSpace(20),
+                                          Row(
+                                            children: [
+                                              const Expanded(
+                                                child: TitleText(text: latestTransactions),
+                                              ),
+                                              InkResponse(
+                                                onTap: () {
+                                                  ref.read(bottomNavSelectedIndexProvider.notifier).state = 3;
+                                                  AppNav.goRouter.go(RtNm.transactionsScreen);
+                                                },
+                                                child: Text(
+                                                  seeAll,
+                                                  style: s14W600(
+                                                    context,
+                                                    fontFamily: interFontFamily,
+                                                  ).copyWith(
+                                                    color: AppColors.primaryVariantLight,
+                                                    decoration: TextDecoration.underline,
+                                                    decorationColor: AppColors.primaryVariantLight,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
+                                          const VerticalSpace(20),
+                                          Consumer(builder: (context, ref, _) {
+                                            final transactionsState = ref.watch(
+                                                transactionHistoryProvider(profile?.wallet?.address ?? ''));
+
+                                            if (transactionsState.isLoading &&
+                                                transactionsState.transactionHistory.isEmpty) {
+                                              return const SizedBox();
+                                            }
+
+                                            if (transactionsState.transactionHistory.isEmpty) {
+                                              return const Center(
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(bottom: AppValues.paddingMedium),
+                                                  child: Text('No transactions yet.'),
+                                                ),
+                                              );
+                                            }
+
+                                            return ListView.builder(
+                                              itemCount: transactionsState.transactionHistory.length > 10 ? 10 : transactionsState.transactionHistory.length,
+                                              padding: const EdgeInsets.all(
+                                                AppValues.paddingMedium,
+                                              ),
+                                              physics: const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemBuilder: (context, index) {
+                                                final transaction = transactionsState.transactionHistory[index];
+                                                final merchantName = transaction.merchantName ?? '';
+                                                final merchantAddress = transaction.merchantAddress ?? '';
+                                                final amount =
+                                                    transaction.amount?.toBigInt().dividedByMillion() ?? 0.0;
+                                                const currency = '';
+                                                final date = transaction.timestamp == null
+                                                    ? ''
+                                                    : uiDateTimeFormat.format(
+                                                    transaction.timestamp!.toDateFromMillisecondsSinceEpoch()!);
+
+                                                return LatestTransactionTile(
+                                                  latestTransaction: LatestTransaction(
+                                                    title: merchantName,
+                                                    address: merchantAddress,
+                                                    amount: amount,
+                                                    currency: '',
+                                                    date: date,
+                                                    match: '',
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          })
+                                        ],
+                                      ),
                                     ),
-                                    const VerticalSpace(20),
-                                    Consumer(builder: (context, ref, _) {
-                                      final transactionsState = ref.watch(
-                                          transactionHistoryProvider(profile?.wallet?.address ?? ''));
-
-                                      if (transactionsState.isLoading &&
-                                          transactionsState.transactionHistory.isEmpty) {
-                                        return const SizedBox();
-                                      }
-
-                                      if (transactionsState.transactionHistory.isEmpty) {
-                                        return const Center(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(bottom: AppValues.paddingMedium),
-                                            child: Text('No transactions yet.'),
-                                          ),
-                                        );
-                                      }
-
-                                      return ListView.builder(
-                                        itemCount: transactionsState.transactionHistory.length > 10 ? 10 : transactionsState.transactionHistory.length,
-                                        padding: const EdgeInsets.all(
-                                          AppValues.paddingMedium,
-                                        ),
-                                        physics: const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemBuilder: (context, index) {
-                                          final transaction = transactionsState.transactionHistory[index];
-                                          final merchantName = transaction.merchantName ?? '';
-                                          final merchantAddress = transaction.merchantAddress ?? '';
-                                          final amount =
-                                              transaction.amount?.toBigInt().dividedByMillion() ?? 0.0;
-                                          const currency = '';
-                                          final date = transaction.timestamp == null
-                                              ? ''
-                                              : uiDateTimeFormat.format(
-                                              transaction.timestamp!.toDateFromMillisecondsSinceEpoch()!);
-
-                                          return LatestTransactionTile(
-                                            latestTransaction: LatestTransaction(
-                                              title: merchantName,
-                                              address: merchantAddress,
-                                              amount: amount,
-                                              currency: '',
-                                              date: date,
-                                              match: '',
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    })
                                   ],
                                 ),
                               ),
-                            ],
-                          );
-                        },
-                        error: (err, stack) => WhenErrorWidget(error: err),
-                        loading: () => const HomeWalletSection(profile: null),
+                            ),
+                          ),
+                        ],
                       );
                     },
-                  ),
-                ],
+                    error: (err, stack) => WhenErrorWidget(error: err),
+                    loading: () => const HomeWalletSection(profile: null),
+                  );
+                },
               ),
             ),
           ],

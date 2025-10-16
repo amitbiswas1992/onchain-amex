@@ -35,15 +35,6 @@ class HomeWalletSection extends ConsumerWidget {
 
     return Column(
       children: [
-        HomeAppBar(
-          onGiftTap: () {
-            AppNav.goRouter.push(RtNm.rewardsScreen);
-          },
-          onNotificationTap: () {},
-          onProfileTap: () {},
-          profileName: profile?.getShortName() ?? '',
-        ),
-        const VerticalSpace(AppValues.paddingMedium),
         asyncBorrowerProfile.when(
           data: (borrowerProfileResult) {
             switch (borrowerProfileResult) {
@@ -59,7 +50,6 @@ class HomeWalletSection extends ConsumerWidget {
                             availableCreditAmount = result.data ?? 0;
                           case Error<num?>():
                         }
-                        log('Shaiful 1');
                         return _loadingWidget(
                           context: context,
                           profile: profile,
