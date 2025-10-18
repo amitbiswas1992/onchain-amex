@@ -100,7 +100,7 @@ class SecuritySettingsSection extends StatelessWidget {
           title: 'Language & appearance',
           subtitle: 'Customize language settings and which theme is used',
           onTap: () {
-            // Navigate to language & appearance settings
+            AppNav.goRouter.push(RtNm.languageAndAppearanceScreen);
           },
         ),
       ],

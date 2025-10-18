@@ -4,6 +4,7 @@ class LatestTransaction {
   double? amount;
   String? currency;
   String? date;
+  String? match;
 
   LatestTransaction({
     this.title,
@@ -11,6 +12,7 @@ class LatestTransaction {
     this.amount,
     this.currency,
     this.date,
+    this.match,
   });
 
   LatestTransaction.fromJson(Map<String, dynamic> json) {
@@ -19,6 +21,7 @@ class LatestTransaction {
     amount = json['amount'] != null ? (json['amount'] as num).toDouble() : null;
     currency = json['currency'];
     date = json['date'];
+    match = json['match'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +31,7 @@ class LatestTransaction {
       'amount': amount,
       'currency': currency,
       'date': date,
+      'match': match,
     };
   }
 }

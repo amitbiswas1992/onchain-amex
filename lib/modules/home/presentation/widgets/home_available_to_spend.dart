@@ -8,14 +8,19 @@ import '../../../../core/widgets/containers/light_card.dart';
 import '../../../../core/widgets/texts/large_number_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../more/data/models/profile.dart';
 import '../resources/home_strings.dart';
 
 class HomeAvailableToSpend extends StatelessWidget {
   final num availableCreditAmount;
+  final Profile? profile;
+  final VoidCallback onRepayTap;
 
   const HomeAvailableToSpend({
     super.key,
     required this.availableCreditAmount,
+    required this.profile,
+    required this.onRepayTap,
   });
 
   @override
@@ -57,9 +62,7 @@ class HomeAvailableToSpend extends StatelessWidget {
                   showBorder: false,
                   deepColor: true,
                   rounded: true,
-                  onTap: () {
-                    AppNav.goRouter.push(RtNm.replayFoundScreen);
-                  },
+                  onTap: onRepayTap,
                 ),
               ),
             ],

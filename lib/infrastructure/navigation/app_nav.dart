@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../modules/add_and_repay/presentation/screens/add_found_screen.dart';
-import '../../modules/add_and_repay/presentation/screens/replay_found_screen.dart';
+import '../../modules/add_and_repay/presentation/screens/repay_found_screen.dart';
 import '../../modules/cards/data/models/choose_card_extra.dart';
 import '../../modules/cards/presentation/screens/cards_screen.dart';
 import '../../modules/cards/presentation/screens/choose_card_details_screen.dart';
@@ -18,9 +18,13 @@ import '../../modules/home/presentation/screens/shell_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_code_input_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invitation_success_screen.dart';
 import '../../modules/invite_friend/presentation/screens/invite_friend_screen.dart';
+import '../../modules/kyc/presentation/screens/id_check_kyc_options_screen.dart';
+import '../../modules/kyc/presentation/screens/kyc_screen.dart';
+import '../../modules/kyc/presentation/screens/kyc_success_screen.dart';
 import '../../modules/more/data/models/profile.dart';
 import '../../modules/more/presentation/screens/change_email_screen.dart';
 import '../../modules/more/presentation/screens/change_phone_screen.dart';
+import '../../modules/more/presentation/screens/language_and_appearance_screen.dart';
 import '../../modules/more/presentation/screens/manage_devices_screen.dart';
 import '../../modules/more/presentation/screens/more_screen.dart';
 import '../../modules/more/presentation/screens/notification_settings_screen.dart';
@@ -43,13 +47,16 @@ import '../../modules/signin/presentation/screens/register_with_phone_screen.dar
 import '../../modules/signin/presentation/screens/sign_in_loading_screen.dart';
 import '../../modules/signin/presentation/screens/user_info_input_screen.dart';
 import '../../modules/spends/data/models/payment_success_extra.dart';
+import '../../modules/spends/data/models/scanned_data.dart';
 import '../../modules/spends/presentation/screens/payment_success_screen.dart';
 import '../../modules/spends/presentation/screens/qr_code_scanner_screen.dart';
-import '../../modules/spends/presentation/screens/spend_after_scan_amount_input_screen.dart';
+import '../../modules/spends/presentation/screens/payment_screen.dart';
 import '../../modules/spends/presentation/screens/spends_screen.dart';
+import '../../modules/spends/presentation/widgets/scan_and_pay_page.dart';
 import '../../modules/splash/presentation/screens/nowhere_screen.dart';
 import '../../modules/splash/presentation/screens/splash_screen.dart';
 import '../../modules/transactions/presentation/screens/transactions_screen.dart';
+import '../../modules/wallet/data/models/borrower_profile.dart';
 import 'rt_nm.dart';
 
 class AppNav {
@@ -89,8 +96,8 @@ class AppNav {
 
   static final goRouter = GoRouter(
     navigatorKey: navKey,
-    initialLocation:
-        kDebugMode == false ? RtNm.splashScreen : RtNm.splashScreen,
+    observers: [routeObserver],
+    initialLocation: kDebugMode == false ? RtNm.splashScreen : RtNm.splashScreen,
     routes: [
       _shellRoutes,
       ..._authRoutes,
@@ -202,7 +209,34 @@ class AppNav {
         state,
       ),
     ),
-
+    GoRoute(
+      path: RtNm.kycScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const KycScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.idCheckKycOptionsScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const IdCheckKycOptionsScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.kycSuccessScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const KycSuccessScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.languageAndAppearanceScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const LanguageAndAppearanceScreen(),
+        state,
+      ),
+    ),
   ];
 
   static final _rewardsRoutes = [
@@ -365,9 +399,9 @@ class AppNav {
       ),
     ),
     GoRoute(
-      path: RtNm.spendAfterScanAmountInputScreen,
+      path: RtNm.paymentScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const SpendAfterScanAmountInputScreen(),
+        PaymentScreen(scannedData: state.extra as ScannedData),
         state,
       ),
     ),
@@ -391,7 +425,7 @@ class AppNav {
     GoRoute(
       path: RtNm.replayFoundScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
-        const ReplayFoundScreen(),
+        RepayFoundScreen(borrowerProfile: state.extra as BorrowerProfile),
         state,
       ),
     ),

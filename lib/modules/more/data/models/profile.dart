@@ -19,7 +19,7 @@ class Profile {
   String? kycProvider;
   String? kycVerificationId;
   String? kycDocuments;
-  String? kycData;
+  KycData? kycData;
   String? kycVerifiedAt;
   bool? isEmailVerified;
   bool? isPhoneVerified;
@@ -104,7 +104,7 @@ class Profile {
     kycProvider = json['kycProvider'];
     kycVerificationId = json['kycVerificationId'];
     kycDocuments = json['kycDocuments'];
-    kycData = json['kycData'];
+    kycData = KycData.fromJson(json['kycData'] ?? {});
     kycVerifiedAt = json['kycVerifiedAt'];
     isEmailVerified = json['isEmailVerified'];
     isPhoneVerified = json['isPhoneVerified'];
@@ -197,6 +197,29 @@ class Profile {
     }
   }
 }
+
+class KycData {
+  String? reason;
+  String? status;
+  String? sessionId;
+
+  KycData({this.reason, this.status, this.sessionId});
+
+  KycData.fromJson(Map<String, dynamic> json) {
+    reason = json['reason'];
+    status = json['status'];
+    sessionId = json['sessionId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['reason'] = this.reason;
+    data['status'] = this.status;
+    data['sessionId'] = this.sessionId;
+    return data;
+  }
+}
+
 
 class CreditAccountModel {
   String? id;

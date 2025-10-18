@@ -2,14 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/big_int_extensions.dart';
+import '../../../../core/extensions/string_extension.dart';
+import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
+import '../../../../core/utils/date_util.dart';
+import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/dividers/app_divider.dart';
+import '../../../../core/widgets/errors/when_error_widget.dart';
+import '../../../../core/widgets/loaders/when_loading_widget.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../../../infrastructure/network/result.dart';
 import '../../../home/data/models/latest_transaction.dart';
 import '../../../home/presentation/resources/home_strings.dart';
 import '../../../home/presentation/widgets/latest_transaction_tile.dart';
+import '../../../more/data/models/profile.dart';
+import '../../../more/presentation/providers/more_providers.dart';
+import '../providers/transaction_providers.dart';
 
 class TransactionsScreen extends ConsumerStatefulWidget {
   const TransactionsScreen({super.key});
@@ -19,78 +30,12 @@ class TransactionsScreen extends ConsumerStatefulWidget {
 }
 
 class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
-  final _latestTransactions = [
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Book Worm',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 2.3,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'J&G Cinema',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 8.5,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0x................3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'J&G Cinema',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 8.5,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0x................3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0xuywet7687y8jhw876hhbtxa3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-    LatestTransaction(
-      title: 'Starbucks',
-      address: '0x................3456',
-      amount: 5.0,
-      currency: 'USDC',
-      date: '11 Jul,25 : 03:55 PM',
-    ),
-  ];
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,68 +43,174 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
     final padding = MediaQuery.of(context).padding;
 
     return Scaffold(
-      body: Column(
-        children: [
-          VerticalSpace(padding.top),
-          const VerticalSpace(AppValues.paddingMedium),
-          const Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppValues.paddingMedium,
-            ),
-            child: AppTextFormField(
-              borderRadius: 56,
-              hintText: search,
-              prefixIcon: Icon(CupertinoIcons.search),
-            ),
-          ),
-          const VerticalSpace(20),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                ...['Date', 'Type', 'Category', 'Currency', 'Others'].map((e) {
-                  return Container(
-                    margin: const EdgeInsets.only(left: AppValues.paddingMedium),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(56),
-                      border: Border.all(
-                        color: Colors.grey.shade300,
+      body: Consumer(
+        builder: (context, ref, _) {
+          final asyncProfile = ref.watch(profileProvider);
+
+          return asyncProfile.when(
+            loading: () => const WhenLoadingWidget(),
+            error: (err, stack) => WhenErrorWidget(error: err),
+            data: (result) {
+              switch (result) {
+                case Error<Profile?>():
+                  return const SizedBox();
+                case Ok<Profile?>():
+                  if (result.data!.wallet == null) {
+                    return const Center(
+                      child: Text('You did not connected any wallet yet.'),
+                    );
+                  }
+
+                  _scrollController.addListener(() {
+                    if (_scrollController.position.pixels ==
+                        _scrollController.position.maxScrollExtent) {
+                      ref
+                          .read(transactionHistoryProvider(result.data!.wallet?.address ?? '')
+                              .notifier)
+                          .getMoreData();
+                    }
+                  });
+
+                  return Column(
+                    children: [
+                      VerticalSpace(padding.top),
+                      const VerticalSpace(AppValues.paddingMedium),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppValues.paddingMedium,
+                        ),
+                        child: AppTextFormField(
+                          borderRadius: 56,
+                          hintText: search,
+                          prefixIcon: const Icon(CupertinoIcons.search),
+                          onChanged: (val) {
+                            ref.read(transactionSearchKey.notifier).state = val;
+                          },
+                        ),
                       ),
-                    ),
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: AppValues.paddingSmall,
-                    ),
-                    child: Text(
-                      e,
-                      style: s14W500(context),
-                    ),
+                      // const VerticalSpace(20),
+                      // SingleChildScrollView(
+                      //   scrollDirection: Axis.horizontal,
+                      //   child: Row(
+                      //     children: [
+                      //       ...['Date', 'Type', 'Category', 'Currency', 'Others'].map((e) {
+                      //         return Container(
+                      //           margin: const EdgeInsets.only(left: AppValues.paddingMedium),
+                      //           decoration: BoxDecoration(
+                      //             borderRadius: BorderRadius.circular(56),
+                      //             border: Border.all(
+                      //               color: Colors.grey.shade300,
+                      //             ),
+                      //           ),
+                      //           alignment: Alignment.center,
+                      //           padding: const EdgeInsets.symmetric(
+                      //             horizontal: 14,
+                      //             vertical: AppValues.paddingSmall,
+                      //           ),
+                      //           child: Text(
+                      //             e,
+                      //             style: s14W500(context),
+                      //           ),
+                      //         );
+                      //       }),
+                      //     ],
+                      //   ),
+                      // ),
+                      const VerticalSpace(20),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
+                        child: AppDivider(),
+                      ),
+                      const VerticalSpace(AppValues.paddingMedium),
+                      Expanded(
+                        child: Consumer(builder: (context, ref, _) {
+                          final transactionsState = ref.watch(
+                              transactionHistoryProvider(result.data?.wallet?.address ?? ''));
+
+                          if (transactionsState.isLoading &&
+                              transactionsState.transactionHistory.isEmpty) {
+                            return const WhenLoadingWidget(
+                              message: 'Loading transactions...',
+                            );
+                          }
+
+                          if (transactionsState.transactionHistory.isEmpty) {
+                            return Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkResponse(
+                                    child: const Icon(Icons.refresh),
+                                    onTap: () {
+                                      ref.invalidate(transactionHistoryProvider);
+                                    },
+                                  ),
+                                  const VerticalSpace(AppValues.paddingMedium),
+                                  const Text('No transactions yet.'),
+                                ],
+                              ),
+                            );
+                          }
+
+                          final searchKey = ref.watch(transactionSearchKey);
+
+                          return RefreshIndicator(
+                            color: isLightTheme(context) ? AppColors.primaryLight : Colors.white,
+                            onRefresh: () async {
+                              ref.invalidate(transactionHistoryProvider);
+                              return;
+                            },
+                            child: ListView.builder(
+                              itemCount: transactionsState.transactionHistory.length,
+                              padding: const EdgeInsets.all(
+                                AppValues.paddingMedium,
+                              ),
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              controller: _scrollController,
+                              itemBuilder: (context, index) {
+                                final transaction = transactionsState.transactionHistory[index];
+                                final merchantName = transaction.merchantName ?? '';
+                                final merchantAddress = transaction.merchantAddress ?? '';
+                                final amount =
+                                    transaction.amount?.toBigInt().dividedByMillion() ?? 0.0;
+                                const currency = '';
+                                final date = transaction.timestamp == null
+                                    ? ''
+                                    : uiDateTimeFormat.format(
+                                        transaction.timestamp!.toDateFromMillisecondsSinceEpoch()!);
+
+                                if (searchKey.isNotEmpty) {
+                                  if (!merchantName.toLowerCase().contains(searchKey.toLowerCase()) &&
+                                      !merchantAddress
+                                          .toLowerCase()
+                                          .contains(searchKey.toLowerCase()) &&
+                                      !date.toLowerCase().contains(searchKey.toLowerCase())) {
+                                    return const SizedBox();
+                                  }
+                                }
+
+                                return LatestTransactionTile(
+                                  latestTransaction: LatestTransaction(
+                                    title: merchantName,
+                                    address: merchantAddress,
+                                    amount: amount,
+                                    currency: '',
+                                    date: date,
+                                    match: searchKey,
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }),
+                      ),
+                    ],
                   );
-                }),
-              ],
-            ),
-          ),
-          const VerticalSpace(20),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
-            child: AppDivider(),
-          ),
-          const VerticalSpace(AppValues.paddingMedium),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _latestTransactions.length,
-              padding: const EdgeInsets.all(
-                AppValues.paddingMedium,
-              ),
-              itemBuilder: (context, index) {
-                return LatestTransactionTile(
-                  latestTransaction: _latestTransactions[index],
-                );
-              },
-            ),
-          ),
-        ],
+              }
+            },
+          );
+        },
       ),
     );
   }

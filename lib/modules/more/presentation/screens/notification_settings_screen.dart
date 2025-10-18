@@ -7,6 +7,7 @@ import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../rewards/presentation/screens/rewards_strings.dart';
+import '../providers/more_providers.dart';
 import 'security_privacy_screen.dart';
 
 class NotificationSettingsScreen extends ConsumerStatefulWidget {
@@ -32,12 +33,21 @@ class _NotificationSettingsScreenState extends ConsumerState<NotificationSetting
               const VerticalSpace(24),
               Text(notificationSettings, style: s18W600(context),),
               const VerticalSpace(AppValues.paddingLarge),
-              BiometricToggleMenuItem(
-                enabled: true,
-                onToggle: (val) {},
-                assetPath: 'assets/icons/bell.svg',
-                title: pushNotification,
-                subTitle: 'Receive alerts and updates',
+              Consumer(
+                builder: (context, ref, _) {
+
+                  final enabled = ref.watch(notificationEnabledProvider);
+
+                  return BiometricToggleMenuItem(
+                    enabled: enabled,
+                    onToggle: (val) {
+                      ref.read(notificationEnabledProvider.notifier).state = val;
+                    },
+                    assetPath: 'assets/icons/bell.svg',
+                    title: pushNotification,
+                    subTitle: 'Receive alerts and updates',
+                  );
+                },
               ),
             ],
           ),

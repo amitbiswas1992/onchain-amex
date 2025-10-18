@@ -27,7 +27,7 @@ class SpendsNfcPage extends StatelessWidget {
           const VerticalSpace(AppValues.paddingLarge),
           InkWell(
             onTap: () {
-              AppNav.goRouter.push(RtNm.spendAfterScanAmountInputScreen);
+              AppNav.goRouter.push(RtNm.paymentScreen);
             },
             child: Container(
               height: size.width * .6,

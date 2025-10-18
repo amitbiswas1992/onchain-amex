@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:reown_appkit/appkit_modal.dart';
 
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
@@ -18,11 +19,13 @@ import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../../infrastructure/network/result.dart';
 import '../../../home/presentation/providers/home_providers.dart';
+import '../../../kyc/presentation/screens/kyc_screen.dart';
 import '../../../signin/presentation/providers/sign_in_providers.dart';
 import '../../../wallet/presentation/controllers/wallet_controller.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../../data/models/profile.dart';
 import '../providers/more_providers.dart';
+import '../widgets/connect_wallet_button.dart';
 import '../widgets/menu_section.dart';
 
 class MoreScreen extends ConsumerStatefulWidget {
@@ -110,9 +113,7 @@ class MoreBody extends ConsumerWidget {
                 onToggle: () {
                   ref.read(themeModeProvider.notifier).state =
                       isLightTheme(context) ? ThemeMode.dark : ThemeMode.light;
-                  ref
-                      .read(securedStorageService)
-                      .saveThemeMode(ref.read(themeModeProvider)!);
+                  ref.read(securedStorageService).saveThemeMode(ref.read(themeModeProvider)!);
                 },
               ),
             ),
@@ -144,14 +145,18 @@ class MoreBody extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      'KYC Not Verified',
-                      style: s12W500(context, fontFamily: interFontFamily)
-                          .copyWith(
-                        color: AppColors.errorLight,
+                      profile?.kycStatus == "APPROVED" ? 'Verified' : 'KYC Not Verified',
+                      style: s12W500(context, fontFamily: interFontFamily).copyWith(
+                        color: profile?.kycStatus == "APPROVED"
+                            ? AppColors.primaryVariantLight
+                            : AppColors.errorLight,
                       ),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    // if (profile?.kycStatus == "APPROVED") return;
+                    AppNav.goRouter.push(RtNm.kycScreen);
+                  },
                 ),
                 MenuItem(
                   icon: 'assets/icons/key.svg',
@@ -178,8 +183,7 @@ class MoreBody extends ConsumerWidget {
                   subtitle: 'Update your personal information',
                   onTap: () {
                     if (profile != null) {
-                      AppNav.goRouter
-                          .push(RtNm.personalDetailsScreen, extra: profile);
+                      AppNav.goRouter.push(RtNm.personalDetailsScreen, extra: profile);
                     }
                   },
                 ),
@@ -191,21 +195,21 @@ class MoreBody extends ConsumerWidget {
                     AppNav.goRouter.push(RtNm.notificationSettingsScreen);
                   },
                 ),
-                MenuItem(
-                  icon: 'assets/icons/bank.svg',
-                  title: 'Payment methods',
-                  subtitle:
-                      'Manage saved cards and bank accounts that linked to this account',
-                  onTap: () {
-                    AppNav.goRouter.push(RtNm.paymentMethodsScreen);
-                  },
-                ),
+                // MenuItem(
+                //   icon: 'assets/icons/bank.svg',
+                //   title: 'Payment methods',
+                //   subtitle: 'Manage saved cards and bank accounts that linked to this account',
+                //   onTap: () {
+                //     AppNav.goRouter.push(RtNm.paymentMethodsScreen);
+                //   },
+                // ),
                 MenuItem(
                   icon: 'assets/icons/circle_half.svg',
                   title: 'Language & Appearance',
-                  subtitle:
-                      'Customize language settings and which theme is used',
-                  onTap: () {},
+                  subtitle: 'Customize language settings and which theme is used',
+                  onTap: () {
+                    AppNav.goRouter.push(RtNm.languageAndAppearanceScreen);
+                  },
                 ),
               ],
             ),
@@ -219,12 +223,12 @@ class MoreBody extends ConsumerWidget {
             MenuSection(
               title: 'Action & Agreements',
               items: [
-                MenuItem(
-                  icon: 'assets/icons/bank.svg',
-                  title: 'Referrals and rewards',
-                  subtitle: 'Send and track referrals and manage your rewards',
-                  onTap: () {},
-                ),
+                // MenuItem(
+                //   icon: 'assets/icons/bank.svg',
+                //   title: 'Referrals and rewards',
+                //   subtitle: 'Send and track referrals and manage your rewards',
+                //   onTap: () {},
+                // ),
                 MenuItem(
                   icon: 'assets/icons/info.svg',
                   title: 'Agreements',
@@ -243,8 +247,7 @@ class MoreBody extends ConsumerWidget {
                   color: AppColors.errorLight,
                   onTap: () {
                     if (profile != null) {
-                      AppNav.goRouter
-                          .push(RtNm.deleteAccountScreen, extra: profile);
+                      AppNav.goRouter.push(RtNm.deleteAccountScreen, extra: profile);
                     } else {
                       log('profile is null');
                     }
@@ -331,8 +334,7 @@ class ProfileHeaderSection extends StatelessWidget {
           ),
           const VerticalSpace(AppValues.paddingMedium),
           Text(
-            '${profile?.firstName ?? ''} ${profile?.lastName ?? ''}'
-                .toUpperCase(),
+            '${profile?.firstName ?? ''} ${profile?.lastName ?? ''}'.toUpperCase(),
             style: s22W600(context),
           ),
           const VerticalSpace(16),
@@ -355,20 +357,19 @@ class ProfileHeaderSection extends StatelessWidget {
             ),
           ),
           const VerticalSpace(16),
-          AppIconButton(
-            title:
-                profile?.wallet != null ? 'Wallet Connected' : 'Connect Wallet',
-            titleStyle: s14W500(context, fontFamily: interFontFamily).copyWith(
-              color: profile?.wallet != null
-                  ? AppColors.primaryLight
-                  : AppColors.onBackgroundDark,
-            ),
-            height: 48,
-            onTap: profile?.wallet != null ? null : onWalletConnectTap,
-            icon: SvgPicture.asset('assets/icons/link.svg'),
-            radius: AppValues.borderRadiusLarge,
-            color: AppColors.backgroundDark,
-          ),
+          // AppIconButton(
+          //   title: profile?.wallet != null ? 'Wallet Connected' : 'Connect Wallet',
+          //   titleStyle: s14W500(context, fontFamily: interFontFamily).copyWith(
+          //     color: profile?.wallet != null ? AppColors.primaryLight : AppColors.onBackgroundDark,
+          //   ),
+          //   height: 48,
+          //   onTap: profile?.wallet != null ? null : onWalletConnectTap,
+          //   icon: SvgPicture.asset('assets/icons/link.svg'),
+          //   radius: AppValues.borderRadiusLarge,
+          //   color: AppColors.backgroundDark,
+          // ),
+          if (profile != null)
+            ConnectWalletButton(profile: profile!),
         ],
       ),
     );

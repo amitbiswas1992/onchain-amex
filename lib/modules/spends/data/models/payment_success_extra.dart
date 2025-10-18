@@ -9,12 +9,14 @@ class PaymentSuccessExtra {
   final double amount;
   final String paymentTo;
   final String currency;
+  final String? transactionHash;
   final VoidCallback onButtonTap;
 
   PaymentSuccessExtra({
     required this.amount,
     required this.paymentTo,
     required this.currency,
+    this.transactionHash,
     required this.onButtonTap,
   });
 

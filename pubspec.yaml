@@ -2,7 +2,7 @@ name: advisify
 description: "A flutter project with clean architecture"
 publish_to: "none"
 
-version: 1.0.21+21
+version: 1.0.23+23
 
 environment:
   sdk: ">=3.4.1 <4.0.0"
@@ -79,6 +79,7 @@ flutter:
     - assets/dummy/
     - assets/rings/
     - assets/tires/
+    - assets/contracts/
 
   fonts:
     - family: Segoe Pro

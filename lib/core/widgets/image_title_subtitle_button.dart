@@ -12,6 +12,7 @@ class ImageTitleSubtitleButton extends StatelessWidget {
   final String title;
   final String subTitle;
   final String buttonTitle;
+  final Widget? otherWidget;
   final VoidCallback onButtonTap;
 
   const ImageTitleSubtitleButton({
@@ -20,7 +21,7 @@ class ImageTitleSubtitleButton extends StatelessWidget {
     required this.title,
     required this.subTitle,
     required this.buttonTitle,
-    required this.onButtonTap,
+    required this.onButtonTap, this.otherWidget,
   });
 
   @override
@@ -36,12 +37,18 @@ class ImageTitleSubtitleButton extends StatelessWidget {
         const SizedBox(height: AppValues.paddingLarge),
         TitleText(
           text: title,
+          textAlign: TextAlign.center,
         ),
         const VerticalSpace(AppValues.paddingMedium),
         Text(
           subTitle,
+          textAlign: TextAlign.center,
           style: s14W400(context),
         ),
+        if (otherWidget != null)
+          const VerticalSpace(AppValues.paddingMedium + AppValues.paddingMedium),
+        if (otherWidget != null)
+          otherWidget!,
         const VerticalSpace(32),
         AppPrimaryButton(
           title: buttonTitle,

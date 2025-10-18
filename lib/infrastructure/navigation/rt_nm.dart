@@ -20,8 +20,7 @@ class RtNm {
   static const transactionsScreen = '/transactions-screen';
   static const moreScreen = '/more-screen';
   static const qrCodeScannerScreen = '/qr-code-scanner-screen';
-  static const spendAfterScanAmountInputScreen =
-      '/spend-after-scan-amount-input-screen';
+  static const paymentScreen = '/payment-screen';
   static const paymentSuccessScreen = '/payment-success-screen';
   static const addFoundScreen = '/add-found-screen';
   static const replayFoundScreen = '/replay-found-screen';
@@ -46,4 +45,9 @@ class RtNm {
 
   static const rewardsScreen = '/rewards-screen';
   static const manageDevicesScreen = '/manage-devices-screen';
+
+  static const kycScreen = '/kyc-screen';
+  static const idCheckKycOptionsScreen = '/id-check-kyc-options-screen';
+  static const kycSuccessScreen = '/kyc-success-screen';
+  static const languageAndAppearanceScreen = '/language-and-appearance-screen';
 }
