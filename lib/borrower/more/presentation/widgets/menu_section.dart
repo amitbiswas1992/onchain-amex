@@ -193,6 +193,7 @@ class MenuItemToggle extends StatelessWidget {
               ],
             ),
           ),
+          const HorizontalSpace(4),
           Container(
             decoration: BoxDecoration(
               color: AppColors.borderColor.withValues(alpha: 0.2),

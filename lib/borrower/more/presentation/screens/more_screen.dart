@@ -60,42 +60,51 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer(
-        builder: (context, ref, _) {
-          final asyncProfile = ref.watch(profileProvider);
-
-          return asyncProfile.when(
-            data: (data) {
-              Profile? profile;
-              switch (data) {
-                case Ok<Profile?>():
-                  profile = data.data;
-                case Error<Profile?>():
-              }
-
-              return MoreBody(
-                profile: profile,
-                merchantMode: _merchantMode,
-                onMerchantModeChanged: (mode) async {
-                  setState(() {
-                    _merchantMode = mode;
-                  });
-                  await Future.delayed(const Duration(milliseconds: 300));
-                  await ref.read(securedStorageService).saveMerchantMode(mode);
-                  if (mounted) {
-                    AppNav.goRouter.go(RtNm.splashScreen);
-                  }
-                },
-              );
-            },
-            error: (err, stack) => WhenErrorWidget(error: err),
-            loading: () => MoreBody(
-              profile: null,
-              merchantMode: _merchantMode,
-              onMerchantModeChanged: (mode) {},
-            ),
-          );
+      body: RefreshIndicator(
+        edgeOffset: 60,
+        onRefresh: () async {
+          ref.invalidate(profileProvider);
+          await Future.delayed(const Duration(milliseconds: 1000));
         },
+        child: Consumer(
+          builder: (context, ref, _) {
+            final asyncProfile = ref.watch(profileProvider);
+
+            return asyncProfile.when(
+              data: (data) {
+                Profile? profile;
+                switch (data) {
+                  case Ok<Profile?>():
+                    profile = data.data;
+                  case Error<Profile?>():
+                }
+
+                return MoreBody(
+                  profile: profile,
+                  merchantMode: _merchantMode,
+                  onMerchantModeChanged: (mode) async {
+                    setState(() {
+                      _merchantMode = mode;
+                    });
+                    await Future.delayed(const Duration(milliseconds: 300));
+                    await ref
+                        .read(securedStorageService)
+                        .saveMerchantMode(mode);
+                    if (mounted) {
+                      AppNav.goRouter.go(RtNm.splashScreen);
+                    }
+                  },
+                );
+              },
+              error: (err, stack) => WhenErrorWidget(error: err),
+              loading: () => MoreBody(
+                profile: null,
+                merchantMode: _merchantMode,
+                onMerchantModeChanged: (mode) {},
+              ),
+            );
+          },
+        ),
       ),
     );
   }

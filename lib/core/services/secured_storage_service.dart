@@ -66,6 +66,10 @@ class SecuredStorageService {
     }
   }
 
+  Future<void> deleteAll() async {
+    await _storage.deleteAll();
+  }
+
   // Merchant Mode Management
   Future<void> saveMerchantMode(String mode) async {
     await _storage.write(key: 'merchant_mode', value: mode);

@@ -52,6 +52,7 @@ dependencies:
   package_info_plus: ^8.1.2
   qr_flutter: ^4.1.0
   skeletonizer: ^2.1.0+1
+  shared_preferences: ^2.5.3
 
 #dependency_overrides:
 #  uuid: ^4.5.1
