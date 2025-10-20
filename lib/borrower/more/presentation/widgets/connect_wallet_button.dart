@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reown_appkit/appkit_modal.dart';
-import 'package:reown_appkit/modal/appkit_modal_impl.dart';
 
 import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/transaction_hash_text.dart';
@@ -49,66 +48,89 @@ class _ConnectWalletButtonState extends ConsumerState<ConnectWalletButton> {
           if (parts.length >= 3) {
             final chainId = parts[1];
             final address = parts[2];
-
-            showLoadingDialog(context: context, message: 'Connecting to your wallet.');
-            final result = await ref.read(walletRepoProvider).connectWallet(
-              payload: {
-                'borrower': address,
-              },
+            await Future.delayed(const Duration(milliseconds: 1000));
+            if (!mounted) return;
+            showLoadingDialog(
+              context: context,
+              message: 'Connecting to your wallet.',
             );
-            hideDialog();
 
+            Result<TransactionModel?> result;
+            if (widget.profile.userType == 'BORROWER') {
+              result =
+                  await ref.read(walletRepoProvider).registerBorrowerWallet(
+                payload: {
+                  'borrower': address,
+                },
+              );
+            } else if (widget.profile.userType == 'LENDER') {
+              result = await ref.read(walletRepoProvider).registerLenderWallet(
+                payload: {
+                  'lender': address,
+                },
+              );
+            } else {
+              result =
+                  await ref.read(walletRepoProvider).registerMerchantWallet(
+                payload: {
+                  'merchant': address,
+                  'name': widget.profile.fullName,
+                },
+              );
+            }
+            hideDialog();
+            ref.invalidate(profileProvider);
             switch (result) {
               case Ok<TransactionModel?>():
                 showSuccessDialog(
                   context: AppNav.navKey.currentContext!,
                   message: 'Wallet connected successfully.',
-                  otherWidget:
-                  TransactionHashText(text: result.data?.transactionHash ?? ''),
+                  otherWidget: TransactionHashText(
+                    text: result.data?.transactionHash ?? '',
+                  ),
                 );
                 ref.invalidate(profileProvider);
                 break;
               case Error<TransactionModel?>():
-                showErrorDialog(context: AppNav.navKey.currentContext!, message: result.toString());
+                showErrorDialog(
+                  context: AppNav.navKey.currentContext!,
+                  message: result.toString(),
+                );
                 break;
             }
 
             return;
-
           }
         }
       });
     }
   }
 
-  Future<void> _onModalDisconnect(ModalDisconnect event) async {
+  Future<void> _onModalDisconnect(ModalDisconnect event) async {}
 
-  }
+  Future<void> _onModalError(ModalError event) async {}
 
-  Future<void> _onModalError(ModalError event) async {
-
-  }
-
-  Future<void> _onModalUpdate(ModalConnect event) async {
-
-  }
-
-
+  Future<void> _onModalUpdate(ModalConnect event) async {}
 
   @override
   Widget build(BuildContext context) {
     return ref.watch(appkitModalProvider).when(
-      data: (model) {
-        appKitModal = model;
-        appKitModal?.onModalConnect.subscribe(_onModalConnect);
-        appKitModal?.onModalDisconnect.subscribe(_onModalDisconnect);
-        appKitModal?.onModalError.subscribe(_onModalError);
-        appKitModal?.onModalUpdate.subscribe(_onModalUpdate);
+          data: (model) {
+            appKitModal = model;
+            appKitModal?.onModalConnect.subscribe(_onModalConnect);
+            appKitModal?.onModalDisconnect.subscribe(_onModalDisconnect);
+            appKitModal?.onModalError.subscribe(_onModalError);
+            appKitModal?.onModalUpdate.subscribe(_onModalUpdate);
 
-        return AppKitModalConnectButton(appKit: model);
-      },
-      error: (error, stck) => const SizedBox(),
-      loading: () => const Center(child: Text('Getting wallet info...'),),
-    );
+            return AppKitModalConnectButton(
+              appKit: model,
+              context: context,
+            );
+          },
+          error: (error, stck) => const SizedBox(),
+          loading: () => const Center(
+            child: Text('Getting wallet info...'),
+          ),
+        );
   }
 }

@@ -1,18 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reown_appkit/appkit_modal.dart';
 import 'package:reown_appkit/reown_appkit.dart';
 
 import '../../../../core/resources/app_secrets.dart';
-import '../../../../core/widgets/dialogs.dart';
-import '../../../../core/widgets/texts/transaction_hash_text.dart';
 import '../../../../infrastructure/di/global_providers.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/network/result.dart';
-import '../../../more/presentation/providers/more_providers.dart';
 import '../../data/models/borrower_profile.dart';
-import '../../data/models/transaction_model.dart';
 import '../../data/repositories/wallet_repo.dart';
 
 final walletRepoProvider = Provider.autoDispose((ref) {
@@ -21,18 +14,23 @@ final walletRepoProvider = Provider.autoDispose((ref) {
 
 final modelInitialized = StateProvider.autoDispose<bool>((ref) => false);
 
-
 final availableCreditProvider =
     FutureProvider.autoDispose<Result<num?>>((ref) async {
-  return await ref.read(walletRepoProvider).getAvailableCredit(publicAddress: '');
+  return await ref
+      .read(walletRepoProvider)
+      .getAvailableCredit(publicAddress: '');
 });
 
-final borrowerProfileProvider =
-    FutureProvider.autoDispose.family<Result<BorrowerProfile?>, String>((ref, pId) async {
-  return await ref.read(walletRepoProvider).getBorrowerProfile(publicAddress: pId);
+final borrowerProfileProvider = FutureProvider.autoDispose
+    .family<Result<BorrowerProfile?>, String>((ref, pId) async {
+  return await ref
+      .read(walletRepoProvider)
+      .getBorrowerProfile(publicAddress: pId);
 });
 
-final appkitModalProvider = FutureProvider<ReownAppKitModal>((ref) async {
+final appkitModalProvider =
+    FutureProvider.autoDispose<ReownAppKitModal>((ref) async {
+  ref.keepAlive();
   final appKitModal = ReownAppKitModal(
     context: AppNav.navKey.currentContext!,
     projectId: reownProjectId,

@@ -2,14 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:reown_appkit/appkit_modal.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
-import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/theme_toogle_button.dart';
 import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/errors/when_error_widget.dart';
@@ -19,9 +18,7 @@ import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../../infrastructure/network/result.dart';
 import '../../../home/presentation/providers/home_providers.dart';
-import '../../../kyc/presentation/screens/kyc_screen.dart';
 import '../../../signin/presentation/providers/sign_in_providers.dart';
-import '../../../wallet/presentation/controllers/wallet_controller.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../../data/models/profile.dart';
 import '../providers/more_providers.dart';
@@ -36,21 +33,27 @@ class MoreScreen extends ConsumerStatefulWidget {
 }
 
 class _MoreScreenState extends ConsumerState<MoreScreen> {
-  late final WalletController _walletController;
+  String _merchantMode = 'Merchant'; // Default mode
 
   @override
   void initState() {
-    _walletController = WalletController(
-      context: context,
-      ref: ref,
-      walletRepo: ref.read(walletRepoProvider),
-    );
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadMerchantMode();
+    });
+  }
+
+  Future<void> _loadMerchantMode() async {
+    final mode = await ref.read(securedStorageService).getMerchantMode();
+    if (mode != null && mounted) {
+      setState(() {
+        _merchantMode = mode;
+      });
+    }
   }
 
   @override
   void dispose() {
-    _walletController.dispose();
     super.dispose();
   }
 
@@ -72,13 +75,24 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
 
               return MoreBody(
                 profile: profile,
-                walletController: _walletController,
+                merchantMode: _merchantMode,
+                onMerchantModeChanged: (mode) async {
+                  setState(() {
+                    _merchantMode = mode;
+                  });
+                  await Future.delayed(const Duration(milliseconds: 300));
+                  await ref.read(securedStorageService).saveMerchantMode(mode);
+                  if (mounted) {
+                    AppNav.goRouter.go(RtNm.splashScreen);
+                  }
+                },
               );
             },
             error: (err, stack) => WhenErrorWidget(error: err),
             loading: () => MoreBody(
               profile: null,
-              walletController: _walletController,
+              merchantMode: _merchantMode,
+              onMerchantModeChanged: (mode) {},
             ),
           );
         },
@@ -89,12 +103,14 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
 
 class MoreBody extends ConsumerWidget {
   final Profile? profile;
-  final WalletController walletController;
+  final String merchantMode;
+  final Function(String) onMerchantModeChanged;
 
   const MoreBody({
     super.key,
     required this.profile,
-    required this.walletController,
+    required this.merchantMode,
+    required this.onMerchantModeChanged,
   });
 
   @override
@@ -113,20 +129,39 @@ class MoreBody extends ConsumerWidget {
                 onToggle: () {
                   ref.read(themeModeProvider.notifier).state =
                       isLightTheme(context) ? ThemeMode.dark : ThemeMode.light;
-                  ref.read(securedStorageService).saveThemeMode(ref.read(themeModeProvider)!);
+                  ref
+                      .read(securedStorageService)
+                      .saveThemeMode(ref.read(themeModeProvider)!);
                 },
               ),
             ),
             // Header Section
             ProfileHeaderSection(
               profile: profile,
-              onWalletConnectTap: () async {
-                await walletController.connectWalletToServer();
-              },
             ),
             const VerticalSpace(AppValues.paddingLarge),
             const DividerCustom(),
             const VerticalSpace(AppValues.paddingMedium),
+            // Mode Toggle Section - Only for MERCHANT users
+            if (profile?.userType == 'MERCHANT') ...[
+              MenuSection(
+                title: 'App Mode',
+                items: [
+                  MenuItemToggle(
+                    icon: icon,
+                    title: 'Switch Mode',
+                    subtitle: 'Toggle between Lender and Merchant mode',
+                    option1: 'Lender',
+                    option2: 'Merchant',
+                    currentValue: merchantMode,
+                    onChanged: onMerchantModeChanged,
+                  ),
+                ],
+              ),
+              const VerticalSpace(AppValues.paddingMedium),
+              const DividerCustom(),
+              const VerticalSpace(AppValues.paddingMedium),
+            ],
             // Menu Sections
             MenuSection(
               title: 'Account Settings',
@@ -145,8 +180,11 @@ class MoreBody extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      profile?.kycStatus == "APPROVED" ? 'Verified' : 'KYC Not Verified',
-                      style: s12W500(context, fontFamily: interFontFamily).copyWith(
+                      profile?.kycStatus == "APPROVED"
+                          ? 'Verified'
+                          : 'KYC Not Verified',
+                      style: s12W500(context, fontFamily: interFontFamily)
+                          .copyWith(
                         color: profile?.kycStatus == "APPROVED"
                             ? AppColors.primaryVariantLight
                             : AppColors.errorLight,
@@ -183,7 +221,8 @@ class MoreBody extends ConsumerWidget {
                   subtitle: 'Update your personal information',
                   onTap: () {
                     if (profile != null) {
-                      AppNav.goRouter.push(RtNm.personalDetailsScreen, extra: profile);
+                      AppNav.goRouter
+                          .push(RtNm.personalDetailsScreen, extra: profile);
                     }
                   },
                 ),
@@ -206,7 +245,8 @@ class MoreBody extends ConsumerWidget {
                 MenuItem(
                   icon: 'assets/icons/circle_half.svg',
                   title: 'Language & Appearance',
-                  subtitle: 'Customize language settings and which theme is used',
+                  subtitle:
+                      'Customize language settings and which theme is used',
                   onTap: () {
                     AppNav.goRouter.push(RtNm.languageAndAppearanceScreen);
                   },
@@ -247,7 +287,8 @@ class MoreBody extends ConsumerWidget {
                   color: AppColors.errorLight,
                   onTap: () {
                     if (profile != null) {
-                      AppNav.goRouter.push(RtNm.deleteAccountScreen, extra: profile);
+                      AppNav.goRouter
+                          .push(RtNm.deleteAccountScreen, extra: profile);
                     } else {
                       log('profile is null');
                     }
@@ -270,9 +311,18 @@ class MoreBody extends ConsumerWidget {
                 switch (result) {
                   case Ok():
                     await ref.read(securedStorageService).deleteUserTokens();
+                    await ref.read(securedStorageService).deleteMerchantMode();
+
                     AppNav.goRouter.go(RtNm.splashScreen);
+                    ref.invalidate(profileProvider);
+                    ref.invalidate(appkitModalProvider);
+                    ref.invalidate(walletRepoProvider);
+                    ref.invalidate(devicesRepo);
                   case Error():
-                    showErrorDialog(context: context, message: result.toString());
+                    showErrorDialog(
+                      context: context,
+                      message: result.toString(),
+                    );
                 }
               },
             ),
@@ -302,12 +352,10 @@ class DividerCustom extends StatelessWidget {
 
 class ProfileHeaderSection extends StatelessWidget {
   final Profile? profile;
-  final VoidCallback onWalletConnectTap;
 
   const ProfileHeaderSection({
     super.key,
     this.profile,
-    required this.onWalletConnectTap,
   });
 
   @override
@@ -333,16 +381,27 @@ class ProfileHeaderSection extends StatelessWidget {
             ),
           ),
           const VerticalSpace(AppValues.paddingMedium),
-          Text(
-            '${profile?.firstName ?? ''} ${profile?.lastName ?? ''}'.toUpperCase(),
-            style: s22W600(context),
-          ),
-          const VerticalSpace(16),
-          Text(
-            'You are a ${profile?.userType?.toLowerCase() ?? ''}',
-            style: s11W400(context),
-          ),
-          const VerticalSpace(16),
+          profile == null
+              ? Skeletonizer(
+                  child: Text(
+                    '__________',
+                    style: s22W600(context),
+                  ),
+                )
+              : const SizedBox.shrink(),
+          if (profile != null) ...[
+            Text(
+              '${profile?.firstName ?? ''} ${profile?.lastName ?? ''}'
+                  .toUpperCase(),
+              style: s22W600(context),
+            ),
+            const VerticalSpace(8),
+            Text(
+              'You are a ${profile?.userType?.toLowerCase() ?? ''}',
+              style: s11W400(context),
+            ),
+          ],
+          const VerticalSpace(8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
@@ -356,20 +415,21 @@ class ProfileHeaderSection extends StatelessWidget {
               ),
             ),
           ),
-          const VerticalSpace(16),
-          // AppIconButton(
-          //   title: profile?.wallet != null ? 'Wallet Connected' : 'Connect Wallet',
-          //   titleStyle: s14W500(context, fontFamily: interFontFamily).copyWith(
-          //     color: profile?.wallet != null ? AppColors.primaryLight : AppColors.onBackgroundDark,
-          //   ),
-          //   height: 48,
-          //   onTap: profile?.wallet != null ? null : onWalletConnectTap,
-          //   icon: SvgPicture.asset('assets/icons/link.svg'),
-          //   radius: AppValues.borderRadiusLarge,
-          //   color: AppColors.backgroundDark,
-          // ),
-          if (profile != null)
-            ConnectWalletButton(profile: profile!),
+          const VerticalSpace(8),
+          if (profile == null)
+            Skeletonizer(
+              child: Skeleton.leaf(
+                child: Container(
+                  width: 150,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryLight.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                ),
+              ),
+            ),
+          if (profile != null) ConnectWalletButton(profile: profile!),
         ],
       ),
     );

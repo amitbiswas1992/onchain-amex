@@ -13,7 +13,6 @@ import '../../../../core/widgets/app_text_form_field.dart';
 import '../../../../core/widgets/dividers/app_divider.dart';
 import '../../../../core/widgets/errors/when_error_widget.dart';
 import '../../../../core/widgets/loaders/when_loading_widget.dart';
-import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/network/result.dart';
 import '../../../home/data/models/latest_transaction.dart';
 import '../../../home/presentation/resources/home_strings.dart';
@@ -57,7 +56,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                 case Ok<Profile?>():
                   if (result.data!.wallet == null) {
                     return const Center(
-                      child: Text('You did not connected any wallet yet.'),
+                      child: Text('You haven\'t connected any wallet yet.'),
                     );
                   }
 
@@ -65,8 +64,11 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                     if (_scrollController.position.pixels ==
                         _scrollController.position.maxScrollExtent) {
                       ref
-                          .read(transactionHistoryProvider(result.data!.wallet?.address ?? '')
-                              .notifier)
+                          .read(
+                            transactionHistoryProvider(
+                                    result.data!.wallet?.address ?? '')
+                                .notifier,
+                          )
                           .getMoreData();
                     }
                   });
@@ -118,92 +120,110 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                       // ),
                       const VerticalSpace(20),
                       const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppValues.paddingMedium),
                         child: AppDivider(),
                       ),
                       const VerticalSpace(AppValues.paddingMedium),
                       Expanded(
-                        child: Consumer(builder: (context, ref, _) {
-                          final transactionsState = ref.watch(
-                              transactionHistoryProvider(result.data?.wallet?.address ?? ''));
-
-                          if (transactionsState.isLoading &&
-                              transactionsState.transactionHistory.isEmpty) {
-                            return const WhenLoadingWidget(
-                              message: 'Loading transactions...',
+                        child: Consumer(
+                          builder: (context, ref, _) {
+                            final transactionsState = ref.watch(
+                              transactionHistoryProvider(
+                                  result.data?.wallet?.address ?? ''),
                             );
-                          }
 
-                          if (transactionsState.transactionHistory.isEmpty) {
-                            return Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  InkResponse(
-                                    child: const Icon(Icons.refresh),
-                                    onTap: () {
-                                      ref.invalidate(transactionHistoryProvider);
-                                    },
-                                  ),
-                                  const VerticalSpace(AppValues.paddingMedium),
-                                  const Text('No transactions yet.'),
-                                ],
-                              ),
-                            );
-                          }
+                            if (transactionsState.isLoading &&
+                                transactionsState.transactionHistory.isEmpty) {
+                              return const WhenLoadingWidget(
+                                message: 'Loading transactions...',
+                              );
+                            }
 
-                          final searchKey = ref.watch(transactionSearchKey);
+                            if (transactionsState.transactionHistory.isEmpty) {
+                              return Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    InkResponse(
+                                      child: const Icon(Icons.refresh),
+                                      onTap: () {
+                                        ref.invalidate(
+                                            transactionHistoryProvider);
+                                      },
+                                    ),
+                                    const VerticalSpace(
+                                        AppValues.paddingMedium),
+                                    const Text('No transactions yet.'),
+                                  ],
+                                ),
+                              );
+                            }
 
-                          return RefreshIndicator(
-                            color: isLightTheme(context) ? AppColors.primaryLight : Colors.white,
-                            onRefresh: () async {
-                              ref.invalidate(transactionHistoryProvider);
-                              return;
-                            },
-                            child: ListView.builder(
-                              itemCount: transactionsState.transactionHistory.length,
-                              padding: const EdgeInsets.all(
-                                AppValues.paddingMedium,
-                              ),
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              controller: _scrollController,
-                              itemBuilder: (context, index) {
-                                final transaction = transactionsState.transactionHistory[index];
-                                final merchantName = transaction.merchantName ?? '';
-                                final merchantAddress = transaction.merchantAddress ?? '';
-                                final amount =
-                                    transaction.amount?.toBigInt().dividedByMillion() ?? 0.0;
-                                const currency = '';
-                                final date = transaction.timestamp == null
-                                    ? ''
-                                    : uiDateTimeFormat.format(
-                                        transaction.timestamp!.toDateFromMillisecondsSinceEpoch()!);
+                            final searchKey = ref.watch(transactionSearchKey);
 
-                                if (searchKey.isNotEmpty) {
-                                  if (!merchantName.toLowerCase().contains(searchKey.toLowerCase()) &&
-                                      !merchantAddress
-                                          .toLowerCase()
-                                          .contains(searchKey.toLowerCase()) &&
-                                      !date.toLowerCase().contains(searchKey.toLowerCase())) {
-                                    return const SizedBox();
-                                  }
-                                }
-
-                                return LatestTransactionTile(
-                                  latestTransaction: LatestTransaction(
-                                    title: merchantName,
-                                    address: merchantAddress,
-                                    amount: amount,
-                                    currency: '',
-                                    date: date,
-                                    match: searchKey,
-                                  ),
-                                );
+                            return RefreshIndicator(
+                              color: isLightTheme(context)
+                                  ? AppColors.primaryLight
+                                  : Colors.white,
+                              onRefresh: () async {
+                                ref.invalidate(transactionHistoryProvider);
+                                return;
                               },
-                            ),
-                          );
-                        }),
+                              child: ListView.builder(
+                                itemCount:
+                                    transactionsState.transactionHistory.length,
+                                padding: const EdgeInsets.all(
+                                  AppValues.paddingMedium,
+                                ),
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                controller: _scrollController,
+                                itemBuilder: (context, index) {
+                                  final transaction = transactionsState
+                                      .transactionHistory[index];
+                                  final merchantName =
+                                      transaction.merchantName ?? '';
+                                  final merchantAddress =
+                                      transaction.merchantAddress ?? '';
+                                  final amount = transaction.amount
+                                          ?.toBigInt()
+                                          .dividedByMillion() ??
+                                      0.0;
+                                  const currency = '';
+                                  final date = transaction.timestamp == null
+                                      ? ''
+                                      : uiDateTimeFormat.format(
+                                          transaction.timestamp!
+                                              .toDateFromMillisecondsSinceEpoch()!,
+                                        );
+
+                                  if (searchKey.isNotEmpty) {
+                                    if (!merchantName.toLowerCase().contains(
+                                            searchKey.toLowerCase()) &&
+                                        !merchantAddress.toLowerCase().contains(
+                                            searchKey.toLowerCase()) &&
+                                        !date.toLowerCase().contains(
+                                            searchKey.toLowerCase())) {
+                                      return const SizedBox();
+                                    }
+                                  }
+
+                                  return LatestTransactionTile(
+                                    latestTransaction: LatestTransaction(
+                                      title: merchantName,
+                                      address: merchantAddress,
+                                      amount: amount,
+                                      currency: '',
+                                      date: date,
+                                      match: searchKey,
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   );

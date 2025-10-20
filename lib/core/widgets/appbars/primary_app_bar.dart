@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../infrastructure/navigation/app_nav.dart';
+import '../../../infrastructure/navigation/rt_nm.dart';
 import '../../resources/app_values.dart';
 import '../../utils/sizebox_util.dart';
 import '../texts/text_styles.dart';
@@ -24,15 +25,18 @@ class PrimaryAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Container(
       height: preferredSize.height,
-      margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top), // For status bar
+      margin: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top,
+      ), // For status bar
       alignment: Alignment.center,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           InkWell(
-            onTap: onLeadingPressed ?? () {
-              AppNav.goRouter.pop();
-            },
+            onTap: onLeadingPressed ??
+                () {
+                  AppNav.goRouter.go(RtNm.homeScreen);
+                },
             child: SizedBox(
               height: double.infinity,
               child: Row(

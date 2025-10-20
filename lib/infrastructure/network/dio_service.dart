@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
-import '../../core/services/secured_storage_service.dart';
-import '../../modules/signin/data/models/tokens_model.dart';
+import '../../borrower/signin/data/models/register_model.dart';
 import '../navigation/app_nav.dart';
 import '../navigation/rt_nm.dart';
 import 'api_urls.dart';
@@ -18,7 +16,10 @@ class DioService {
   final HeadersService headersService;
   final ConnectivityService connectivityService;
 
-  DioService({required this.headersService, required this.connectivityService}) {
+  DioService({
+    required this.headersService,
+    required this.connectivityService,
+  }) {
     _initialize();
   }
 
@@ -34,7 +35,8 @@ class DioService {
       InterceptorsWrapper(
         onError: (error, handler) async {
           final data = error.requestOptions.data;
-          final payloadLog = data is FormData ? 'FormData(...)' : jsonEncode(data);
+          final payloadLog =
+              data is FormData ? 'FormData(...)' : jsonEncode(data);
 
           log(
             '''🔗 url:: ${error.requestOptions.method} -> ${error.requestOptions.uri}
@@ -48,17 +50,22 @@ class DioService {
 
           // 🔑 handle 401 here
           log('handling 401');
-          if (error.response?.statusCode == 401 && !_isRefreshRequest(error.requestOptions)) {
+          if (error.response?.statusCode == 401 &&
+              !_isRefreshRequest(error.requestOptions)) {
             final success = await _refreshAuthTokens();
             if (success) {
               final retryResponse = await _retryRequest(error.requestOptions);
               if (retryResponse.statusCode == 401) {
-                await _forceLogout(error.requestOptions); // Only logout if retry is still 401
+                await _forceLogout(
+                  error.requestOptions,
+                ); // Only logout if retry is still 401
                 return handler.reject(error);
               }
               return handler.resolve(retryResponse); // OK for 400/200/201 etc.
             } else {
-              await _forceLogout(error.requestOptions); // Logout if refresh failed
+              await _forceLogout(
+                error.requestOptions,
+              ); // Logout if refresh failed
               return handler.reject(error);
             }
           }
@@ -70,7 +77,8 @@ class DioService {
         },
         onResponse: (response, handler) {
           final data = response.requestOptions.data;
-          final payloadLog = data is FormData ? 'FormData(...)' : jsonEncode(data);
+          final payloadLog =
+              data is FormData ? 'FormData(...)' : jsonEncode(data);
 
           log(
             '''\nurl:: ${response.requestOptions.method} -> ${response.requestOptions.uri}
@@ -101,7 +109,8 @@ class DioService {
       headers: headers,
       responseType: requestOptions.responseType,
       contentType: requestOptions.contentType,
-      validateStatus: (status) => status != null, // Treat all HTTP status codes as valid
+      validateStatus: (status) =>
+          status != null, // Treat all HTTP status codes as valid
     );
 
     return dio.request<dynamic>(
@@ -111,7 +120,6 @@ class DioService {
       options: options,
     );
   }
-
 
   Future<bool> _refreshAuthTokens() async {
     try {
@@ -125,7 +133,7 @@ class DioService {
       );
 
       if (response.statusCode == 200 && response.data['success'] == true) {
-        final newTokens = TokensModel.fromJson(response.data['data']);
+        final newTokens = RegisterModel.fromJson(response.data);
         await headersService.securedStorageService.saveUserTokens(newTokens);
         return true;
       }
@@ -140,8 +148,12 @@ class DioService {
     final isEmailLogin = options.path.contains(ApiUrls.login);
     final isPhoneLogin = options.path.contains(ApiUrls.loginWIthPhone);
     final isEmailRegistration = options.path.contains(ApiUrls.register);
-    final isPhoneRegistration = options.path.contains(ApiUrls.registerWIthPhone);
-    if(isEmailLogin || isPhoneLogin || isEmailRegistration || isPhoneRegistration) return;
+    final isPhoneRegistration =
+        options.path.contains(ApiUrls.registerWIthPhone);
+    if (isEmailLogin ||
+        isPhoneLogin ||
+        isEmailRegistration ||
+        isPhoneRegistration) return;
 
     await headersService.securedStorageService.deleteUserTokens();
     AppNav.goRouter.go(RtNm.splashScreen);
@@ -155,13 +167,17 @@ class DioService {
     return await connectivityService.checkInternet();
   }
 
-  Future<Map<String, String>?> _getHeaders({bool useTokenizeHeader = false}) async {
+  Future<Map<String, String>?> _getHeaders({
+    bool useTokenizeHeader = false,
+  }) async {
     return useTokenizeHeader
         ? await headersService.getTokenizedHeaders()
         : headersService.defaultHeaders;
   }
 
-  Future<Map<String, String>?> _getMultipartHeaders({bool useTokenizeHeader = false}) async {
+  Future<Map<String, String>?> _getMultipartHeaders({
+    bool useTokenizeHeader = false,
+  }) async {
     return useTokenizeHeader
         ? await headersService.getMultipartTokenizedHeaders()
         : headersService.defaultHeaders;
@@ -213,7 +229,8 @@ class DioService {
       final response = await dio.get(
         url,
         options: Options(
-          headers: headers ?? await _getHeaders(useTokenizeHeader: useTokenizeHeader),
+          headers: headers ??
+              await _getHeaders(useTokenizeHeader: useTokenizeHeader),
         ),
         queryParameters: query,
       );
@@ -252,7 +269,8 @@ class DioService {
         url,
         queryParameters: query,
         options: Options(
-          headers: headers ?? await _getHeaders(useTokenizeHeader: useTokenizeHeader),
+          headers: headers ??
+              await _getHeaders(useTokenizeHeader: useTokenizeHeader),
         ),
         data: body,
       );
@@ -303,7 +321,8 @@ class DioService {
         data: formData,
         queryParameters: query,
         options: Options(
-          headers: headers ?? await _getMultipartHeaders(useTokenizeHeader: useTokenizeHeader),
+          headers: headers ??
+              await _getMultipartHeaders(useTokenizeHeader: useTokenizeHeader),
           // contentType: 'multipart/form-data',
         ),
       );
@@ -338,7 +357,8 @@ class DioService {
         url,
         queryParameters: query,
         options: Options(
-          headers: headers ?? await _getHeaders(useTokenizeHeader: useTokenizeHeader),
+          headers: headers ??
+              await _getHeaders(useTokenizeHeader: useTokenizeHeader),
         ),
         data: body,
       );
@@ -374,7 +394,8 @@ class DioService {
         url,
         queryParameters: query,
         options: Options(
-          headers: headers ?? await _getHeaders(useTokenizeHeader: useTokenizeHeader),
+          headers: headers ??
+              await _getHeaders(useTokenizeHeader: useTokenizeHeader),
         ),
         data: body,
       );
@@ -395,12 +416,12 @@ class DioService {
   }
 
   Future<ResponseModel> delete(
-      String url, {
-        bool useTokenizeHeader = false,
-        Map<String, String>? headers,
-        Map? body,
-        Map<String, dynamic>? query,
-      }) async {
+    String url, {
+    bool useTokenizeHeader = false,
+    Map<String, String>? headers,
+    Map? body,
+    Map<String, dynamic>? query,
+  }) async {
     try {
       if (await _hasConnection() == false) {
         return ResponseModel().noInternetResponse;
@@ -410,7 +431,8 @@ class DioService {
         url,
         queryParameters: query,
         options: Options(
-          headers: headers ?? await _getHeaders(useTokenizeHeader: useTokenizeHeader),
+          headers: headers ??
+              await _getHeaders(useTokenizeHeader: useTokenizeHeader),
         ),
         data: body,
       );
@@ -424,7 +446,8 @@ class DioService {
       // }
 
       final obj = ResponseModel(
-        success: jsonData['success'] ?? [200, 201, 202].contains(response.statusCode),
+        success: jsonData['success'] ??
+            [200, 201, 202].contains(response.statusCode),
         message: jsonData['message'] ?? '',
         body: jsonData['data'] ?? {},
       );

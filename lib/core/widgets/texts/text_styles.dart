@@ -31,6 +31,28 @@ TextStyle s14W400(BuildContext context, {String? fontFamily}) {
   );
 }
 
+TextStyle s20W500(BuildContext context, {String? fontFamily}) {
+  return TextStyle(
+    fontFamily: fontFamily ?? segoeProFontFamily,
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: isLightTheme(context) ? AppColors.c212121 : AppColors.onSurfaceDark,
+    letterSpacing: 0,
+    height: 1,
+  );
+}
+
+TextStyle s16W600(BuildContext context, {String? fontFamily}) {
+  return TextStyle(
+    fontFamily: fontFamily ?? segoeProFontFamily,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: isLightTheme(context) ? AppColors.c212121 : AppColors.onSurfaceDark,
+    letterSpacing: 0,
+    height: 1,
+  );
+}
+
 TextStyle s16W500(BuildContext context, {String? fontFamily}) {
   return TextStyle(
     fontFamily: fontFamily ?? segoeProFontFamily,
@@ -231,6 +253,8 @@ TextStyle s18W600(BuildContext context, {String? fontFamily}) {
     fontFamily: fontFamily ?? segoeProFontFamily,
     fontSize: 18,
     fontWeight: FontWeight.w600,
-    // color: isLightTheme(context) ? AppColors.c757575 : AppColors.onBackgroundDark,
+    color: isLightTheme(context)
+        ? AppColors.onBackgroundLight
+        : AppColors.onBackgroundDark,
   );
 }

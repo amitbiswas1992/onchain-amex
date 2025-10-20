@@ -33,14 +33,16 @@ class RtNm {
   static const chooseCardScreen = '/choose-card-screen';
   static const chooseCardDetailsScreen = '/choose-card-details-screen';
   static const chooseCardInfoInputScreen = '/choose-card-info-input-screen';
-  static const orderCardPaymentMethodScreen = '/order-card-payment-method-screen';
+  static const orderCardPaymentMethodScreen =
+      '/order-card-payment-method-screen';
   static const notificationSettingsScreen = '/notification-settings-screen';
   static const paymentMethodsScreen = '/payment-methods-screen';
   static const savedCardsScreen = '/saved-cards-screen';
   static const addACardScreen = '/add-a-card-screen';
   static const connectedBankAccountsScreen = '/connected-bank-accounts-screen';
   static const bankLocationSelectScreen = '/bank-location-select-screen';
-  static const connectBankAcDisclaimerScreen = '/connect-bank-ac-disclaimer-screen';
+  static const connectBankAcDisclaimerScreen =
+      '/connect-bank-ac-disclaimer-screen';
   static const deleteAccountScreen = '/delete-account-screen';
 
   static const rewardsScreen = '/rewards-screen';
@@ -50,4 +52,28 @@ class RtNm {
   static const idCheckKycOptionsScreen = '/id-check-kyc-options-screen';
   static const kycSuccessScreen = '/kyc-success-screen';
   static const languageAndAppearanceScreen = '/language-and-appearance-screen';
+
+  // Lender screens
+  static const lenderHomeScreen = '/lender-home-screen';
+  static const lenderWalletScreen = 'lender-wallet-screen';
+  static const lenderDepositAmountScreen = '/lender-deposit-amount-screen';
+  static const lenderDepositConfirmationScreen =
+      '/lender-deposit-confirmation-screen';
+  static const lenderWithdrawAmountScreen = '/lender-withdraw-amount-screen';
+  static const successScreen = '/success-screen';
+  static const lenderMoreScreen = '/lender-more-screen';
+  static const lenderTransactionScreen = '/lender-transactions-screen';
+
+  //merchant screens
+  static const merchantHomeScreen = '/merchant-home-screen';
+  static const merchantPaymentScreen = '/merchant-payment-screen';
+  static const merchantTransactionsScreen = '/merchant-transactions-screen';
+  static const merchantMoreScreen = '/merchant-more-screen';
+  static const merchantWithdrawScreen = 'merchant-withdraw-screen';
+
+  // Increase screens
+  static const increaseScreen = '/increase-screen';
+
+  // Merchant/POS screens
+  static const posPaymentScreen = '/pos-payment-screen';
 }

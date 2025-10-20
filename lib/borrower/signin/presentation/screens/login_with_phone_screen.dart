@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
@@ -74,19 +75,21 @@ class _SignInWithPhoneScreenState extends ConsumerState<LogInWithPhoneScreen> {
                   const AmexTextAppBar(),
                   const VerticalSpace(68),
                   const TitleText(
-                    text: letsGetYpuSignedIn,
+                    text: letsGetYouSignedIn,
                     textAlign: TextAlign.start,
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
                   Consumer(
                     builder: (context, ref, _) {
-                      final countryCode = ref.watch(selectedCountryCodeProvider);
+                      final countryCode =
+                          ref.watch(selectedCountryCodeProvider);
 
                       return PhoneNumberTextField(
                         focusNode: _phoneNode,
                         countryCode: countryCode,
                         onCountryCodeChanged: (code) {
-                          ref.read(selectedCountryCodeProvider.notifier).state = code;
+                          ref.read(selectedCountryCodeProvider.notifier).state =
+                              code;
                         },
                         prefixIcon: const Icon(
                           CupertinoIcons.device_phone_portrait,
@@ -141,7 +144,8 @@ class _SignInWithPhoneScreenState extends ConsumerState<LogInWithPhoneScreen> {
                         child: AppSecondaryButton(
                           title: useEmail,
                           onTap: () {
-                            AppNav.goRouter.pushReplacement(RtNm.loginWithEmailScreen);
+                            AppNav.goRouter
+                                .pushReplacement(RtNm.loginWithEmailScreen);
                           },
                         ),
                       ),
@@ -150,10 +154,14 @@ class _SignInWithPhoneScreenState extends ConsumerState<LogInWithPhoneScreen> {
                         child: AppPrimaryButton(
                           title: continuee,
                           onTap: () async {
-                            final valid = await _formKey.currentState!.validate();
+                            final valid = _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
-                              _controller.signIn(email: _phone, password: _password, isEmail: false);
+                              _controller.signIn(
+                                email: _phone,
+                                password: _password,
+                                isEmail: false,
+                              );
                             }
                           },
                         ),
@@ -168,10 +176,12 @@ class _SignInWithPhoneScreenState extends ConsumerState<LogInWithPhoneScreen> {
                       children: [
                         TextSpan(
                           text: "Register.",
-                          style: s14W500(context),
+                          style: s14W500(context)
+                              .copyWith(color: AppColors.primaryLight),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              AppNav.goRouter.push(RtNm.registerWithPhoneScreen);
+                              AppNav.goRouter
+                                  .push(RtNm.registerWithPhoneScreen);
                             },
                         ),
                       ],

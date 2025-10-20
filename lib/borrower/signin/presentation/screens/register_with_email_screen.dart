@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
@@ -20,6 +22,7 @@ import '../providers/sign_in_providers.dart';
 import '../resources/signin_strings.dart';
 import '../widgets/amex_text_app_bar.dart';
 import '../widgets/user_consent_text.dart';
+import 'role_tabs.dart';
 
 class RegisterWithEmailScreen extends ConsumerStatefulWidget {
   const RegisterWithEmailScreen({super.key});
@@ -28,8 +31,10 @@ class RegisterWithEmailScreen extends ConsumerStatefulWidget {
   ConsumerState createState() => _SignInWithEmailScreenState();
 }
 
-class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen> {
+class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
+    with SingleTickerProviderStateMixin {
   late final SignInController _controller;
+  late final TabController tabController;
   final _formKey = GlobalKey<FormState>();
   final _emailNode = FocusNode();
   final _passwordNode = FocusNode();
@@ -40,9 +45,13 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
   String _email = '';
   String _password = '';
 
+  // Add local role state
+  final _UserRole _selectedRole = _UserRole.borrower;
+
   @override
   void initState() {
     super.initState();
+    tabController = TabController(length: 3, vsync: this);
     _controller = SignInController(
       context: context,
       ref: ref,
@@ -54,6 +63,7 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
   @override
   void dispose() {
     super.dispose();
+    tabController.dispose();
     _emailNode.dispose();
     _passwordNode.dispose();
     _firstNameNode.dispose();
@@ -76,12 +86,14 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const AmexTextAppBar(),
-                  const VerticalSpace(68),
+                  const VerticalSpace(36),
+                  const VerticalSpace(AppValues.paddingMedium),
                   const TitleText(
-                    text: letsGetYpuSignedIn,
+                    text: letsGetYouRegistered,
                     textAlign: TextAlign.start,
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
+                  RoleTabWidget(tabController: tabController),
                   AppTextFormField(
                     focusNode: _emailNode,
                     prefixIcon: const Icon(
@@ -91,7 +103,7 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                     hintText: yourEmailAddress,
                     maxLines: 1,
                     keyboardType: TextInputType.emailAddress,
-                    autoFocus: true,
+                    autoFocus: false,
                     validator: (val) {
                       if (val == null || val.isEmpty) {
                         return inputRequired;
@@ -184,7 +196,8 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                         child: AppSecondaryButton(
                           title: usePhone,
                           onTap: () {
-                            AppNav.goRouter.pushReplacement(RtNm.registerWithPhoneScreen);
+                            AppNav.goRouter
+                                .pushReplacement(RtNm.registerWithPhoneScreen);
                           },
                         ),
                       ),
@@ -193,7 +206,9 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                         child: AppPrimaryButton(
                           title: continuee,
                           onTap: () async {
-                            final valid = await _formKey.currentState!.validate();
+                            HapticFeedback.lightImpact();
+                            FocusScope.of(context).unfocus();
+                            final valid = _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
                               _controller.register(
@@ -202,6 +217,11 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                                 lastName: _lastName,
                                 firstName: _firstName,
                                 isEmail: true,
+                                userType: tabController.index == 0
+                                    ? 'BORROWER'
+                                    : tabController.index == 1
+                                        ? 'LENDER'
+                                        : 'MERCHANT',
                               );
                             }
                           },
@@ -217,7 +237,8 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                       children: [
                         TextSpan(
                           text: "Login.",
-                          style: s14W500(context),
+                          style: s14W500(context)
+                              .copyWith(color: AppColors.primaryLight),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               AppNav.goRouter.push(RtNm.loginWithEmailScreen);
@@ -235,6 +256,60 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
           ),
         ),
       ),
+    );
+  }
+}
+
+// Simple role enum
+enum _UserRole { borrower, merchant, lender }
+
+// Tabs widget
+class RoleTabs extends StatelessWidget {
+  final _UserRole selected;
+  final ValueChanged<_UserRole> onChanged;
+
+  const RoleTabs({
+    super.key,
+    required this.selected,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    const items = [
+      (_UserRole.borrower, 'Borrower'),
+      (_UserRole.merchant, 'Merchant'),
+      (_UserRole.lender, 'Lender'),
+    ];
+
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: items.map((item) {
+        final isSelected = selected == item.$1;
+        return ChoiceChip(
+          label: Text(
+            item.$2,
+            style: s14W500(context, fontFamily: interFontFamily).copyWith(
+              color: isSelected
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).iconTheme.color,
+            ),
+          ),
+          selected: isSelected,
+          onSelected: (_) => onChanged(item.$1),
+          selectedColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          shape: StadiumBorder(
+            side: BorderSide(
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.grey.shade300,
+            ),
+          ),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        );
+      }).toList(),
     );
   }
 }

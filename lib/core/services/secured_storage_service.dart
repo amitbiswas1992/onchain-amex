@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../modules/signin/data/models/tokens_model.dart';
+import '../../borrower/signin/data/models/register_model.dart';
+import '../../borrower/signin/data/models/tokens_model.dart';
 
 class SecuredStorageService {
   final _storage = const FlutterSecureStorage(
@@ -11,7 +12,10 @@ class SecuredStorageService {
   );
 
   Future<void> saveThemeMode(ThemeMode mode) async {
-    await _storage.write(key: 'theme_mode', value: mode == ThemeMode.dark ? 'dark' : 'light');
+    await _storage.write(
+      key: 'theme_mode',
+      value: mode == ThemeMode.dark ? 'dark' : 'light',
+    );
   }
 
   Future<ThemeMode> getThemeMode() async {
@@ -28,14 +32,27 @@ class SecuredStorageService {
     return onboarded == 'true';
   }
 
-  Future<void> saveUserTokens(TokensModel tokenModel) async {
-    await _storage.write(key: 'user_token', value: jsonEncode(tokenModel.toJson()));
+  Future<void> saveUserTokens(RegisterModel tokenModel) async {
+    await _storage.write(
+      key: 'user_token',
+      value: jsonEncode(tokenModel.toJson()),
+    );
+  }
+
+  Future<RegisterModel?> getUserModel() async {
+    final token = await _storage.read(key: 'user_token');
+    if (token != null) {
+      return RegisterModel.fromJson(jsonDecode(token));
+    }
+    return null;
   }
 
   Future<TokensModel?> getUserTokens() async {
     final token = await _storage.read(key: 'user_token');
     if (token != null) {
-      return TokensModel.fromJson(jsonDecode(token));
+      return TokensModel.fromJson(
+        (jsonDecode(token) as Map<String, dynamic>)['tokens'],
+      );
     }
     return null;
   }
@@ -49,4 +66,16 @@ class SecuredStorageService {
     }
   }
 
+  // Merchant Mode Management
+  Future<void> saveMerchantMode(String mode) async {
+    await _storage.write(key: 'merchant_mode', value: mode);
+  }
+
+  Future<String?> getMerchantMode() async {
+    return await _storage.read(key: 'merchant_mode');
+  }
+
+  Future<void> deleteMerchantMode() async {
+    await _storage.delete(key: 'merchant_mode');
+  }
 }

@@ -10,7 +10,6 @@ import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/containers/light_card.dart';
 import '../../../../core/widgets/errors/when_error_widget.dart';
-import '../../../../core/widgets/loaders/when_loading_widget.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
@@ -24,8 +23,6 @@ import '../../data/models/latest_transaction.dart';
 import '../providers/home_providers.dart';
 import '../resources/home_strings.dart';
 import '../widgets/home_app_bar.dart';
-import '../widgets/home_available_to_spend.dart';
-import '../widgets/home_credit_score_and_xp_points.dart';
 import '../widgets/home_wallet_section.dart';
 import '../widgets/latest_transaction_tile.dart';
 
@@ -42,9 +39,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final padding = MediaQuery.of(context).padding;
 
     return Scaffold(
-      backgroundColor: isLightTheme(context) ? const Color(0xFFF5F5F5) : const Color(0xFF121212),
+      backgroundColor: isLightTheme(context)
+          ? const Color(0xFFF5F5F5)
+          : const Color(0xFF121212),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
+        padding:
+            const EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),
         child: Column(
           children: [
             VerticalSpace(padding.top),
@@ -76,19 +76,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           const VerticalSpace(AppValues.paddingMedium),
                           Expanded(
                             child: RefreshIndicator(
-                              color: isLightTheme(context) ? AppColors.primaryLight : Colors.white,
+                              color: isLightTheme(context)
+                                  ? AppColors.primaryLight
+                                  : Colors.white,
                               onRefresh: () async {
                                 ref.invalidate(availableCreditProvider);
                                 ref.invalidate(borrowerProfileProvider);
                                 ref.invalidate(transactionHistoryProvider);
+                                ref.invalidate(profileProvider);
+                                await Future.delayed(
+                                  const Duration(milliseconds: 1000),
+                                );
                               },
-
                               child: SingleChildScrollView(
                                 physics: const AlwaysScrollableScrollPhysics(),
                                 child: Column(
                                   children: [
                                     HomeWalletSection(profile: profile),
-                                    const VerticalSpace(AppValues.paddingMedium),
+                                    const VerticalSpace(
+                                      AppValues.paddingMedium,
+                                    ),
                                     LightCard(
                                       radius: 0,
                                       padding: const EdgeInsets.symmetric(
@@ -100,12 +107,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                           Row(
                                             children: [
                                               const Expanded(
-                                                child: TitleText(text: latestTransactions),
+                                                child: TitleText(
+                                                  text: latestTransactions,
+                                                ),
                                               ),
                                               InkResponse(
                                                 onTap: () {
-                                                  ref.read(bottomNavSelectedIndexProvider.notifier).state = 3;
-                                                  AppNav.goRouter.go(RtNm.transactionsScreen);
+                                                  ref
+                                                      .read(
+                                                        bottomNavSelectedIndexProvider
+                                                            .notifier,
+                                                      )
+                                                      .state = 3;
+                                                  AppNav.goRouter.go(
+                                                    RtNm.transactionsScreen,
+                                                  );
                                                 },
                                                 child: Text(
                                                   seeAll,
@@ -113,65 +129,108 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                     context,
                                                     fontFamily: interFontFamily,
                                                   ).copyWith(
-                                                    color: AppColors.primaryVariantLight,
-                                                    decoration: TextDecoration.underline,
-                                                    decorationColor: AppColors.primaryVariantLight,
+                                                    color: AppColors
+                                                        .primaryVariantLight,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    decorationColor: AppColors
+                                                        .primaryVariantLight,
                                                   ),
                                                 ),
                                               ),
                                             ],
                                           ),
                                           const VerticalSpace(20),
-                                          Consumer(builder: (context, ref, _) {
-                                            final transactionsState = ref.watch(
-                                                transactionHistoryProvider(profile?.wallet?.address ?? ''));
-
-                                            if (transactionsState.isLoading &&
-                                                transactionsState.transactionHistory.isEmpty) {
-                                              return const SizedBox();
-                                            }
-
-                                            if (transactionsState.transactionHistory.isEmpty) {
-                                              return const Center(
-                                                child: Padding(
-                                                  padding: EdgeInsets.only(bottom: AppValues.paddingMedium),
-                                                  child: Text('No transactions yet.'),
+                                          Consumer(
+                                            builder: (context, ref, _) {
+                                              final transactionsState =
+                                                  ref.watch(
+                                                transactionHistoryProvider(
+                                                  profile?.wallet?.address ??
+                                                      '',
                                                 ),
                                               );
-                                            }
 
-                                            return ListView.builder(
-                                              itemCount: transactionsState.transactionHistory.length > 10 ? 10 : transactionsState.transactionHistory.length,
-                                              padding: const EdgeInsets.all(
-                                                AppValues.paddingMedium,
-                                              ),
-                                              physics: const NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemBuilder: (context, index) {
-                                                final transaction = transactionsState.transactionHistory[index];
-                                                final merchantName = transaction.merchantName ?? '';
-                                                final merchantAddress = transaction.merchantAddress ?? '';
-                                                final amount =
-                                                    transaction.amount?.toBigInt().dividedByMillion() ?? 0.0;
-                                                const currency = '';
-                                                final date = transaction.timestamp == null
-                                                    ? ''
-                                                    : uiDateTimeFormat.format(
-                                                    transaction.timestamp!.toDateFromMillisecondsSinceEpoch()!);
+                                              if (transactionsState.isLoading &&
+                                                  transactionsState
+                                                      .transactionHistory
+                                                      .isEmpty) {
+                                                return const SizedBox();
+                                              }
 
-                                                return LatestTransactionTile(
-                                                  latestTransaction: LatestTransaction(
-                                                    title: merchantName,
-                                                    address: merchantAddress,
-                                                    amount: amount,
-                                                    currency: '',
-                                                    date: date,
-                                                    match: '',
+                                              if (transactionsState
+                                                  .transactionHistory.isEmpty) {
+                                                return const Center(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                      bottom: AppValues
+                                                          .paddingMedium,
+                                                    ),
+                                                    child: Text(
+                                                      'No transactions yet.',
+                                                    ),
                                                   ),
                                                 );
-                                              },
-                                            );
-                                          })
+                                              }
+
+                                              return ListView.builder(
+                                                itemCount: transactionsState
+                                                            .transactionHistory
+                                                            .length >
+                                                        10
+                                                    ? 10
+                                                    : transactionsState
+                                                        .transactionHistory
+                                                        .length,
+                                                padding: const EdgeInsets.all(
+                                                  AppValues.paddingMedium,
+                                                ),
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemBuilder: (context, index) {
+                                                  final transaction =
+                                                      transactionsState
+                                                              .transactionHistory[
+                                                          index];
+                                                  final merchantName =
+                                                      transaction
+                                                              .merchantName ??
+                                                          '';
+                                                  final merchantAddress =
+                                                      transaction
+                                                              .merchantAddress ??
+                                                          '';
+                                                  final amount = transaction
+                                                          .amount
+                                                          ?.toBigInt()
+                                                          .dividedByMillion() ??
+                                                      0.0;
+                                                  const currency = '';
+                                                  final date = transaction
+                                                              .timestamp ==
+                                                          null
+                                                      ? ''
+                                                      : uiDateTimeFormat.format(
+                                                          transaction.timestamp!
+                                                              .toDateFromMillisecondsSinceEpoch()!,
+                                                        );
+
+                                                  return LatestTransactionTile(
+                                                    latestTransaction:
+                                                        LatestTransaction(
+                                                      title: merchantName,
+                                                      address: merchantAddress,
+                                                      amount: amount,
+                                                      currency: '',
+                                                      date: date,
+                                                      match: '',
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          ),
                                         ],
                                       ),
                                     ),

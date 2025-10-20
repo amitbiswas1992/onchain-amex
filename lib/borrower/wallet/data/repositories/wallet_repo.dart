@@ -12,44 +12,85 @@ class WalletRepo implements WalletRepoInterface {
   WalletRepo({required this.dioService});
 
   @override
-  Future<Result<TransactionModel?>> connectWallet({required Map<String, dynamic> payload}) async {
+  Future<Result<TransactionModel?>> registerBorrowerWallet(
+      {required Map<String, dynamic> payload}) async {
     try {
       final response = await dioService.post(
-        ApiUrls.connectWallet,
+        ApiUrls.registerBorrowerWallet,
         body: payload,
         useTokenizeHeader: true,
       );
 
-      return response.toResult(dataHandler: (data) => TransactionModel.fromJson(data));
+      return response.toResult(
+          dataHandler: (data) => TransactionModel.fromJson(data));
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }
   }
 
   @override
-  Future<Result<num?>> getAvailableCredit({required String publicAddress}) async {
+  Future<Result<TransactionModel?>> registerLenderWallet(
+      {required Map<String, dynamic> payload}) async {
+    try {
+      final response = await dioService.post(
+        ApiUrls.registerLenderWallet,
+        body: payload,
+        useTokenizeHeader: true,
+      );
+
+      return response.toResult(
+          dataHandler: (data) => TransactionModel.fromJson(data));
+    } catch (error, stck) {
+      return handleCatchAndReturnResult(error: error, stck: stck);
+    }
+  }
+
+  @override
+  Future<Result<TransactionModel?>> registerMerchantWallet(
+      {required Map<String, dynamic> payload}) async {
+    try {
+      final response = await dioService.post(
+        ApiUrls.registerMerchantWallet,
+        body: payload,
+        useTokenizeHeader: true,
+      );
+
+      return response.toResult(
+          dataHandler: (data) => TransactionModel.fromJson(data));
+    } catch (error, stck) {
+      return handleCatchAndReturnResult(error: error, stck: stck);
+    }
+  }
+
+  @override
+  Future<Result<num?>> getAvailableCredit(
+      {required String publicAddress}) async {
     try {
       final response = await dioService.get(
         ApiUrls.availableCredit,
         useTokenizeHeader: true,
       );
 
-      return response.toResult(dataHandler: (data) {
-        return num.tryParse(data['availableCredit'] ?? '0');
-      });
+      return response.toResult(
+        dataHandler: (data) {
+          return num.tryParse(data['availableCredit'] ?? '0');
+        },
+      );
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }
   }
 
   @override
-  Future<Result<BorrowerProfile?>> getBorrowerProfile({required String publicAddress}) async {
+  Future<Result<BorrowerProfile?>> getBorrowerProfile(
+      {required String publicAddress}) async {
     try {
       final response = await dioService.get(
         ApiUrls.borrowerProfile(publicAddress),
         useTokenizeHeader: true,
       );
-      return response.toResult(dataHandler: (data) => BorrowerProfile.fromJson(data));
+      return response.toResult(
+          dataHandler: (data) => BorrowerProfile.fromJson(data));
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }

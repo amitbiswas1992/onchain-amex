@@ -5,7 +5,7 @@ import '../../../../core/resources/app_colors.dart';
 import '../../../../core/widgets/containers/icon_outer_circle.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 
-class HomeAppBar extends StatelessWidget {
+class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String profileName;
   final VoidCallback onProfileTap;
   final VoidCallback onNotificationTap;
@@ -18,6 +18,8 @@ class HomeAppBar extends StatelessWidget {
     required this.onNotificationTap,
     required this.onGiftTap,
   });
+  @override
+  Size get preferredSize => const Size.fromHeight(80);
 
   @override
   Widget build(BuildContext context) {

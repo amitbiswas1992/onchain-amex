@@ -1,13 +1,10 @@
-import 'dart:convert';
-
 import '../../../../core/utils/log_util.dart';
 import '../../../../infrastructure/network/api_urls.dart';
 import '../../../../infrastructure/network/dio_service.dart';
 import '../../../../infrastructure/network/result.dart';
+import '../../business/repository/sign_in_repo_interface.dart';
 import '../dto/register_dto.dart';
 import '../models/register_model.dart';
-import '../../business/repository/sign_in_repo_interface.dart';
-import '../models/tokens_model.dart';
 
 class SignInRepo implements SignInRepoInterface {
   final DioService dioService;
@@ -15,61 +12,72 @@ class SignInRepo implements SignInRepoInterface {
   SignInRepo({required this.dioService});
 
   @override
-  Future<Result<RegisterModel?>> registerWithEmail({required RegisterDto dto}) async {
+  Future<Result<RegisterModel?>> registerWithEmail({
+    required RegisterDto dto,
+  }) async {
     try {
       final response = await dioService.post(
         dto.isEmail ? ApiUrls.register : ApiUrls.registerWIthPhone,
         body: dto.toJson(),
       );
 
-      return response.toResult(dataHandler: (data) {
-        return RegisterModel(
-          tokensModel: TokensModel.fromJson(data['tokens']),
-          userMap: data['user'],
-        );
-      });
+      return response.toResult(
+        dataHandler: (data) {
+          return RegisterModel.fromJson(data);
+        },
+      );
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }
   }
 
   @override
-  Future<Result> verifyEmailOtp(
-      {required Map<String, dynamic> payload, required bool isEmail}) async {
+  Future<Result> verifyEmailOtp({
+    required Map<String, dynamic> payload,
+    required bool isEmail,
+  }) async {
     try {
       final response = await dioService.post(
         isEmail ? ApiUrls.verifyOtpForEmail : ApiUrls.verifyOtpForPhone,
         body: payload,
       );
 
-      return response.toResult(dataHandler: (json) {
-        return null;
-      });
+      return response.toResult(
+        dataHandler: (json) {
+          return null;
+        },
+      );
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }
   }
 
   @override
-  Future<Result> resendOtpToEmail(
-      {required Map<String, dynamic> payload, required bool isEmail}) async {
+  Future<Result> resendOtpToEmail({
+    required Map<String, dynamic> payload,
+    required bool isEmail,
+  }) async {
     try {
       final response = await dioService.post(
         isEmail ? ApiUrls.resendOtpToEmail : ApiUrls.resendOtpToPhone,
         body: payload,
       );
 
-      return response.toResult(dataHandler: (json) {
-        return null;
-      });
+      return response.toResult(
+        dataHandler: (json) {
+          return null;
+        },
+      );
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }
   }
 
   @override
-  Future<Result<RegisterModel?>> login(
-      {required Map<String, dynamic> payload, required bool isEmail}) async {
+  Future<Result<RegisterModel?>> login({
+    required Map<String, dynamic> payload,
+    required bool isEmail,
+  }) async {
     try {
       final response = await dioService.post(
         isEmail ? ApiUrls.login : ApiUrls.loginWIthPhone,
@@ -78,10 +86,9 @@ class SignInRepo implements SignInRepoInterface {
 
       return response.toResult(
         dataHandler: (data) {
-          return RegisterModel(
-            tokensModel: TokensModel.fromJson(data['tokens']),
-            userMap: data['user'],
-          );
+          print('Login Response Data: ${data['user']}');
+          print('Login Response Data: ${data['tokens']}');
+          return RegisterModel.fromJson(data);
         },
       );
     } catch (error, stck) {
@@ -95,7 +102,8 @@ class SignInRepo implements SignInRepoInterface {
       return (await dioService.post(
         ApiUrls.logOut,
         useTokenizeHeader: true,
-      )).toResult(dataHandler: null);
+      ))
+          .toResult(dataHandler: null);
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }

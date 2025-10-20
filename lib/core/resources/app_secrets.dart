@@ -1,1 +1,1 @@
-const reownProjectId = '520ee95ea7ffe12bc7bbc2bbc4a03dd8';
+const reownProjectId = 'f626249ddcf84558524fe78fd5e053fa';

@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
@@ -21,6 +22,7 @@ import '../providers/sign_in_providers.dart';
 import '../resources/signin_strings.dart';
 import '../widgets/amex_text_app_bar.dart';
 import '../widgets/user_consent_text.dart';
+import 'role_tabs.dart';
 
 class RegisterWithPhoneScreen extends ConsumerStatefulWidget {
   const RegisterWithPhoneScreen({super.key});
@@ -29,8 +31,11 @@ class RegisterWithPhoneScreen extends ConsumerStatefulWidget {
   ConsumerState createState() => _RegisterWithPhoneScreenState();
 }
 
-class _RegisterWithPhoneScreenState extends ConsumerState<RegisterWithPhoneScreen> {
+class _RegisterWithPhoneScreenState
+    extends ConsumerState<RegisterWithPhoneScreen>
+    with SingleTickerProviderStateMixin {
   late final SignInController _controller;
+  late final TabController tabController;
 
   final _formKey = GlobalKey<FormState>();
   final _phoneNode = FocusNode();
@@ -42,9 +47,13 @@ class _RegisterWithPhoneScreenState extends ConsumerState<RegisterWithPhoneScree
   String _password = '';
   String _phone = '';
 
+  // Add local role state
+  final _UserRole _selectedRole = _UserRole.borrower;
+
   @override
   void initState() {
     super.initState();
+    tabController = TabController(length: 3, vsync: this);
     _controller = SignInController(
       context: context,
       ref: ref,
@@ -56,6 +65,7 @@ class _RegisterWithPhoneScreenState extends ConsumerState<RegisterWithPhoneScree
   @override
   void dispose() {
     super.dispose();
+    tabController.dispose();
     _phoneNode.dispose();
     _passwordNode.dispose();
     _firstNameNode.dispose();
@@ -78,21 +88,25 @@ class _RegisterWithPhoneScreenState extends ConsumerState<RegisterWithPhoneScree
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const AmexTextAppBar(),
-                  const VerticalSpace(68),
+                  const VerticalSpace(AppValues.paddingMedium),
+                  const VerticalSpace(36),
                   const TitleText(
-                    text: letsGetYpuSignedIn,
+                    text: letsGetYouRegistered,
                     textAlign: TextAlign.start,
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
+                  RoleTabWidget(tabController: tabController),
                   Consumer(
                     builder: (context, ref, _) {
-                      final countryCode = ref.watch(selectedCountryCodeProvider);
+                      final countryCode =
+                          ref.watch(selectedCountryCodeProvider);
 
                       return PhoneNumberTextField(
                         focusNode: _phoneNode,
                         countryCode: countryCode,
                         onCountryCodeChanged: (code) {
-                          ref.read(selectedCountryCodeProvider.notifier).state = code;
+                          ref.read(selectedCountryCodeProvider.notifier).state =
+                              code;
                         },
                         prefixIcon: const Icon(
                           CupertinoIcons.device_phone_portrait,
@@ -188,7 +202,8 @@ class _RegisterWithPhoneScreenState extends ConsumerState<RegisterWithPhoneScree
                         child: AppSecondaryButton(
                           title: useEmail,
                           onTap: () {
-                            AppNav.goRouter.pushReplacement(RtNm.registerWithEmailScreen);
+                            AppNav.goRouter
+                                .pushReplacement(RtNm.registerWithEmailScreen);
                           },
                         ),
                       ),
@@ -197,7 +212,7 @@ class _RegisterWithPhoneScreenState extends ConsumerState<RegisterWithPhoneScree
                         child: AppPrimaryButton(
                           title: continuee,
                           onTap: () async {
-                            final valid = await _formKey.currentState!.validate();
+                            final valid = _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
                               _controller.register(
@@ -206,6 +221,11 @@ class _RegisterWithPhoneScreenState extends ConsumerState<RegisterWithPhoneScree
                                 firstName: _firstName,
                                 lastName: _lastName,
                                 isEmail: false,
+                                userType: tabController.index == 0
+                                    ? 'BORROWER'
+                                    : tabController.index == 1
+                                        ? 'LENDER'
+                                        : 'MERCHANT',
                               );
                             }
                           },
@@ -221,7 +241,8 @@ class _RegisterWithPhoneScreenState extends ConsumerState<RegisterWithPhoneScree
                       children: [
                         TextSpan(
                           text: "Login.",
-                          style: s14W500(context),
+                          style: s14W500(context)
+                              .copyWith(color: AppColors.primaryLight),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               AppNav.goRouter.push(RtNm.loginWithPhoneScreen);
@@ -239,6 +260,60 @@ class _RegisterWithPhoneScreenState extends ConsumerState<RegisterWithPhoneScree
           ),
         ),
       ),
+    );
+  }
+}
+
+// Simple role enum
+enum _UserRole { borrower, merchant, lender }
+
+// Tabs widget
+class RoleTabs extends StatelessWidget {
+  final _UserRole selected;
+  final ValueChanged<_UserRole> onChanged;
+
+  const RoleTabs({
+    super.key,
+    required this.selected,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    const items = [
+      (_UserRole.borrower, 'Borrower'),
+      (_UserRole.merchant, 'Merchant'),
+      (_UserRole.lender, 'Lender'),
+    ];
+
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: items.map((item) {
+        final isSelected = selected == item.$1;
+        return ChoiceChip(
+          label: Text(
+            item.$2,
+            style: s14W500(context, fontFamily: interFontFamily).copyWith(
+              color: isSelected
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).iconTheme.color,
+            ),
+          ),
+          selected: isSelected,
+          onSelected: (_) => onChanged(item.$1),
+          selectedColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          shape: StadiumBorder(
+            side: BorderSide(
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.grey.shade300,
+            ),
+          ),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        );
+      }).toList(),
     );
   }
 }

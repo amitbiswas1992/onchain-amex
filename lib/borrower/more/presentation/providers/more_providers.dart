@@ -5,16 +5,32 @@ import '../../../../infrastructure/di/global_providers.dart';
 import '../../data/repositories/devices_repo.dart';
 import '../../data/repositories/profile_repo.dart';
 
-final profileRepo = Provider.autoDispose((ref) => ProfileRepo(dioService: ref.read(dioService)));
-final devicesRepo = Provider.autoDispose((ref) => DevicesRepo(dioService: ref.read(dioService)));
+final profileRepo = Provider.autoDispose(
+  (ref) => ProfileRepo(dioService: ref.read(dioService)),
+);
+final devicesRepo = Provider.autoDispose(
+  (ref) => DevicesRepo(dioService: ref.read(dioService)),
+);
 final profileProvider = FutureProvider.autoDispose((ref) async {
-  return await ref.read(profileRepo).getProfile();
+  final link = ref.keepAlive();
+  try {
+    final profile = await ref.read(profileRepo).getProfile();
+    // Only keep alive if successful
+    return profile;
+  } catch (e) {
+    link.close(); // Allow disposal on error
+    rethrow;
+  }
 });
 
-final selectedCountryProvider = StateProvider.autoDispose<Country?>((ref) => null);
+final selectedCountryProvider =
+    StateProvider.autoDispose<Country?>((ref) => null);
 
 final pickedDateProvider = StateProvider.autoDispose<DateTime?>((ref) => null);
 
+final merchantProfileProvider = FutureProvider.autoDispose((ref) async {
+  return await ref.read(profileRepo).getMerchantProfile();
+});
 final deviceSessionsProvider = FutureProvider.autoDispose((ref) async {
   return await ref.read(devicesRepo).getSignedDevices();
 });

@@ -17,9 +17,21 @@ class SplashController {
   void routeNext() async {
     await Future.delayed(const Duration(seconds: 3));
 
-    final userTokens = await ref.read(securedStorageService).getUserTokens();
+    final userTokens = await ref.read(securedStorageService).getUserModel();
+    print(userTokens);
     if (userTokens != null) {
-      AppNav.goRouter.go(RtNm.homeScreen);
+      if (userTokens.user.userType == 'LENDER') {
+        AppNav.goRouter.go(RtNm.lenderHomeScreen);
+      } else if (userTokens.user.userType == 'BORROWER') {
+        AppNav.goRouter.go(RtNm.homeScreen);
+      } else {
+        if (await ref.read(securedStorageService).getMerchantMode() ==
+            'Lender') {
+          AppNav.goRouter.go(RtNm.lenderHomeScreen);
+          return;
+        }
+        AppNav.goRouter.go(RtNm.merchantHomeScreen);
+      }
       return;
     }
 

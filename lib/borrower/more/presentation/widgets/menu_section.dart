@@ -82,7 +82,9 @@ class MenuItem extends StatelessWidget {
             IconOuterCircle(
               icon: SvgPicture.asset(
                 icon,
-                color: doNotUseIconColor ? null : color ?? Theme.of(context).iconTheme.color,
+                color: doNotUseIconColor
+                    ? null
+                    : color ?? Theme.of(context).iconTheme.color,
                 width: 24,
                 height: 24,
               ),
@@ -123,6 +125,108 @@ class MenuItem extends StatelessWidget {
                   color: AppColors.c455468,
                 ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class MenuItemToggle extends StatelessWidget {
+  final String icon;
+  final String title;
+  final String? subtitle;
+  final String option1;
+  final String option2;
+  final String currentValue;
+  final Function(String) onChanged;
+  final Color? color;
+  final bool doNotUseIconColor;
+
+  const MenuItemToggle({
+    super.key,
+    required this.icon,
+    required this.title,
+    this.subtitle,
+    required this.option1,
+    required this.option2,
+    required this.currentValue,
+    required this.onChanged,
+    this.color,
+    this.doNotUseIconColor = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Row(
+        children: [
+          IconOuterCircle(
+            icon: SvgPicture.string(
+              icon,
+              color: doNotUseIconColor
+                  ? null
+                  : color ?? Theme.of(context).iconTheme.color,
+              width: 24,
+              height: 24,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: s14W600(context),
+                ),
+                if (subtitle != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle!,
+                    maxLines: 3,
+                    style: s12W400(context).copyWith(
+                      color: color,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.borderColor.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildToggleOption(context, option1),
+                _buildToggleOption(context, option2),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToggleOption(BuildContext context, String option) {
+    final isSelected = currentValue == option;
+    return InkWell(
+      onTap: () => onChanged(option),
+      borderRadius: BorderRadius.circular(6),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.primaryLight : Colors.transparent,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Text(
+          option,
+          style: s12W600(context).copyWith(
+            color: isSelected ? Colors.white : AppColors.c455468,
+          ),
         ),
       ),
     );

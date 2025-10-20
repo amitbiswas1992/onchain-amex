@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
@@ -71,7 +73,7 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                   const AmexTextAppBar(),
                   const VerticalSpace(68),
                   const TitleText(
-                    text: letsGetYpuSignedIn,
+                    text: letsGetYouSignedIn,
                     textAlign: TextAlign.start,
                   ),
                   const VerticalSpace(AppValues.paddingMedium),
@@ -136,7 +138,8 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                         child: AppSecondaryButton(
                           title: usePhone,
                           onTap: () {
-                            AppNav.goRouter.pushReplacement(RtNm.loginWithPhoneScreen);
+                            AppNav.goRouter
+                                .pushReplacement(RtNm.loginWithPhoneScreen);
                           },
                         ),
                       ),
@@ -145,10 +148,16 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                         child: AppPrimaryButton(
                           title: continuee,
                           onTap: () async {
-                            final valid = await _formKey.currentState!.validate();
+                            HapticFeedback.lightImpact();
+                            FocusScope.of(context).unfocus();
+                            final valid = _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
-                              _controller.signIn(email: _email, password: _password, isEmail: true);
+                              _controller.signIn(
+                                email: _email,
+                                password: _password,
+                                isEmail: true,
+                              );
                             }
                           },
                         ),
@@ -163,10 +172,12 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                       children: [
                         TextSpan(
                           text: "Register.",
-                          style: s14W500(context),
+                          style: s14W500(context)
+                              .copyWith(color: AppColors.primaryLight),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              AppNav.goRouter.push(RtNm.registerWithEmailScreen);
+                              AppNav.goRouter
+                                  .push(RtNm.registerWithEmailScreen);
                             },
                         ),
                       ],
