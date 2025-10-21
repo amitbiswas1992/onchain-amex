@@ -1,6 +1,8 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+
 import '../../../../core/utils/log_util.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
@@ -12,9 +14,11 @@ class QrCodeScannerScreen extends StatefulWidget {
   State<QrCodeScannerScreen> createState() => _QrCodeScannerScreenState();
 }
 
-class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> with SingleTickerProviderStateMixin {
+class _QrCodeScannerScreenState extends State<QrCodeScannerScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scanLineAnimation;
+  bool _isProcessing = false;
 
   @override
   void initState() {
@@ -89,7 +93,8 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> with SingleTi
                                   color: Colors.greenAccent,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.greenAccent.withOpacity(0.5),
+                                      color:
+                                          Colors.greenAccent.withOpacity(0.5),
                                       blurRadius: 8,
                                       spreadRadius: 2,
                                     ),
@@ -147,7 +152,13 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen> with SingleTi
             );
           },
           onDetect: (capture) {
-            AppNav.goRouter.pop(capture.barcodes.first.rawValue);
+            if (_isProcessing) return;
+            _isProcessing = true;
+
+            final rawValue = capture.barcodes.first.rawValue;
+            if (rawValue != null && mounted) {
+              AppNav.goRouter.pop(rawValue);
+            }
           },
         ),
       ),
@@ -200,8 +211,7 @@ class _ScanWindowClipper extends CustomClipper<Path> {
 
   @override
   Path getClip(Size size) {
-    final path = Path()
-      ..addRect(Rect.fromLTWH(0, 0, size.width, size.height));
+    final path = Path()..addRect(Rect.fromLTWH(0, 0, size.width, size.height));
 
     final scanWindowRect = Rect.fromCenter(
       center: Offset(size.width / 2, size.height / 2),

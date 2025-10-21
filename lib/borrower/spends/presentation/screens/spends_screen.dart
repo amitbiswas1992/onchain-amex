@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,9 +17,7 @@ import '../../../more/data/models/profile.dart';
 import '../../../more/presentation/providers/more_providers.dart';
 import '../../data/models/scanned_data.dart';
 import '../resources/spends_strings.dart';
-import '../widgets/scan_and_pay_page.dart';
 import '../widgets/spends_nfc_page.dart';
-import 'dart:developer' as dev;
 
 class SpendsScreen extends ConsumerStatefulWidget {
   const SpendsScreen({super.key});
@@ -27,7 +26,8 @@ class SpendsScreen extends ConsumerStatefulWidget {
   ConsumerState createState() => _SpendsScreenState();
 }
 
-class _SpendsScreenState extends ConsumerState<SpendsScreen> with TickerProviderStateMixin {
+class _SpendsScreenState extends ConsumerState<SpendsScreen>
+    with TickerProviderStateMixin {
   late final TabController _tabController;
   late final PageController _pageController;
   Profile? profile;
@@ -73,7 +73,8 @@ class _SpendsScreenState extends ConsumerState<SpendsScreen> with TickerProvider
                           height: 40,
                           child: TabBar(
                             controller: _tabController,
-                            labelStyle: s14W500(context).copyWith(color: Colors.white),
+                            labelStyle:
+                                s14W500(context).copyWith(color: Colors.white),
                             labelPadding: const EdgeInsets.only(
                               left: AppValues.paddingLarge,
                               right: AppValues.paddingLarge,
@@ -136,7 +137,9 @@ class _SpendsScreenState extends ConsumerState<SpendsScreen> with TickerProvider
                                   'assets/icons/qr.png',
                                   height: 80,
                                   width: 80,
-                                  color: isLightTheme(context) ? null : Colors.white,
+                                  color: isLightTheme(context)
+                                      ? null
+                                      : Colors.white,
                                 ),
                               ),
                               const VerticalSpace(AppValues.paddingSmall),
@@ -149,7 +152,7 @@ class _SpendsScreenState extends ConsumerState<SpendsScreen> with TickerProvider
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               );
             },
@@ -161,7 +164,7 @@ class _SpendsScreenState extends ConsumerState<SpendsScreen> with TickerProvider
 
   void _handleQrScan() async {
     final dcc = await AppNav.goRouter.push(RtNm.qrCodeScannerScreen);
-    if (dcc == null){
+    if (dcc == null) {
       return null;
     }
     await Future.delayed(const Duration(seconds: 1));
@@ -170,15 +173,19 @@ class _SpendsScreenState extends ConsumerState<SpendsScreen> with TickerProvider
       if (uri == null) {
         return;
       }
-      final dataStr = utf8.decode(base64Url.decode(uri.queryParameters['data']!));
-      dev.log('data => ${dataStr.runtimeType} => ' + dataStr);
+      final dataStr =
+          utf8.decode(base64Url.decode(uri.queryParameters['data']!));
+      dev.log('data => ${dataStr.runtimeType} => $dataStr');
       // showInfoDialog(context: context, message: dataStr, dismissible: false);
       if (profile == null) {
         dev.log('profile is null');
       } else {
         dev.log('profile is not null');
       }
-      AppNav.goRouter.push(RtNm.paymentScreen, extra: ScannedData.fromJson(jsonDecode(dataStr), profile));
+      AppNav.goRouter.push(
+        RtNm.paymentScreen,
+        extra: ScannedData.fromJson(jsonDecode(dataStr), profile),
+      );
     } catch (error, stck) {
       debugPrint(error.toString());
       debugPrint(stck.toString());

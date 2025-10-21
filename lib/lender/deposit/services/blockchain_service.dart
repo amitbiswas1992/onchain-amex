@@ -482,25 +482,23 @@ class BlockchainService {
 
     final contractAmount = DecimalConverter.toContractAmount(amount);
 
-    try {
-      final txHash = await appKitModal.requestWriteContract(
-        topic: sessionTopic!,
-        chainId: currentChainId,
-        deployedContract: _vaultContract!,
-        functionName: 'withdraw',
-        parameters: [
-          contractAmount,
-          ethereumAddress, // receiver
-          ethereumAddress, // owner
-        ],
-        transaction: Transaction(from: ethereumAddress),
-      );
-
-      return txHash;
-    } catch (e) {
-      print('Error withdrawing: $e');
-      throw Exception('Failed to withdraw: ${e.toString()}');
+    final txHash = await appKitModal.requestWriteContract(
+      topic: sessionTopic!,
+      chainId: currentChainId,
+      deployedContract: _vaultContract!,
+      functionName: 'withdraw',
+      parameters: [
+        contractAmount,
+        ethereumAddress, // receiver
+        ethereumAddress, // owner
+      ],
+      transaction: Transaction(from: ethereumAddress),
+    );
+    if (txHash is Map && txHash['code'] == 5000) {
+      throw Exception('User rejected the transaction');
     }
+
+    return txHash;
   }
 
   /// Withdraw (redeem shares for USDC) - Legacy method

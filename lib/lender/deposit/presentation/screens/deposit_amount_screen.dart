@@ -6,6 +6,7 @@ import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/decimal_converter.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
+import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
@@ -50,13 +51,14 @@ class _DepositAmountScreenState extends ConsumerState<DepositAmountScreen>
   Future<void> _handleDeposit() async {
     final amountText = _amountController.text.trim();
     if (amountText.isEmpty) {
-      _showError('Please enter an amount');
+      showErrorDialog(context: context, message: 'Please enter an amount');
       return;
     }
 
     final amount = double.tryParse(amountText);
     if (amount == null || amount <= 0) {
-      _showError('Please enter a valid amount');
+      showErrorDialog(context: context, message: 'Please enter a valid amount');
+
       return;
     }
 
@@ -70,7 +72,6 @@ class _DepositAmountScreenState extends ConsumerState<DepositAmountScreen>
       // Check USDC balance
       final balance = await blockchainService.getUsdcBalance();
       if (balance < amount) {
-        _showError('Insufficient USDC balance');
         setState(() {
           _isProcessing = false;
         });
@@ -81,25 +82,21 @@ class _DepositAmountScreenState extends ConsumerState<DepositAmountScreen>
       final allowance = await blockchainService.getUsdcAllowance();
       print('Current allowance: $allowance, required: $amount');
       if (allowance < amount) {
-        // Need to approve first
-        if (!mounted) return;
-        final shouldApprove = await _showApprovalDialog(amount);
-        if (!shouldApprove) {
-          setState(() {
-            _isProcessing = false;
-          });
-          return;
-        }
         await blockchainService.approveUsdc(amount);
-        await Future.delayed(const Duration(seconds: 1));
+        showLoadingDialog(context: context, message: 'Waiting for approval...');
+        await Future.delayed(const Duration(seconds: 2));
+        hideDialog();
       }
       final depositTxHash = await blockchainService.deposit(amount);
 
       if (!mounted) return;
 
-      // Wait a bit for the transaction to be mined (give blockchain time to process)
-      _showLoadingMessage('Waiting for blockchain confirmation...');
+      showLoadingDialog(
+        context: context,
+        message: "Completing your transaction...",
+      );
       await Future.delayed(const Duration(seconds: 5));
+      hideDialog();
 
       // Refresh balances after waiting
       ref.invalidate(usdcBalanceProvider);
@@ -121,7 +118,7 @@ class _DepositAmountScreenState extends ConsumerState<DepositAmountScreen>
     } catch (e) {
       print('Deposit error: $e');
       if (!mounted) return;
-      _showError(e.toString());
+      showErrorDialog(context: context, message: e.toString());
     } finally {
       if (mounted) {
         setState(() {
@@ -129,65 +126,6 @@ class _DepositAmountScreenState extends ConsumerState<DepositAmountScreen>
         });
       }
     }
-  }
-
-  Future<bool> _showApprovalDialog(double amount) async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Approval Required'),
-        content: Text(
-          'You need to approve the vault to spend ${DecimalConverter.formatAmount(amount)} USDC. This is a one-time transaction.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryLight,
-            ),
-            child: const Text('Approve', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-    return result ?? false;
-  }
-
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-        duration: const Duration(seconds: 3),
-      ),
-    );
-  }
-
-  void _showLoadingMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const SizedBox(
-              width: 16,
-              height: 16,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Text(message),
-          ],
-        ),
-        backgroundColor: AppColors.primaryLight,
-        duration: const Duration(seconds: 5),
-      ),
-    );
   }
 
   @override

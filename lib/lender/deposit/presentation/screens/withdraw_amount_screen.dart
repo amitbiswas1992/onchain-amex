@@ -6,6 +6,7 @@ import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/decimal_converter.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
+import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
@@ -90,9 +91,12 @@ class _WithdrawAmountScreenState extends ConsumerState<WithdrawAmountScreen> {
       final maxWithdrawable =
           await blockchainService.getMaxWithdrawableAmount();
       if (amount > maxWithdrawable) {
-        _showError(
-          'Amount exceeds max withdrawable: ${DecimalConverter.formatAmount(maxWithdrawable)} USDC',
+        showErrorDialog(
+          context: context,
+          message:
+              'Amount exceeds max withdrawable: ${DecimalConverter.formatAmount(maxWithdrawable)} USDC',
         );
+
         setState(() {
           _isProcessing = false;
         });
@@ -104,9 +108,12 @@ class _WithdrawAmountScreenState extends ConsumerState<WithdrawAmountScreen> {
       if (!mounted) return;
 
       // Wait for blockchain confirmation
-      _showLoadingMessage('Waiting for blockchain confirmation...');
-      await Future.delayed(const Duration(seconds: 5));
-
+      showLoadingDialog(
+        context: context,
+        message: "Completing your transaction...",
+      );
+      await Future.delayed(const Duration(seconds: 7));
+      hideDialog();
       // Refresh balances
       ref.invalidate(usdcBalanceProvider);
       ref.invalidate(vaultBalanceProvider);
@@ -129,7 +136,7 @@ class _WithdrawAmountScreenState extends ConsumerState<WithdrawAmountScreen> {
     } catch (e) {
       print('Withdraw error: $e');
       if (!mounted) return;
-      _showError('Transaction failed: ${e.toString()}');
+      showErrorDialog(context: context, message: e.toString());
     } finally {
       if (mounted) {
         setState(() {

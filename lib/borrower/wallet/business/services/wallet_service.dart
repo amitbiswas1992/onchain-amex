@@ -1,12 +1,12 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
 
 import 'package:flutter/services.dart';
-import 'package:reown_appkit/appkit_modal.dart';
 import 'package:reown_appkit/reown_appkit.dart';
 
 import '../../../../core/constants/contract_constants.dart';
 import '../../../../core/extensions/big_int_extensions.dart';
-import 'dart:developer' as dev;
+import '../../../../core/utils/decimal_converter.dart';
 
 class WalletService {
   final ReownAppKitModal appKitModal;
@@ -24,7 +24,8 @@ class WalletService {
       print('Starting to load contracts...');
 
       // Load Creditor Contract (Creditor.json)
-      final creditorAbi = await rootBundle.loadString('assets/contracts/Creditor.json');
+      final creditorAbi =
+          await rootBundle.loadString('assets/contracts/Creditor.json');
       final creditorAbiJson = json.decode(creditorAbi);
 
       _creditorContract = DeployedContract(
@@ -48,7 +49,6 @@ class WalletService {
         EthereumAddress.fromHex(ContractConstants.usdcAddress),
       );
       print('USDC contract loaded');
-
 
       _isInitialized = true;
       print('All contracts loaded successfully');
@@ -149,30 +149,25 @@ class WalletService {
     if (!isConnected || _usdcContract == null || sessionTopic == null)
       return 0.0;
 
-    try {
-      final result = await appKitModal.requestReadContract(
-        topic: sessionTopic!,
-        chainId: currentChainId,
-        deployedContract: _usdcContract!,
-        functionName: 'allowance',
-        parameters: [
-          ethereumAddress,
-          EthereumAddress.fromHex(ContractConstants.vaultAddress),
-        ],
-      );
+    final result = await appKitModal.requestReadContract(
+      topic: sessionTopic!,
+      chainId: currentChainId,
+      deployedContract: _usdcContract!,
+      functionName: 'allowance',
+      parameters: [
+        ethereumAddress,
+        EthereumAddress.fromHex(ContractConstants.creditorAddress),
+      ],
+    );
 
-      final allowance = result.first as BigInt;
-      return allowance.dividedByMillion();
-    } catch (e) {
-      print('Error getting USDC allowance: $e');
-      return 0.0;
-    }
+    final allowance = result.first as BigInt;
+    return allowance.dividedByMillion();
   }
 
   /// Approve Vault to spend USDC
   /// @param amount The amount of USDC to approve (in UI format)
   Future<String> approveUsdc(double amount) async {
-    dev.log('approval amount => ${amount}');
+    dev.log('approval amount => $amount');
     // Wait for contracts to load
     await _ensureInitialized();
 
@@ -182,24 +177,22 @@ class WalletService {
 
     final contractAmount = amount.multiplyByMillion();
 
-    try {
-      final txHash = await appKitModal.requestWriteContract(
-        topic: sessionTopic!,
-        chainId: currentChainId,
-        deployedContract: _usdcContract!,
-        functionName: 'approve',
-        parameters: [
-          EthereumAddress.fromHex(ContractConstants.creditorAddress),
-          contractAmount,
-        ],
-        transaction: Transaction(from: ethereumAddress),
-      );
-
-      return txHash;
-    } catch (e) {
-      print('Error approving USDC: $e');
-      throw Exception('Failed to approve USDC: ${e.toString()}');
+    final txHash = await appKitModal.requestWriteContract(
+      topic: sessionTopic!,
+      chainId: currentChainId,
+      deployedContract: _usdcContract!,
+      functionName: 'approve',
+      parameters: [
+        EthereumAddress.fromHex(ContractConstants.creditorAddress),
+        contractAmount,
+      ],
+      transaction: Transaction(from: ethereumAddress),
+    );
+    if (txHash is Map && txHash['code'] == 5000) {
+      throw Exception('User rejected the transaction');
     }
+
+    return txHash;
   }
 
   /// Repay USDC into vault
@@ -242,7 +235,10 @@ class WalletService {
 
   /// Repay USDC into vault
   /// @param amount USDC amount to deposit (in UI format)
-  Future<String> spend({required double amount, required String merchantPublicAddress}) async {
+  Future<String> spend({
+    required double amount,
+    required String merchantPublicAddress,
+  }) async {
     // Wait for contracts to load
     await _ensureInitialized();
 
@@ -256,27 +252,28 @@ class WalletService {
     //   throw Exception('Insufficient allowance. Please approve USDC first.');
     // }
 
-    final contractAmount = amount.multiplyByMillion();
+    final contractAmount = DecimalConverter.toContractAmount(amount);
 
-    try {
-      final txHash = await appKitModal.requestWriteContract(
-        topic: sessionTopic!,
-        chainId: currentChainId,
-        deployedContract: _creditorContract!,
-        functionName: 'spend',
-        parameters: [
-          ethereumAddress, // borrower address
-          EthereumAddress.fromHex(merchantPublicAddress),
-          contractAmount,
-        ],
-        transaction: Transaction(from: ethereumAddress),
-      );
-
-      return txHash;
-    } catch (e) {
-      print('Error depositing: $e');
-      throw Exception('Failed to deposit: ${e.toString()}');
+    print(
+      'Spending amount in contract format: $contractAmount for merchant: $merchantPublicAddress $ethereumAddress',
+    );
+    final txHash = await appKitModal.requestWriteContract(
+      topic: sessionTopic!,
+      chainId: currentChainId,
+      deployedContract: _creditorContract!,
+      functionName: 'spend',
+      parameters: [
+        ethereumAddress, // borrower address
+        EthereumAddress.fromHex(merchantPublicAddress),
+        contractAmount,
+      ],
+      transaction: Transaction(from: ethereumAddress),
+    );
+    print('spend txHash: $txHash');
+    if (txHash is Map && txHash['code'] == 5000) {
+      throw Exception('User rejected the transaction');
     }
-  }
 
+    return txHash;
+  }
 }

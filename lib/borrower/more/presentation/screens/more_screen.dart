@@ -321,6 +321,10 @@ class MoreBody extends ConsumerWidget {
                   case Ok():
                     await ref.read(securedStorageService).deleteUserTokens();
                     await ref.read(securedStorageService).deleteMerchantMode();
+                    await ref
+                        .read(appkitModalProvider)
+                        .valueOrNull
+                        ?.disconnect();
 
                     AppNav.goRouter.go(RtNm.splashScreen);
                     ref.invalidate(profileProvider);
