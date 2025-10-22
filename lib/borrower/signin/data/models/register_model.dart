@@ -26,7 +26,7 @@ class RegisterModel {
 
 class User {
   final String id;
-  final String email;
+  final String? email;
   final String username;
   final String firstName;
   final String lastName;
