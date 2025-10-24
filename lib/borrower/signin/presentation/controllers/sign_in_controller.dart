@@ -105,6 +105,31 @@ class SignInController {
     );
   }
 
+  Future<void> forgotPassword({
+    required String emailOrPhone,
+    required bool isEmail,
+  }) async {
+    AppNav.goRouter.push(RtNm.signInLoadingScreen);
+    final result = await signInRepo.sendPasswordResetOtp(
+      payload: {isEmail ? 'email' : 'phoneNumber': emailOrPhone},
+    );
+    AppNav.navKey.currentState?.pop();
+    switch (result) {
+      case Ok():
+
+        // Navigate to reset password screen and pass email and otp
+        AppNav.goRouter.push(
+          RtNm.resetPasswordScreen,
+          extra: {
+            'email': emailOrPhone,
+          },
+        );
+
+      case Error():
+        showErrorDialog(context: context, message: result.toString());
+    }
+  }
+
   Future<void> register({
     required String email,
     required String password,
@@ -151,6 +176,36 @@ class SignInController {
       }
     } else {
       //TODO: handle resend otp for phone number
+    }
+  }
+
+  Future<void> resetPassword({
+    required String email,
+    required String otp,
+    required String newPassword,
+  }) async {
+    AppNav.goRouter.push(RtNm.signInLoadingScreen);
+    final result = await signInRepo.resetPassword(
+      payload: {
+        'email': email,
+        'otp': otp,
+        'newPassword': newPassword,
+      },
+    );
+    AppNav.navKey.currentState?.pop();
+    switch (result) {
+      case Ok():
+        showSuccessDialog(
+          context: context,
+          message:
+              'Password reset successful. Please login with your new password.',
+          dismissible: false,
+          onDone: () {
+            AppNav.goRouter.go(RtNm.loginWithEmailScreen);
+          },
+        );
+      case Error():
+        showErrorDialog(context: context, message: result.toString());
     }
   }
 }

@@ -16,7 +16,7 @@ class SplashController {
   });
 
   void routeNext() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
     final first = await _isFirstTime();
     if (first) {
       await ref.read(securedStorageService).deleteAll();

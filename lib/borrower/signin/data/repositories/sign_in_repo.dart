@@ -97,6 +97,44 @@ class SignInRepo implements SignInRepoInterface {
   }
 
   @override
+  Future<Result> sendPasswordResetOtp({
+    required Map<String, dynamic> payload,
+  }) async {
+    try {
+      final response = await dioService.post(
+        ApiUrls.passwordResetOtp,
+        body: payload,
+      );
+
+      return response.toResult(
+        dataHandler: (json) {
+          return null;
+        },
+      );
+    } catch (error, stck) {
+      return handleCatchAndReturnResult(error: error, stck: stck);
+    }
+  }
+
+  @override
+  Future<Result> resetPassword({required Map<String, dynamic> payload}) async {
+    try {
+      final response = await dioService.post(
+        ApiUrls.resetPasswordOtp,
+        body: payload,
+      );
+
+      return response.toResult(
+        dataHandler: (json) {
+          return null;
+        },
+      );
+    } catch (error, stck) {
+      return handleCatchAndReturnResult(error: error, stck: stck);
+    }
+  }
+
+  @override
   Future<Result> logout() async {
     try {
       return (await dioService.post(

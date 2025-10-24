@@ -75,6 +75,10 @@ class _DepositAmountScreenState extends ConsumerState<DepositAmountScreen>
         setState(() {
           _isProcessing = false;
         });
+        showErrorDialog(
+          context: context,
+          message: 'Insufficient USDC balance.',
+        );
         return;
       }
 

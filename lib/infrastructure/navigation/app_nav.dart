@@ -41,11 +41,13 @@ import '../../borrower/payment_methods/presentation/screens/connected_bank_accou
 import '../../borrower/payment_methods/presentation/screens/payment_methods_screen.dart';
 import '../../borrower/payment_methods/presentation/screens/saved_cards_screen.dart';
 import '../../borrower/rewards/presentation/screens/rewards_screen.dart';
+import '../../borrower/signin/presentation/screens/forgot_password_screen.dart';
 import '../../borrower/signin/presentation/screens/login_with_email_screen.dart';
 import '../../borrower/signin/presentation/screens/login_with_phone_screen.dart';
 import '../../borrower/signin/presentation/screens/otp_input_screen.dart';
 import '../../borrower/signin/presentation/screens/register_with_email_screen.dart';
 import '../../borrower/signin/presentation/screens/register_with_phone_screen.dart';
+import '../../borrower/signin/presentation/screens/reset_password_screen.dart';
 import '../../borrower/signin/presentation/screens/sign_in_loading_screen.dart';
 import '../../borrower/signin/presentation/screens/user_info_input_screen.dart';
 import '../../borrower/spends/data/models/payment_success_extra.dart';
@@ -65,7 +67,6 @@ import '../../lender/deposit/presentation/screens/deposit_confirmation_screen.da
 import '../../lender/deposit/presentation/screens/withdraw_amount_screen.dart';
 import '../../lender/home/presentation/screens/lender_home_screen.dart';
 import '../../lender/home/presentation/screens/lender_shell_screen.dart';
-import '../../lender/lender_transactions/presentation/screens/lender_transactions_screen.dart';
 import '../../lender/wallet/presentation/screens/wallet_screen.dart';
 import '../../merchant/home/presentation/merchant_home_screen.dart';
 import '../../merchant/home/presentation/merchant_withdraw_screen.dart';
@@ -345,6 +346,23 @@ class AppNav {
       ),
     ),
     GoRoute(
+      path: RtNm.forgotPasswordScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        const ForgotPasswordScreen(),
+        state,
+      ),
+    ),
+    GoRoute(
+      path: RtNm.resetPasswordScreen,
+      pageBuilder: (context, state) => fadeTransitionPageBuilder(
+        // allow passing email and otp as extra map
+        ResetPasswordScreen(
+          email: (state.extra as Map<String, dynamic>?)?['email'] as String?,
+        ),
+        state,
+      ),
+    ),
+    GoRoute(
       path: RtNm.loginWithPhoneScreen,
       pageBuilder: (context, state) => fadeTransitionPageBuilder(
         const LogInWithPhoneScreen(),
@@ -588,11 +606,6 @@ class AppNav {
                 fadeTransitionPageBuilder(const WalletScreen(), state),
           ),
         ],
-      ),
-      GoRoute(
-        path: RtNm.lenderTransactionScreen,
-        pageBuilder: (context, state) =>
-            fadeTransitionPageBuilder(const LenderTransactionScreen(), state),
       ),
       GoRoute(
         path: RtNm.lenderMoreScreen,

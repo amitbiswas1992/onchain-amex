@@ -243,7 +243,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       );
                     },
                     error: (err, stack) => WhenErrorWidget(error: err),
-                    loading: () => const HomeWalletSection(profile: null),
+                    loading: () => Column(
+                      children: [
+                        HomeAppBar(
+                          onGiftTap: () {},
+                          onNotificationTap: () {},
+                          onProfileTap: () {},
+                          profileName: '',
+                        ),
+                        const VerticalSpace(AppValues.paddingMedium),
+                        const HomeWalletSection(profile: null),
+                      ],
+                    ),
                   );
                 },
               ),

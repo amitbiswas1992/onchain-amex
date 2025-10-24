@@ -10,6 +10,8 @@ class RtNm {
   static const otpInputScreen = '/otp-input-screen';
   static const userInfoInputScreen = '/user-info-input-screen';
   static const signInLoadingScreen = '/sign-in-loading-screen';
+  static const forgotPasswordScreen = '/forgot-password-screen';
+  static const resetPasswordScreen = '/reset-password-screen';
   static const inviteFriendScreen = '/invite-friend-screen';
   static const inviteCodeInputScreen = '/invite-code-input-screen';
   static const invitationSuccessScreen = '/invitation-success-screen';

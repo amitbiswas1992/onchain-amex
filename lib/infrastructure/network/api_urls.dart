@@ -20,6 +20,8 @@ class ApiUrls {
       '/api/v1/blockchain/creditor/admin/merchant/authorize';
   static const profile = '/api/v1/auth/profile';
   static const refreshToken = '/api/v1/auth/refresh';
+  static const passwordResetOtp = '/api/v1/auth/send-password-reset-otp';
+  static const resetPasswordOtp = '/api/v1/auth/reset-password-otp';
   static deleteUser(String userID) => '/api/v1/users/$userID';
 
   static const availableCredit =

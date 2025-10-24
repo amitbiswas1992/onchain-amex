@@ -2,9 +2,9 @@ class ContractConstants {
   ContractConstants._();
 
   // Contract Addresses (Sepolia Testnet)
-  static const vaultAddress = '0x586e931E227a9E2405856b8936a35d0aC64534be';
-  static const usdcAddress = '0x80d112F0879176f6d2B86A0dE2508ec7B8D40b05';
-  static const creditorAddress = '0x5e3b35D64BFeAF8deD5009237BAf6D94FeE63f29';
+  static const vaultAddress = '0x65dAF30Aa45F309238CCb040bABF88643384F5a4';
+  static const usdcAddress = '0x0d5Af39508302A8f61d80339542802770C4B352D';
+  static const creditorAddress = '0x059e3AB0DF61E81Ebfb1aa3983237aa0dB0bFebc';
 
   // Network Configuration
   static const String networkName = 'Sepolia';

@@ -16,6 +16,7 @@ final modelInitialized = StateProvider.autoDispose<bool>((ref) => false);
 
 final availableCreditProvider =
     FutureProvider.autoDispose<Result<num?>>((ref) async {
+  ref.keepAlive();
   return await ref
       .read(walletRepoProvider)
       .getAvailableCredit(publicAddress: '');
@@ -23,6 +24,7 @@ final availableCreditProvider =
 
 final borrowerProfileProvider = FutureProvider.autoDispose
     .family<Result<BorrowerProfile?>, String>((ref, pId) async {
+  ref.keepAlive();
   return await ref
       .read(walletRepoProvider)
       .getBorrowerProfile(publicAddress: pId);

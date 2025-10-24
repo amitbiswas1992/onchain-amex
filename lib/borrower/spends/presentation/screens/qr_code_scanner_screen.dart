@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../../core/utils/log_util.dart';
-import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 
 class QrCodeScannerScreen extends StatefulWidget {
@@ -44,7 +43,31 @@ class _QrCodeScannerScreenState extends State<QrCodeScannerScreen>
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Scaffold(
-        appBar: const PrimaryAppBar(),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leadingWidth: 90,
+          leading: IconButton(
+            icon: const Row(
+              children: [
+                Icon(Icons.arrow_back, color: Colors.white),
+                SizedBox(width: 8),
+                Text(
+                  'Back',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            onPressed: () {
+              AppNav.goRouter.pop();
+            },
+          ),
+        ),
         body: MobileScanner(
           onDetectError: (error, stck) {
             catchLog(error: error, stck: stck);

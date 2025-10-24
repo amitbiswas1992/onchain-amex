@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../borrower/signin/data/models/register_model.dart';
@@ -83,3 +84,8 @@ class SecuredStorageService {
     await _storage.delete(key: 'merchant_mode');
   }
 }
+
+final loggedInUserProvider = FutureProvider<RegisterModel?>((ref) async {
+  final storageService = SecuredStorageService();
+  return await storageService.getUserModel();
+});

@@ -131,7 +131,17 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                       _passwordNode.unfocus();
                     },
                   ),
-                  const VerticalSpace(32),
+                  const VerticalSpace(4),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        AppNav.goRouter.push(RtNm.forgotPasswordScreen);
+                      },
+                      child: const Text('Forgot password?'),
+                    ),
+                  ),
+                  const VerticalSpace(24),
                   Row(
                     children: [
                       Expanded(
@@ -164,7 +174,7 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                       ),
                     ],
                   ),
-                  const VerticalSpace(AppValues.paddingLarge),
+                  const VerticalSpace(AppValues.paddingMedium),
                   RichText(
                     text: TextSpan(
                       text: "Do not have an account?  ",
@@ -183,7 +193,7 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                       ],
                     ),
                   ),
-                  const VerticalSpace(82),
+                  const VerticalSpace(48),
                   const UserConsentText(),
                   const VerticalSpace(40),
                 ],

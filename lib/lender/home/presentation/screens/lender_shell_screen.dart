@@ -24,9 +24,8 @@ class _ShellScreenState extends ConsumerState<LenderShellScreen> {
       switch (index) {
         case 0:
           AppNav.goRouter.go(RtNm.lenderHomeScreen);
+
         case 1:
-          AppNav.goRouter.go(RtNm.lenderTransactionScreen);
-        case 2:
           AppNav.goRouter.go(RtNm.lenderMoreScreen);
       }
     }
@@ -62,21 +61,11 @@ class _ShellScreenState extends ConsumerState<LenderShellScreen> {
                 ),
                 Expanded(
                   child: BottomNavItem(
-                    label: 'Transactions',
-                    svgPath: 'assets/icons/bottom_nav/transactions.svg',
+                    label: 'More',
+                    svgPath: 'assets/icons/bottom_nav/more.svg',
                     isSelected: selectedIndex == 1,
                     onItemTap: () {
                       _onItemTapped(1);
-                    },
-                  ),
-                ),
-                Expanded(
-                  child: BottomNavItem(
-                    label: 'More',
-                    svgPath: 'assets/icons/bottom_nav/more.svg',
-                    isSelected: selectedIndex == 2,
-                    onItemTap: () {
-                      _onItemTapped(2);
                     },
                   ),
                 ),

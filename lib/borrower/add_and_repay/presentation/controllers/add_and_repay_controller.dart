@@ -1,6 +1,7 @@
+import 'dart:developer' as dev;
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reown_appkit/reown_appkit.dart';
 
 import '../../../../core/extensions/big_int_extensions.dart';
 import '../../../../core/extensions/string_extension.dart';
@@ -10,9 +11,6 @@ import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../more/presentation/providers/more_providers.dart';
 import '../../../wallet/business/services/wallet_service.dart';
-import '../../../wallet/business/services/wallet_service_interface.dart';
-import 'dart:developer' as dev;
-
 import '../../../wallet/data/models/borrower_profile.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 
@@ -21,7 +19,11 @@ class AddAndRepayController {
   final WidgetRef ref;
   final WalletService walletService;
 
-  const AddAndRepayController({required this.context, required this.ref, required this.walletService});
+  const AddAndRepayController({
+    required this.context,
+    required this.ref,
+    required this.walletService,
+  });
 
   Future<void> repay(String input, BorrowerProfile borrowerProfile) async {
     final amount = double.tryParse(input);
@@ -30,13 +32,21 @@ class AddAndRepayController {
       return;
     }
 
-    if (amount > (borrowerProfile.outstandingDebt?.toBigInt().dividedByMillion() ?? 0.0)) {
-      showWarningDialog(context: context, message: 'Amount must be less than or equal to outstanding debt');
+    if (amount >
+        (borrowerProfile.outstandingDebt?.toBigInt().dividedByMillion() ??
+            0.0)) {
+      showWarningDialog(
+        context: context,
+        message: 'Amount must be less than or equal to outstanding debt',
+      );
       return;
     }
 
     if (amount <= 0) {
-      showWarningDialog(context: context, message: 'Amount must be greater than 0');
+      showWarningDialog(
+        context: context,
+        message: 'Amount must be greater than 0',
+      );
       return;
     }
 
@@ -47,7 +57,11 @@ class AddAndRepayController {
       dev.log('Allowance: $allowance');
       if (allowance < amount) {
         // Need to approve first
-        final shouldApprove = await showPermissionDialog(context: context, message: 'Are you sure you want to repay amount: ${amount.toStringAsFixed(2)}?');
+        final shouldApprove = await showPermissionDialog(
+          context: context,
+          message:
+              'Are you sure you want to repay amount: ${amount.toStringAsFixed(2)}?',
+        );
         if (!shouldApprove) {
           return;
         }
@@ -62,11 +76,11 @@ class AddAndRepayController {
       showSuccessDialog(
         context: context,
         message: 'Repay completed successfully.',
-        otherWidget:
-        TransactionHashText(text: txHash),
+        otherWidget: TransactionHashText(text: txHash),
         dismissible: false,
-        onDone: () {
+        onDone: () async {
           AppNav.goRouter.go(RtNm.homeScreen);
+
           ref.invalidate(profileProvider);
           ref.invalidate(availableCreditProvider);
           ref.invalidate(borrowerProfileProvider);
@@ -77,7 +91,6 @@ class AddAndRepayController {
       debugPrint(stck.toString());
       showErrorDialog(context: context, message: error.toString());
     }
-
   }
 
   Future<void> mintUsdc(double amount) async {
@@ -88,5 +101,4 @@ class AddAndRepayController {
       debugPrint(stck.toString());
     }
   }
-
 }

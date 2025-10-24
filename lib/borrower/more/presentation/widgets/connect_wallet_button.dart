@@ -36,10 +36,33 @@ class _ConnectWalletButtonState extends ConsumerState<ConnectWalletButton> {
   Future<void> _onModalConnect(ModalConnect? event) async {
     if (event == null) return;
 
-    /// if wallet has connected previously then no need to send the public address to the server
-    if (widget.profile.wallet != null) return;
-
     final namespaces = event.session.namespaces;
+
+    /// if wallet has connected previously then no need to send the public address to the server
+    if (widget.profile.wallet != null && namespaces != null) {
+      late String address;
+      namespaces.forEach((network, ns) async {
+        for (final acc in ns.accounts) {
+          final parts = acc.split(':'); // e.g. ["eip155", "1", "0x123..."]
+          if (parts.length >= 3) {
+            final chainId = parts[1];
+            address = parts[2];
+          }
+        }
+      });
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (!mounted) return;
+      if (address != widget.profile.wallet?.address) {
+        await ref.read(appkitModalProvider).valueOrNull?.disconnect();
+        showErrorDialog(
+          context: context,
+          message:
+              'Connected wallet address does not match with your registered wallet address.',
+        );
+      }
+      return;
+    }
+
     if (namespaces != null) {
       print('namespaces length => ${namespaces.length}');
       namespaces.forEach((network, ns) async {

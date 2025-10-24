@@ -213,24 +213,23 @@ class WalletService {
 
     final contractAmount = amount.multiplyByMillion();
 
-    try {
-      final txHash = await appKitModal.requestWriteContract(
-        topic: sessionTopic!,
-        chainId: currentChainId,
-        deployedContract: _creditorContract!,
-        functionName: 'repay',
-        parameters: [
-          contractAmount,
-          EthereumAddress.fromHex(ContractConstants.usdcAddress), // receiver
-        ],
-        transaction: Transaction(from: ethereumAddress),
-      );
-
-      return txHash;
-    } catch (e) {
-      print('Error depositing: $e');
-      throw Exception('Failed to deposit: ${e.toString()}');
+    final txHash = await appKitModal.requestWriteContract(
+      topic: sessionTopic!,
+      chainId: currentChainId,
+      deployedContract: _creditorContract!,
+      functionName: 'repay',
+      parameters: [
+        contractAmount,
+        EthereumAddress.fromHex(ContractConstants.usdcAddress), // receiver
+      ],
+      transaction: Transaction(from: ethereumAddress),
+    );
+    print('repay txHash: $txHash');
+    if (txHash is Map && txHash['code'] == 5000) {
+      throw Exception('User rejected the transaction');
     }
+
+    return txHash;
   }
 
   /// Repay USDC into vault

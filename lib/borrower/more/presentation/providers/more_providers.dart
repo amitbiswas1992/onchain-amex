@@ -12,15 +12,9 @@ final devicesRepo = Provider.autoDispose(
   (ref) => DevicesRepo(dioService: ref.read(dioService)),
 );
 final profileProvider = FutureProvider.autoDispose((ref) async {
-  final link = ref.keepAlive();
-  try {
-    final profile = await ref.read(profileRepo).getProfile();
-    // Only keep alive if successful
-    return profile;
-  } catch (e) {
-    link.close(); // Allow disposal on error
-    rethrow;
-  }
+  final profile = await ref.read(profileRepo).getProfile();
+  // Only keep alive if successful
+  return profile;
 });
 
 final selectedCountryProvider =
