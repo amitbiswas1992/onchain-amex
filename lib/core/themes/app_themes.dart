@@ -66,7 +66,7 @@ class AppThemes {
       // labelSmall: TextStyle(letterSpacing: 0, height: 1),
     ),
     appBarTheme: const AppBarTheme(
-      color: AppColors.primaryLight,
+      backgroundColor: AppColors.primaryLight,
       titleTextStyle: TextStyle(color: AppColors.onPrimaryLight, fontSize: 20),
     ),
     buttonTheme: ButtonThemeData(
@@ -119,7 +119,7 @@ class AppThemes {
       valueIndicatorTextStyle: const TextStyle(
         color: AppColors.onSurfaceLight, // Black text
       ),
-      showValueIndicator: ShowValueIndicator.always,
+      showValueIndicator: ShowValueIndicator.onDrag,
     ),
   );
 
@@ -173,7 +173,7 @@ class AppThemes {
       ),
     ),
     appBarTheme: const AppBarTheme(
-      color: AppColors.primaryDark,
+      backgroundColor: AppColors.primaryDark,
       titleTextStyle: TextStyle(color: AppColors.onPrimaryDark, fontSize: 20),
     ),
     buttonTheme: ButtonThemeData(
@@ -211,10 +211,10 @@ class AppThemes {
       inactiveTrackColor: Colors.grey.shade300,
       trackHeight: 4,
       thumbShape: const HollowCircleThumbShape(
-        hollowColor: AppColors.surfaceDark
+        hollowColor: AppColors.surfaceDark,
       ),
       overlayShape: SliderComponentShape.noOverlay,
-      showValueIndicator: ShowValueIndicator.always,
+      showValueIndicator: ShowValueIndicator.onDrag,
       valueIndicatorShape: const CustomValueIndicatorShape(
         backgroundColor: AppColors.surfaceLight,
         borderColor: Colors.blueGrey,

@@ -9,11 +9,8 @@ import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/app_picker_button.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
-import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
-import '../../../../infrastructure/navigation/app_nav.dart';
-import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../more/presentation/providers/more_providers.dart';
 import '../controllers/kyc_controller.dart';
 import '../providers/kyc_providers.dart';
@@ -71,7 +68,7 @@ class _IdCheckKycOptionsScreenState extends ConsumerState<IdCheckKycOptionsScree
                     },
                     icon: const Icon(Icons.arrow_drop_down_sharp),
                   );
-                }),
+                },),
                 const VerticalSpace(AppValues.paddingLarge * 2),
                 Text(
                   'Select ID type',

@@ -66,7 +66,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                       ref
                           .read(
                             transactionHistoryProvider(
-                                    result.data!.wallet?.address ?? '')
+                                    result.data!.wallet?.address ?? '',)
                                 .notifier,
                           )
                           .getMoreData();
@@ -121,7 +121,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                       const VerticalSpace(20),
                       const Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: AppValues.paddingMedium),
+                            horizontal: AppValues.paddingMedium,),
                         child: AppDivider(),
                       ),
                       const VerticalSpace(AppValues.paddingMedium),
@@ -130,7 +130,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                           builder: (context, ref, _) {
                             final transactionsState = ref.watch(
                               transactionHistoryProvider(
-                                  result.data?.wallet?.address ?? ''),
+                                  result.data?.wallet?.address ?? '',),
                             );
 
                             if (transactionsState.isLoading &&
@@ -150,11 +150,11 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                                       child: const Icon(Icons.refresh),
                                       onTap: () {
                                         ref.invalidate(
-                                            transactionHistoryProvider);
+                                            transactionHistoryProvider,);
                                       },
                                     ),
                                     const VerticalSpace(
-                                        AppValues.paddingMedium),
+                                        AppValues.paddingMedium,),
                                     const Text('No transactions yet.'),
                                   ],
                                 ),
@@ -200,11 +200,11 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
 
                                   if (searchKey.isNotEmpty) {
                                     if (!merchantName.toLowerCase().contains(
-                                            searchKey.toLowerCase()) &&
+                                            searchKey.toLowerCase(),) &&
                                         !merchantAddress.toLowerCase().contains(
-                                            searchKey.toLowerCase()) &&
+                                            searchKey.toLowerCase(),) &&
                                         !date.toLowerCase().contains(
-                                            searchKey.toLowerCase())) {
+                                            searchKey.toLowerCase(),)) {
                                       return const SizedBox();
                                     }
                                   }

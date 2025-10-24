@@ -192,7 +192,7 @@ class _SpendAfterScanAmountInputScreenState
                                                     inputDetectorProvider
                                                         .notifier,
                                                   )
-                                                  .state = val ?? '';
+                                                  .state = val;
                                             },
                                           ),
                                           const VerticalSpace(12),

@@ -9,7 +9,6 @@ import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/app_progress_bar.dart';
 import '../../../../core/widgets/containers/deem_card.dart';
 import '../../../../core/widgets/containers/light_card.dart';
-import '../../../../core/widgets/dividers/app_divider.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../screens/rewards_strings.dart';
 
@@ -48,7 +47,7 @@ class ChallengesPage extends ConsumerWidget {
                     style: s11W400(context).copyWith(
                         // color: AppColors.c757575,
                         ),
-                  )
+                  ),
                 ],
               ),
             ),

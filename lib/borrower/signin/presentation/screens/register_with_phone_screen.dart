@@ -47,9 +47,6 @@ class _RegisterWithPhoneScreenState
   String _password = '';
   String _phone = '';
 
-  // Add local role state
-  final _UserRole _selectedRole = _UserRole.borrower;
-
   @override
   void initState() {
     super.initState();

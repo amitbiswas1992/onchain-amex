@@ -77,7 +77,7 @@ class _SavedCardsScreenState extends ConsumerState<SavedCardsScreen> {
                     ],
                   ),
                 );
-              }),
+              },),
             ),
             SafeArea(
               child: AppPrimaryButton(

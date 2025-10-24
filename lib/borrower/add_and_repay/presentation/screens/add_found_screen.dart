@@ -10,7 +10,6 @@ import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/containers/app_chip.dart';
 import '../../../../core/widgets/containers/deem_card.dart';
-import '../../../../core/widgets/shapes/hollow_circle_thumb_shape.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
@@ -56,7 +55,8 @@ class _AddFoundScreenState extends ConsumerState<AddFoundScreen> {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: '0.0',
-                          hintStyle: s54w600(context).copyWith(color: AppColors.c757575),
+                          hintStyle: s54w600(context)
+                              .copyWith(color: AppColors.c757575),
                           border: InputBorder.none,
                           errorBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
@@ -68,7 +68,7 @@ class _AddFoundScreenState extends ConsumerState<AddFoundScreen> {
                           ),
                         ),
                         onChanged: (val) {
-                          ref.read(inputDetectorProvider.notifier).state = val ?? '';
+                          ref.read(inputDetectorProvider.notifier).state = val;
                         },
                       ),
                       const VerticalSpace(12),
@@ -91,7 +91,7 @@ class _AddFoundScreenState extends ConsumerState<AddFoundScreen> {
 
                           return Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 // color: Colors.red,
                                 height: 56,
                                 child: Slider(
@@ -101,8 +101,9 @@ class _AddFoundScreenState extends ConsumerState<AddFoundScreen> {
                                   divisions: 4,
                                   label: "${repayIn.toInt()} months",
                                   onChanged: (newValue) {
-                                    ref.read(repayInMonthProvider.notifier).state =
-                                        newValue.toInt();
+                                    ref
+                                        .read(repayInMonthProvider.notifier)
+                                        .state = newValue.toInt();
                                   },
                                 ),
                               ),
@@ -111,14 +112,15 @@ class _AddFoundScreenState extends ConsumerState<AddFoundScreen> {
                                   horizontal: AppValues.paddingSmall,
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     ...['1', '3', '6', '9', '12'].map((e) {
                                       return Text(
                                         e,
                                         style: s14W600(context),
                                       );
-                                    }).toList(),
+                                    }),
                                   ],
                                 ),
                               ),
@@ -137,28 +139,38 @@ class _AddFoundScreenState extends ConsumerState<AddFoundScreen> {
                                       keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
                                         hintText: '0.0',
-                                        hintStyle:
-                                            s54w600(context).copyWith(color: AppColors.c757575),
+                                        hintStyle: s54w600(context)
+                                            .copyWith(color: AppColors.c757575),
                                         border: InputBorder.none,
                                         errorBorder: InputBorder.none,
                                         focusedBorder: InputBorder.none,
                                         enabledBorder: InputBorder.none,
                                         disabledBorder: InputBorder.none,
-                                        contentPadding: const EdgeInsets.symmetric(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
                                           vertical: AppValues.paddingMedium,
                                           horizontal: AppValues.paddingMedium,
                                         ),
                                       ),
                                       onChanged: (val) {
-                                        ref.read(inputDetectorProvider.notifier).state = val ?? '';
+                                        ref
+                                            .read(
+                                              inputDetectorProvider.notifier,
+                                            )
+                                            .state = val;
                                       },
                                     ),
                                     const VerticalSpace(AppValues.paddingSmall),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        const Icon(Icons.info_outline, size: 12),
+                                        const Icon(
+                                          Icons.info_outline,
+                                          size: 12,
+                                        ),
                                         const HorizontalSpace(4),
                                         Text(
                                           includingProcessingFee,

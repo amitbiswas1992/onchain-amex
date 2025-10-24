@@ -13,7 +13,7 @@ class WalletRepo implements WalletRepoInterface {
 
   @override
   Future<Result<TransactionModel?>> registerBorrowerWallet(
-      {required Map<String, dynamic> payload}) async {
+      {required Map<String, dynamic> payload,}) async {
     try {
       final response = await dioService.post(
         ApiUrls.registerBorrowerWallet,
@@ -22,7 +22,7 @@ class WalletRepo implements WalletRepoInterface {
       );
 
       return response.toResult(
-          dataHandler: (data) => TransactionModel.fromJson(data));
+          dataHandler: (data) => TransactionModel.fromJson(data),);
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }
@@ -30,7 +30,7 @@ class WalletRepo implements WalletRepoInterface {
 
   @override
   Future<Result<TransactionModel?>> registerLenderWallet(
-      {required Map<String, dynamic> payload}) async {
+      {required Map<String, dynamic> payload,}) async {
     try {
       final response = await dioService.post(
         ApiUrls.registerLenderWallet,
@@ -39,7 +39,7 @@ class WalletRepo implements WalletRepoInterface {
       );
 
       return response.toResult(
-          dataHandler: (data) => TransactionModel.fromJson(data));
+          dataHandler: (data) => TransactionModel.fromJson(data),);
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }
@@ -47,7 +47,7 @@ class WalletRepo implements WalletRepoInterface {
 
   @override
   Future<Result<TransactionModel?>> registerMerchantWallet(
-      {required Map<String, dynamic> payload}) async {
+      {required Map<String, dynamic> payload,}) async {
     try {
       final response = await dioService.post(
         ApiUrls.registerMerchantWallet,
@@ -56,7 +56,7 @@ class WalletRepo implements WalletRepoInterface {
       );
 
       return response.toResult(
-          dataHandler: (data) => TransactionModel.fromJson(data));
+          dataHandler: (data) => TransactionModel.fromJson(data),);
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }
@@ -64,7 +64,7 @@ class WalletRepo implements WalletRepoInterface {
 
   @override
   Future<Result<num?>> getAvailableCredit(
-      {required String publicAddress}) async {
+      {required String publicAddress,}) async {
     try {
       final response = await dioService.get(
         ApiUrls.availableCredit,
@@ -83,14 +83,14 @@ class WalletRepo implements WalletRepoInterface {
 
   @override
   Future<Result<BorrowerProfile?>> getBorrowerProfile(
-      {required String publicAddress}) async {
+      {required String publicAddress,}) async {
     try {
       final response = await dioService.get(
         ApiUrls.borrowerProfile(publicAddress),
         useTokenizeHeader: true,
       );
       return response.toResult(
-          dataHandler: (data) => BorrowerProfile.fromJson(data));
+          dataHandler: (data) => BorrowerProfile.fromJson(data),);
     } catch (error, stck) {
       return handleCatchAndReturnResult(error: error, stck: stck);
     }

@@ -55,7 +55,7 @@ class DeviceInfoService {
       "browserName": "",
       "browserVersion": "",
       "userAgent": "",
-      "location": ""
+      "location": "",
     };
   }
 }

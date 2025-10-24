@@ -9,9 +9,6 @@ import '../../../../core/utils/log_util.dart';
 import '../../../../core/widgets/dialogs.dart';
 import 'dart:developer' as dev;
 
-import '../../../../infrastructure/navigation/app_nav.dart';
-import '../../../../infrastructure/navigation/rt_nm.dart';
-import '../../data/models/scanned_data.dart';
 
 final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
@@ -238,7 +235,7 @@ class _ScanAndPayPageState extends State<ScanAndPayPage> with SingleTickerProvid
       dev.log('pausing the camera');
       controller.pause();
       final dataStr = utf8.decode(base64Url.decode(uri.queryParameters['data']!));
-      dev.log('data => ${dataStr.runtimeType} => ' +dataStr);
+      dev.log('data => ${dataStr.runtimeType} => $dataStr');
       // await AppNav.goRouter.push(RtNm.paymentScreen, extra: ScannedData.fromJson(jsonDecode(dataStr)));
     } catch (error, stck) {
       debugPrint(error.toString());

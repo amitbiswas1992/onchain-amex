@@ -27,7 +27,7 @@ class DevicesRepo implements DevicesRepoInterface {
   Future<Result> deleteDeviceSession({required String deviceID}) async {
     try {
       return (await dioService.delete(ApiUrls.deleteDeviceSession(deviceID),
-              useTokenizeHeader: true))
+              useTokenizeHeader: true,))
           .toResult(
         dataHandler: null,
       );

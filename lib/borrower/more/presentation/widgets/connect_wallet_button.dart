@@ -45,7 +45,7 @@ class _ConnectWalletButtonState extends ConsumerState<ConnectWalletButton> {
         for (final acc in ns.accounts) {
           final parts = acc.split(':'); // e.g. ["eip155", "1", "0x123..."]
           if (parts.length >= 3) {
-            final chainId = parts[1];
+            // final chainId = parts[1];
             address = parts[2];
           }
         }
@@ -69,7 +69,7 @@ class _ConnectWalletButtonState extends ConsumerState<ConnectWalletButton> {
         for (final acc in ns.accounts) {
           final parts = acc.split(':'); // e.g. ["eip155", "1", "0x123..."]
           if (parts.length >= 3) {
-            final chainId = parts[1];
+            // final chainId = parts[1];
             final address = parts[2];
             await Future.delayed(const Duration(milliseconds: 1000));
             if (!mounted) return;

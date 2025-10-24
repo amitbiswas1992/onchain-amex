@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
@@ -77,7 +76,7 @@ class _ConnectBankAcDisclaimerScreenState extends ConsumerState<ConnectBankAcDis
                     {'name': 'Remove the connection anytime', 'icon': 'gear.svg'},
                     {
                       'name': 'Use the same account later when you pay for your repayment',
-                      'icon': 'bank.svg'
+                      'icon': 'bank.svg',
                     },
                   ].map((e) {
                     return Padding(

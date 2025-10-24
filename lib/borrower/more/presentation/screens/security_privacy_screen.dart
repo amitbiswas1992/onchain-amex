@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_strings.dart';
 import '../../../../core/resources/app_values.dart';
-import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
@@ -206,7 +205,7 @@ class BiometricToggleMenuItem extends StatelessWidget {
         Switch(
           value: enabled,
           onChanged: onToggle,
-          activeColor: Colors.white,
+          activeThumbColor: Colors.white,
           activeTrackColor: Colors.green,
           inactiveThumbColor: Colors.white,
           inactiveTrackColor: Colors.grey.shade300,

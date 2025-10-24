@@ -146,8 +146,9 @@ class WalletService {
     // Wait for contracts to load
     await _ensureInitialized();
 
-    if (!isConnected || _usdcContract == null || sessionTopic == null)
+    if (!isConnected || _usdcContract == null || sessionTopic == null) {
       return 0.0;
+    }
 
     final result = await appKitModal.requestReadContract(
       topic: sessionTopic!,

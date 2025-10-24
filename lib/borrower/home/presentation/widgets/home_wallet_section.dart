@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +13,6 @@ import '../../../../infrastructure/network/result.dart';
 import '../../../more/data/models/profile.dart';
 import '../../../wallet/data/models/borrower_profile.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
-import 'home_app_bar.dart';
 import 'home_available_to_spend.dart';
 import 'home_credit_score_and_xp_points.dart';
 
@@ -112,13 +110,13 @@ class HomeWalletSection extends ConsumerWidget {
             0.0) {
           showWarningDialog(
               context: context,
-              message: 'You have no outstanding to repay');
+              message: 'You have no outstanding to repay',);
           return;
         }
 
         if (profile != null) {
           AppNav.goRouter.push(RtNm.replayFoundScreen,
-              extra: borrowerProfile);
+              extra: borrowerProfile,);
         }
       },
     ),

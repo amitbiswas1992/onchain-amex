@@ -1,1 +1,1 @@
-const appTitle = 'TMRW';
+const appTitle = 'Soho Pay';

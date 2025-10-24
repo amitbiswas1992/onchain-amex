@@ -32,7 +32,7 @@ class HighlightedText extends StatelessWidget {
         spans.add(TextSpan(
           text: text.substring(start),
           style: style,
-        ));
+        ),);
         break;
       }
 
@@ -40,7 +40,7 @@ class HighlightedText extends StatelessWidget {
         spans.add(TextSpan(
           text: text.substring(start, index),
           style: style,
-        ));
+        ),);
       }
 
       spans.add(TextSpan(
@@ -53,7 +53,7 @@ class HighlightedText extends StatelessWidget {
               backgroundColor: highlightColor,
               fontWeight: FontWeight.bold,
             ),
-      ));
+      ),);
 
       start = index + matchText.length;
     }

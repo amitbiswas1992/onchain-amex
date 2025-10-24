@@ -6,8 +6,6 @@ import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_secondary_button.dart';
 import '../../../../core/widgets/containers/light_card.dart';
 import '../../../../core/widgets/texts/large_number_text.dart';
-import '../../../../infrastructure/navigation/app_nav.dart';
-import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../more/data/models/profile.dart';
 import '../resources/home_strings.dart';
 

@@ -153,7 +153,9 @@ class DioService {
     if (isEmailLogin ||
         isPhoneLogin ||
         isEmailRegistration ||
-        isPhoneRegistration) return;
+        isPhoneRegistration) {
+      return;
+    }
 
     await headersService.securedStorageService.deleteUserTokens();
     AppNav.goRouter.go(RtNm.splashScreen);

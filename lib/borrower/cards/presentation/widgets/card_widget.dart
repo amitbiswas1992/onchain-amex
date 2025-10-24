@@ -3,12 +3,8 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
-import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/green_rounded_icon_button.dart';
 import '../../../../core/widgets/containers/deem_card.dart';
-import '../../../../infrastructure/navigation/app_nav.dart';
-import '../../../../infrastructure/navigation/rt_nm.dart';
-import '../../../more/presentation/widgets/menu_section.dart';
 import '../resources/cards_strings.dart';
 import 'card_info_tile.dart';
 
@@ -79,7 +75,8 @@ class CardWidget extends StatelessWidget {
                             ),
                             CardInfoTile(
                               title: 'Billing address',
-                              value: 'Road 02, Block C, Mirpur DOHS, Dhaka, 1221.',
+                              value:
+                                  'Road 02, Block C, Mirpur DOHS, Dhaka, 1221.',
                             ),
                           ],
                         ),

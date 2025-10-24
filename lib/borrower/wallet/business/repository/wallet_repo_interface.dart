@@ -4,13 +4,13 @@ import '../../data/models/transaction_model.dart';
 
 abstract interface class WalletRepoInterface {
   Future<Result<TransactionModel?>> registerBorrowerWallet(
-      {required Map<String, dynamic> payload});
+      {required Map<String, dynamic> payload,});
   Future<Result<TransactionModel?>> registerLenderWallet(
-      {required Map<String, dynamic> payload});
+      {required Map<String, dynamic> payload,});
   Future<Result<TransactionModel?>> registerMerchantWallet(
-      {required Map<String, dynamic> payload});
+      {required Map<String, dynamic> payload,});
 
   Future<Result<num?>> getAvailableCredit({required String publicAddress});
   Future<Result<BorrowerProfile?>> getBorrowerProfile(
-      {required String publicAddress});
+      {required String publicAddress,});
 }

@@ -6,7 +6,6 @@ import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/buttons/theme_toogle_button.dart';
 import '../../../../infrastructure/di/global_providers.dart';
 import '../../../home/presentation/providers/home_providers.dart';
-import '../widgets/menu_section.dart';
 import 'more_screen.dart';
 
 class LanguageAndAppearanceScreen extends ConsumerWidget {

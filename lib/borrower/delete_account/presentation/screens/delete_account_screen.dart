@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
@@ -9,7 +8,6 @@ import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
-import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../more/data/models/profile.dart';
 import '../controllers/delete_acount_controller.dart';
 import '../providers/delete_account_providers.dart';
@@ -59,16 +57,21 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
                 AppTextFormField(
                   onChanged: (val) {
                     if (val == 'DELETE') {
-                      ref.read(deleteAccountButtonEnabledProvider.notifier).state = true;
+                      ref
+                          .read(deleteAccountButtonEnabledProvider.notifier)
+                          .state = true;
                     } else {
-                      ref.read(deleteAccountButtonEnabledProvider.notifier).state = false;
+                      ref
+                          .read(deleteAccountButtonEnabledProvider.notifier)
+                          .state = false;
                     }
                   },
                 ),
                 const VerticalSpace(32),
                 Consumer(
                   builder: (context, ref, _) {
-                    final enabled = ref.watch(deleteAccountButtonEnabledProvider);
+                    final enabled =
+                        ref.watch(deleteAccountButtonEnabledProvider);
 
                     return AppPrimaryButton(
                       title: 'Close and delete my account',

@@ -101,7 +101,7 @@ class _PersonalInformationScreenState extends ConsumerState<PersonalInformationS
                     },
                     icon: const Icon(Icons.arrow_drop_down_sharp),
                   );
-                }),
+                },),
                 const VerticalSpace(AppValues.paddingMedium),
 
                 // Full legal name
@@ -162,7 +162,7 @@ class _PersonalInformationScreenState extends ConsumerState<PersonalInformationS
                       _selectDate(context);
                     },
                   );
-                }),
+                },),
                 const VerticalSpace(AppValues.paddingMedium),
 
                 // Home Address
@@ -375,7 +375,7 @@ class FormDropdownField extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppValues.borderRadiusSmall),
       ),
       child: DropdownButtonFormField<String>(
-        value: value,
+        initialValue: value,
         decoration: const InputDecoration(
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
-import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/app_progress_bar.dart';
 import '../../../../core/widgets/containers/deem_card.dart';
@@ -29,7 +27,7 @@ class TiresPage extends ConsumerWidget {
         "1% cashback on all purchases",
         "Basic customer support",
         "Monthly credit reports",
-      ]
+      ],
     },
     {
       'title': 'Silver',
@@ -37,8 +35,8 @@ class TiresPage extends ConsumerWidget {
         "1.5% cashback on all purchases",
         "Priority customer support",
         "Gas fee rebates up to \$10/month",
-        "Weekly credit score updates"
-      ]
+        "Weekly credit score updates",
+      ],
     },
     {
       'title': "Gold",
@@ -47,8 +45,8 @@ class TiresPage extends ConsumerWidget {
         "Premium customer support",
         "Gas fee rebates up to \$25/month",
         "Daily credit score updates",
-        "Exclusive merchant discounts"
-      ]
+        "Exclusive merchant discounts",
+      ],
     },
     {
       'title': 'Platinum',
@@ -58,8 +56,8 @@ class TiresPage extends ConsumerWidget {
         "Gas fee rebates up to \$50/month",
         "Real-time credit monitoring",
         "Premium merchant partnerships",
-        "Custom credit limits"
-      ]
+        "Custom credit limits",
+      ],
     }
   ];
 

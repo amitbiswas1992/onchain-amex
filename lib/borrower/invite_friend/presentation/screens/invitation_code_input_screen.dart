@@ -21,11 +21,10 @@ class InvitationCodeInputScreen extends ConsumerStatefulWidget {
   ConsumerState createState() => _InviteCodeInputScreenState();
 }
 
-class _InviteCodeInputScreenState extends ConsumerState<InvitationCodeInputScreen> {
-
+class _InviteCodeInputScreenState
+    extends ConsumerState<InvitationCodeInputScreen> {
   final _formKey = GlobalKey<FormState>();
   final _codeNode = FocusNode();
-  final String _code = '';
 
   @override
   void dispose() {
@@ -63,9 +62,12 @@ class _InviteCodeInputScreenState extends ConsumerState<InvitationCodeInputScree
                   hintText: invitationCode,
                 ),
                 const Expanded(child: SizedBox()),
-                AppPrimaryButton(title: continuee, onTap: () {
-                  AppNav.goRouter.push(RtNm.invitationSuccessScreen);
-                },),
+                AppPrimaryButton(
+                  title: continuee,
+                  onTap: () {
+                    AppNav.goRouter.push(RtNm.invitationSuccessScreen);
+                  },
+                ),
                 const VerticalSpace(AppValues.paddingLarge),
               ],
             ),

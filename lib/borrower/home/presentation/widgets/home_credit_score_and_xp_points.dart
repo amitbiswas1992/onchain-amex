@@ -8,8 +8,6 @@ import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/containers/light_card.dart';
 import '../../../../core/widgets/texts/large_number_text.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
-import '../../../../infrastructure/navigation/app_nav.dart';
-import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../wallet/data/models/borrower_profile.dart';
 import '../resources/home_strings.dart';
 

@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="TMRW"
+        android:label="Soho Pay"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
@@ -30,7 +30,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <!-- scheme must match redirect.native (without ://) -->
-                <data android:scheme="tmrw" />
+                <data android:scheme="soho" />
             </intent-filter>
 
         </activity>

@@ -1,4 +1,4 @@
-name: advisify
+name: soho
 description: "A flutter project with clean architecture"
 publish_to: "none"
 
@@ -58,6 +58,7 @@ dependencies:
 #dependency_overrides:
 #  uuid: ^4.5.1
 
+  crypto: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

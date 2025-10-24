@@ -7,7 +7,7 @@ class DeviceSession {
   bool? isActive;
   String? expiresAt;
   String? ipAddress;
-  Null? location;
+  Null location;
   String? userAgent;
   String? createdAt;
   String? updatedAt;
@@ -26,7 +26,7 @@ class DeviceSession {
         this.userAgent,
         this.createdAt,
         this.updatedAt,
-        this.device});
+        this.device,});
 
   DeviceSession.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -42,25 +42,25 @@ class DeviceSession {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     device =
-    json['device'] != null ? new Device.fromJson(json['device']) : null;
+    json['device'] != null ? Device.fromJson(json['device']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = this.id;
-    data['userId'] = this.userId;
-    data['deviceId'] = this.deviceId;
-    data['accessToken'] = this.accessToken;
-    data['refreshToken'] = this.refreshToken;
-    data['isActive'] = this.isActive;
-    data['expiresAt'] = this.expiresAt;
-    data['ipAddress'] = this.ipAddress;
-    data['location'] = this.location;
-    data['userAgent'] = this.userAgent;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.device != null) {
-      data['device'] = this.device!.toJson();
+    data['id'] = id;
+    data['userId'] = userId;
+    data['deviceId'] = deviceId;
+    data['accessToken'] = accessToken;
+    data['refreshToken'] = refreshToken;
+    data['isActive'] = isActive;
+    data['expiresAt'] = expiresAt;
+    data['ipAddress'] = ipAddress;
+    data['location'] = location;
+    data['userAgent'] = userAgent;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    if (device != null) {
+      data['device'] = device!.toJson();
     }
     return data;
   }
@@ -83,10 +83,10 @@ class Device {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['deviceName'] = this.deviceName;
-    data['deviceType'] = this.deviceType;
-    data['platform'] = this.platform;
-    data['browserName'] = this.browserName;
+    data['deviceName'] = deviceName;
+    data['deviceType'] = deviceType;
+    data['platform'] = platform;
+    data['browserName'] = browserName;
     return data;
   }
 }

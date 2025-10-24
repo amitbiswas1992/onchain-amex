@@ -22,7 +22,7 @@ class AmexTextAppBar extends StatelessWidget {
             textAlign: TextAlign.center,
             style: s32W600(context).copyWith(
                 color:
-                    isLightTheme(context) ?  AppColors.primaryVariantLight : AppColors.primaryLight),
+                    isLightTheme(context) ?  AppColors.primaryVariantLight : AppColors.primaryLight,),
           ),
         ),
       ],

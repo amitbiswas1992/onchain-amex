@@ -13,9 +13,9 @@ class TokensModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['accessToken'] = this.accessToken;
-    data['refreshToken'] = this.refreshToken;
-    data['expiresIn'] = this.expiresIn;
+    data['accessToken'] = accessToken;
+    data['refreshToken'] = refreshToken;
+    data['expiresIn'] = expiresIn;
     return data;
   }
 }

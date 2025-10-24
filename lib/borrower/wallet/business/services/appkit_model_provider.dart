@@ -15,10 +15,10 @@ class AppKitModelProvider {
       projectId: reownProjectId,
       logLevel: LogLevel.all,
       metadata: PairingMetadata(
-        name: 'TMRW',
-        description: 'TMRW App',
+        name: 'Soho Pay',
+        description: 'Soho Pay App',
         redirect: Redirect(
-          native: Platform.isIOS ? 'tmrw://$iosRedirectScreen' : 'tmrw://',
+          native: Platform.isIOS ? 'soho://$iosRedirectScreen' : 'soho://',
           linkMode: false,
         ),
       ),

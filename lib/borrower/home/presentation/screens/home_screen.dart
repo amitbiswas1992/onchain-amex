@@ -206,7 +206,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                           ?.toBigInt()
                                                           .dividedByMillion() ??
                                                       0.0;
-                                                  const currency = '';
+
                                                   final date = transaction
                                                               .timestamp ==
                                                           null

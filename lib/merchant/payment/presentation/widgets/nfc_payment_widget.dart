@@ -91,7 +91,7 @@ class NfcRipplePainter extends CustomPainter {
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0
-      ..color = Colors.white.withOpacity(0.3);
+      ..color = Colors.white.withValues(alpha: 0.3);
 
     // Draw 3 expanding circles
     for (int i = 0; i < 3; i++) {
@@ -102,7 +102,7 @@ class NfcRipplePainter extends CustomPainter {
       canvas.drawCircle(
         center,
         radius,
-        paint..color = Colors.white.withOpacity(opacity),
+        paint..color = Colors.white.withValues(alpha: opacity),
       );
     }
   }

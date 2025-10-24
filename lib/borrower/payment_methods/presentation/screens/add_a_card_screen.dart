@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
@@ -10,7 +9,6 @@ import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/title_and_widget.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
-import '../../../cards/presentation/providers/card_providers.dart';
 import '../../../rewards/presentation/screens/rewards_strings.dart';
 import '../providers/payment_method_providers.dart';
 

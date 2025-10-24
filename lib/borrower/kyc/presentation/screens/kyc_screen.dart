@@ -45,13 +45,18 @@ class _KycScreenState extends ConsumerState<KycScreen> {
                   "Please have your ID ready and click 'Start:",
                   textAlign: TextAlign.center,
                 ),
-                const VerticalSpace(AppValues.paddingLarge + AppValues.paddingMedium),
-                AppPrimaryButton(title: 'Start', titleStyle: s22W600(context).copyWith(color: Colors.white), onTap: () {
-                  AppNav.goRouter.push(RtNm.idCheckKycOptionsScreen);
-                },),
+                const VerticalSpace(
+                    AppValues.paddingLarge + AppValues.paddingMedium,),
+                AppPrimaryButton(
+                  title: 'Start',
+                  titleStyle: s22W600(context).copyWith(color: Colors.white),
+                  onTap: () {
+                    AppNav.goRouter.push(RtNm.idCheckKycOptionsScreen);
+                  },
+                ),
                 const VerticalSpace(AppValues.paddingLarge),
                 const Text(
-                  """By clicking "Start" you consent to TMRW collecting your data pursuant to its Privacy Policy""",
+                  """By clicking "Start" you consent to Soho Pay collecting your data pursuant to its Privacy Policy""",
                   textAlign: TextAlign.center,
                 ),
                 const VerticalSpace(AppValues.paddingLarge * 3),

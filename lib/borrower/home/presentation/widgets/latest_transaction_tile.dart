@@ -7,7 +7,6 @@ import '../../../../core/widgets/containers/icon_outer_circle.dart';
 import '../../../../core/widgets/texts/highlighted_text.dart';
 import '../../../../core/widgets/texts/large_number_text.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
-import '../../../../core/widgets/texts/title_text.dart';
 import '../../data/models/latest_transaction.dart';
 
 class LatestTransactionTile extends StatelessWidget {

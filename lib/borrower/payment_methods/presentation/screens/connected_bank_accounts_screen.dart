@@ -75,7 +75,7 @@ class _ConnectedBankAccountsScreenState extends ConsumerState<ConnectedBankAccou
                     ],
                   ),
                 );
-              }),
+              },),
             ),
             SafeArea(
               child: AppPrimaryButton(

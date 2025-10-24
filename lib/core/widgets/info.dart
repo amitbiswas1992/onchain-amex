@@ -17,7 +17,7 @@ class Info extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: const Color(0xFF1B3860).withValues(alpha: .24),
-        )
+        ),
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: 8,

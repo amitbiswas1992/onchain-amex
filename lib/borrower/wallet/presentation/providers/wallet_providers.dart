@@ -38,10 +38,10 @@ final appkitModalProvider =
     projectId: reownProjectId,
     logLevel: LogLevel.error,
     metadata: const PairingMetadata(
-      name: 'TMRW',
-      description: 'TMRW App',
+      name: 'Soho Pay',
+      description: 'Soho Pay App',
       redirect: Redirect(
-        native: 'tmrw://',
+        native: 'soho://',
         linkMode: false,
       ),
     ),

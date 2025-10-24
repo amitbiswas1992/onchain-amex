@@ -1,4 +1,3 @@
-import 'package:http/http.dart';
 
 import '../../../../core/utils/log_util.dart';
 import '../../../../infrastructure/network/api_urls.dart';

@@ -28,9 +28,6 @@ class _OnboardScreenState extends ConsumerState<OnboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final padding = MediaQuery.of(context).padding;
-
     return Scaffold(
       body: SafeArea(
         child: Column(

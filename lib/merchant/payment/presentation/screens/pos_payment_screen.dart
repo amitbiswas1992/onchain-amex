@@ -104,8 +104,8 @@ class _PosPaymentScreenState extends ConsumerState<PosPaymentScreen> {
     final encodedData = base64Url.encode(utf8.encode(jsonStr));
 
     // Return payment URL
-    print('Generated payment URL: tmrw://payment-screen?data=$encodedData');
-    return 'tmrw:///payment-screen?data=$encodedData';
+    print('Generated payment URL: soho://payment-screen?data=$encodedData');
+    return 'soho:///payment-screen?data=$encodedData';
   }
 
   Future<void> _handlePayment() async {
@@ -222,8 +222,8 @@ class _PosPaymentScreenState extends ConsumerState<PosPaymentScreen> {
                       ),
                       decoration: BoxDecoration(
                         color: _numericAmount > 0
-                            ? AppColors.jungleGreen.withOpacity(0.1)
-                            : AppColors.c757575.withOpacity(0.1),
+                            ? AppColors.jungleGreen.withValues(alpha: 0.1)
+                            : AppColors.c757575.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(

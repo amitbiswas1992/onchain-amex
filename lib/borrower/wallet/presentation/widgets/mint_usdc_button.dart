@@ -8,7 +8,7 @@ import '../../business/services/wallet_service.dart';
 class MintUsdcButton extends ConsumerStatefulWidget {
   final WalletService walletService;
 
-  const MintUsdcButton({required this.walletService});
+  const MintUsdcButton({super.key, required this.walletService});
 
   @override
   ConsumerState<MintUsdcButton> createState() => _MintUsdcButtonState();

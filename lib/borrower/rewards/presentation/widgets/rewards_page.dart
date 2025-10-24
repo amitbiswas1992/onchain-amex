@@ -9,7 +9,6 @@ import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/containers/light_card.dart';
 import '../../../../core/widgets/dividers/app_divider.dart';
-import '../../../../core/widgets/texts/large_number_text.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../screens/rewards_strings.dart';
 
@@ -125,7 +124,7 @@ class RewardsPage extends ConsumerWidget {
                               style: s12W400(context),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),

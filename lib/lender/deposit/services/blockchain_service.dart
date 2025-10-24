@@ -224,8 +224,9 @@ class BlockchainService {
     // Wait for contracts to load
     await _ensureInitialized();
 
-    if (!isConnected || _usdcContract == null || sessionTopic == null)
+    if (!isConnected || _usdcContract == null || sessionTopic == null) {
       return 0.0;
+    }
 
     try {
       final result = await appKitModal.requestReadContract(

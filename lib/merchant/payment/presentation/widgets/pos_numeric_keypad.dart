@@ -112,7 +112,7 @@ class PosNumericKeypad extends StatelessWidget {
         child: Container(
           height: 70,
           decoration: BoxDecoration(
-            color: AppColors.errorLight.withOpacity(0.1),
+            color: AppColors.errorLight.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: AppColors.errorLight.withOpacity(0.3),

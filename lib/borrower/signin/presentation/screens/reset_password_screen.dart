@@ -133,8 +133,9 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                     maxLines: 1,
                     obscureText: true,
                     validator: (val) {
-                      if (val == null || val.isEmpty)
+                      if (val == null || val.isEmpty) {
                         return 'Please confirm password';
+                      }
                       return null;
                     },
                     onSave: (val) => _confirm = val ?? '',

@@ -189,7 +189,7 @@ class Profile {
 
   String getShortName() {
     try {
-      return '${this.firstName?[0].toUpperCase() ?? ''}${this.lastName?[0].toUpperCase() ?? ''}';
+      return '${firstName?[0].toUpperCase() ?? ''}${lastName?[0].toUpperCase() ?? ''}';
     } catch (error, stck) {
       debugPrint(error.toString());
       debugPrint(stck.toString());
@@ -213,9 +213,9 @@ class KycData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['reason'] = this.reason;
-    data['status'] = this.status;
-    data['sessionId'] = this.sessionId;
+    data['reason'] = reason;
+    data['status'] = status;
+    data['sessionId'] = sessionId;
     return data;
   }
 }
@@ -436,7 +436,7 @@ class Wallet {
         this.walletType,
         this.isActive,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,});
 
   Wallet.fromJson(Map<String, dynamic> json) {
     id = json['id'];

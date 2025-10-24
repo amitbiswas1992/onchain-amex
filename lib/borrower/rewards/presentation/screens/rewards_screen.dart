@@ -6,7 +6,6 @@ import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
-import '../../../spends/presentation/resources/spends_strings.dart';
 import '../widgets/challenges_page.dart';
 import '../widgets/rewards_page.dart';
 import '../widgets/tires_page.dart';
@@ -104,7 +103,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> with SingleTicker
                 ChallengesPage(),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

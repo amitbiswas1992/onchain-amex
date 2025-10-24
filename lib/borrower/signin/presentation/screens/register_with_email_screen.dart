@@ -45,9 +45,6 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
   String _email = '';
   String _password = '';
 
-  // Add local role state
-  final _UserRole _selectedRole = _UserRole.borrower;
-
   @override
   void initState() {
     super.initState();
@@ -261,12 +258,12 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
 }
 
 // Simple role enum
-enum _UserRole { borrower, merchant, lender }
+enum UserRole { borrower, merchant, lender }
 
 // Tabs widget
 class RoleTabs extends StatelessWidget {
-  final _UserRole selected;
-  final ValueChanged<_UserRole> onChanged;
+  final UserRole selected;
+  final ValueChanged<UserRole> onChanged;
 
   const RoleTabs({
     super.key,
@@ -277,9 +274,9 @@ class RoleTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const items = [
-      (_UserRole.borrower, 'Borrower'),
-      (_UserRole.merchant, 'Merchant'),
-      (_UserRole.lender, 'Lender'),
+      (UserRole.borrower, 'Borrower'),
+      (UserRole.merchant, 'Merchant'),
+      (UserRole.lender, 'Lender'),
     ];
 
     return Wrap(

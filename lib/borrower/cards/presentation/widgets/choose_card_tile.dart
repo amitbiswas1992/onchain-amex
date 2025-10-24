@@ -5,7 +5,6 @@ import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/containers/app_chip.dart';
 import '../../../../core/widgets/containers/deem_card.dart';
-import '../resources/cards_strings.dart';
 
 class ChooseCardTile extends StatelessWidget {
   final String title;

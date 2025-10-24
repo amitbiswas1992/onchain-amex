@@ -5,7 +5,6 @@ import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
-import '../../../../core/widgets/texts/title_text.dart';
 import '../../../rewards/presentation/screens/rewards_strings.dart';
 import '../providers/more_providers.dart';
 import 'security_privacy_screen.dart';
