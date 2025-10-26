@@ -18,12 +18,14 @@ class PaymentMethodScreen extends ConsumerStatefulWidget {
   final String paymentUrl;
   final double amount;
   final DateTime paymentStartTime;
+  final bool isNfcAvailable;
 
   const PaymentMethodScreen({
     super.key,
     required this.paymentUrl,
     required this.amount,
     required this.paymentStartTime,
+    required this.isNfcAvailable,
   });
 
   @override
@@ -57,7 +59,16 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen>
     super.dispose();
   }
 
+  void _stopEmulation() async {
+    try {
+      await ref.read(nfcHceProvider).stopNfcHce();
+    } catch (e) {
+      print('NFC HCE stop error: $e');
+    }
+  }
+
   void _handleCancel() {
+    _stopEmulation();
     // Cancel the payment verification
     ref
         .read(
@@ -150,43 +161,50 @@ class _PaymentMethodScreenState extends ConsumerState<PaymentMethodScreen>
         // Payment Verification Status Banner
         if (verificationState.status == PaymentVerificationStatus.waiting)
           _buildVerificationBanner(),
+
         // Tab Bar
-        Container(
-          margin: const EdgeInsets.all(AppValues.paddingMedium),
-          decoration: BoxDecoration(
-            color: AppColors.cF5F5F5,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: TabBar(
-            controller: _tabController,
-            indicatorSize: TabBarIndicatorSize.tab,
-            dividerColor: Colors.transparent,
-            indicator: BoxDecoration(
-              color: AppColors.primaryLight,
+        if (widget.isNfcAvailable)
+          Container(
+            margin: const EdgeInsets.all(AppValues.paddingMedium),
+            decoration: BoxDecoration(
+              color: AppColors.cF5F5F5,
               borderRadius: BorderRadius.circular(12),
             ),
-            labelColor: Colors.white,
-            unselectedLabelColor: AppColors.c757575,
-            labelStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+            child: TabBar(
+              controller: _tabController,
+              indicatorSize: TabBarIndicatorSize.tab,
+              dividerColor: Colors.transparent,
+              indicator: BoxDecoration(
+                color: AppColors.primaryLight,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              labelColor: Colors.white,
+              unselectedLabelColor: AppColors.c757575,
+              labelStyle: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+              tabs: const [
+                Tab(icon: Icon(Icons.qr_code_2), text: 'QR Payment'),
+                Tab(icon: Icon(Icons.nfc), text: 'NFC Payment'),
+              ],
             ),
-            tabs: const [
-              Tab(icon: Icon(Icons.qr_code_2), text: 'QR Payment'),
-              Tab(icon: Icon(Icons.nfc), text: 'NFC Payment'),
-            ],
           ),
-        ),
         // Tab Content
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              QrPaymentWidget(paymentUrl: widget.paymentUrl),
-              NfcPaymentWidget(paymentUrl: widget.paymentUrl),
-            ],
+        if (widget.isNfcAvailable)
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                QrPaymentWidget(paymentUrl: widget.paymentUrl),
+                NfcPaymentWidget(paymentUrl: widget.paymentUrl),
+              ],
+            ),
+          )
+        else
+          Expanded(
+            child: QrPaymentWidget(paymentUrl: widget.paymentUrl),
           ),
-        ),
         // Cancel Button
         Padding(
           padding: const EdgeInsets.all(AppValues.paddingMedium),

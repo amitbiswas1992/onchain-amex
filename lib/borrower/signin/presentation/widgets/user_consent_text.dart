@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_strings.dart';
 import '../../../../core/utils/functions.dart';
@@ -24,23 +25,11 @@ class UserConsentText extends StatelessWidget {
                   : AppColors.onBackgroundDark,
             ),
             recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                // Handle Terms and Conditions tap
-                // print('Tapped Terms and Conditions');
-              },
-          ),
-          const TextSpan(text: ', '),
-          TextSpan(
-            text: 'E-Consents',
-            style: s12W400(context).copyWith(
-              color: isLightTheme(context)
-                  ? AppColors.onBackgroundLight
-                  : AppColors.onBackgroundDark,
-            ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                // Handle E-Consents tap
-                // print('Tapped E-Consents');
+              ..onTap = () async {
+                await launchLink(
+                  termsAndConditionsUrl,
+                  context,
+                );
               },
           ),
           TextSpan(
@@ -55,9 +44,11 @@ class UserConsentText extends StatelessWidget {
                   : AppColors.onBackgroundDark,
             ),
             recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                // Handle Privacy Policy tap
-                // print('Tapped Privacy Policy');
+              ..onTap = () async {
+                await launchLink(
+                  privacyPolicyUrl,
+                  context,
+                );
               },
           ),
           TextSpan(

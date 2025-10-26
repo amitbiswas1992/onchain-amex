@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/extensions/string_extension.dart';
 import '../../../../core/resources/app_colors.dart';
@@ -8,6 +9,7 @@ import '../../../../core/utils/decimal_converter.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
+import '../../../../infrastructure/navigation/rt_nm.dart';
 
 class PosPaymentSuccessScreen extends StatelessWidget {
   final String borrowerName;
@@ -29,9 +31,8 @@ class PosPaymentSuccessScreen extends StatelessWidget {
     final isTablet = size.width > 600;
 
     return Scaffold(
-      backgroundColor: isTablet
-          ? const Color(0xFFF5F5F5)
-          : AppColors.backgroundLight,
+      backgroundColor:
+          isTablet ? const Color(0xFFF5F5F5) : AppColors.backgroundLight,
       appBar: isTablet ? null : _buildMobileAppBar(context),
       body: SafeArea(
         child: isTablet ? _buildTabletLayout() : _buildMobileLayout(),
@@ -174,13 +175,7 @@ class PosPaymentSuccessScreen extends StatelessWidget {
               title: 'Done',
               isExpanded: true,
               onTap: () {
-                // Navigate back to POS payment screen
-                // Pop all screens and go back to merchant payment home
-                Navigator.of(context).popUntil(
-                  (route) =>
-                      route.isFirst ||
-                      route.settings.name?.contains('merchantPayment') == true,
-                );
+                context.goNamed(RtNm.merchantHomeScreen);
               },
             ),
           ),

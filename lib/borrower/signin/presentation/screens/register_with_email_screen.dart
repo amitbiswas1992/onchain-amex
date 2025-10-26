@@ -40,10 +40,12 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
   final _passwordNode = FocusNode();
   final _firstNameNode = FocusNode();
   final _lastNameNode = FocusNode();
+  final _referralNode = FocusNode();
   String _firstName = '';
   String _lastName = '';
   String _email = '';
   String _password = '';
+  String _referralCode = '';
 
   @override
   void initState() {
@@ -65,6 +67,7 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
     _passwordNode.dispose();
     _firstNameNode.dispose();
     _lastNameNode.dispose();
+    _referralNode.dispose();
   }
 
   @override
@@ -83,8 +86,7 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const AmexTextAppBar(),
-                  const VerticalSpace(36),
-                  const VerticalSpace(AppValues.paddingMedium),
+                  const VerticalSpace(56),
                   const TitleText(
                     text: letsGetYouRegistered,
                     textAlign: TextAlign.start,
@@ -186,6 +188,20 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                       _lastName = val ?? '';
                     },
                   ),
+                  const VerticalSpace(AppValues.paddingMedium),
+                  AppTextFormField(
+                    focusNode: _referralNode,
+                    hintText: referral,
+                    prefixIcon: const Icon(CupertinoIcons.gift),
+                    keyboardType: TextInputType.name,
+                    textCapitalization: TextCapitalization.words,
+                    onFieldSubmitted: (value) {
+                      _referralNode.unfocus();
+                    },
+                    onSave: (val) {
+                      _referralCode = val ?? '';
+                    },
+                  ),
                   const VerticalSpace(32),
                   Row(
                     children: [
@@ -204,7 +220,7 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                           title: continuee,
                           onTap: () async {
                             HapticFeedback.lightImpact();
-                            FocusScope.of(context).unfocus();
+                            unFocus(context);
                             final valid = _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
@@ -213,6 +229,7 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                                 password: _password,
                                 lastName: _lastName,
                                 firstName: _firstName,
+                                referralCode: _referralCode,
                                 isEmail: true,
                                 userType: tabController.index == 0
                                     ? 'BORROWER'
@@ -244,7 +261,7 @@ class _SignInWithEmailScreenState extends ConsumerState<RegisterWithEmailScreen>
                       ],
                     ),
                   ),
-                  const VerticalSpace(82),
+                  const VerticalSpace(32),
                   const UserConsentText(),
                   const VerticalSpace(40),
                 ],

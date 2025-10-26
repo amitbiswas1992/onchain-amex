@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/resources/app_colors.dart';
+import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 
@@ -15,7 +16,9 @@ class PosNumericKeypad extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isLightTheme(context)
+            ? const Color(0xFFF5F5F5)
+            : AppColors.backgroundDark,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 2)),
@@ -82,9 +85,16 @@ class PosNumericKeypad extends StatelessWidget {
         child: Container(
           height: 70,
           decoration: BoxDecoration(
-            color: AppColors.cF5F5F5,
+            color: isLightTheme(context)
+                ? const Color(0xFFF5F5F5)
+                : AppColors.backgroundDark,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.borderColor, width: 1),
+            border: Border.all(
+              color: isLightTheme(context)
+                  ? AppColors.borderColor
+                  : AppColors.c757575,
+              width: 1,
+            ),
           ),
           child: Center(
             child: Text(
@@ -92,7 +102,7 @@ class PosNumericKeypad extends StatelessWidget {
               style: s28W600(context).copyWith(
                 fontSize: 28,
                 fontWeight: FontWeight.w600,
-                color: AppColors.c212121,
+                // color: AppColors.c212121,
               ),
             ),
           ),

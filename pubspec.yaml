@@ -59,6 +59,10 @@ dependencies:
 #  uuid: ^4.5.1
 
   crypto: any
+  flutter_nfc_hce: ^0.1.8
+  nfc_manager: ^4.1.1
+  app_settings: ^6.1.1
+  nfc_manager_ndef: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -85,6 +89,7 @@ flutter:
     - assets/rings/
     - assets/tires/
     - assets/contracts/
+    - assets/app_icons/
 
   fonts:
     - family: Segoe Pro

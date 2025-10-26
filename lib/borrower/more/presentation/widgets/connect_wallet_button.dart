@@ -6,6 +6,7 @@ import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/transaction_hash_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/network/result.dart';
+import '../../../../merchant/merchant_transactions/presentation/providers/transaction_providers.dart';
 import '../../../wallet/data/models/transaction_model.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../../data/models/profile.dart';
@@ -113,6 +114,9 @@ class _ConnectWalletButtonState extends ConsumerState<ConnectWalletButton> {
                   ),
                 );
                 ref.invalidate(profileProvider);
+                ref.invalidate(availableCreditProvider);
+                ref.invalidate(transactionHistoryProvider);
+                ref.invalidate(merchantProfileProvider);
                 break;
               case Error<TransactionModel?>():
                 showErrorDialog(

@@ -41,7 +41,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       backgroundColor: isLightTheme(context)
           ? const Color(0xFFF5F5F5)
-          : const Color(0xFF121212),
+          : AppColors.backgroundDark,
       body: Padding(
         padding:
             const EdgeInsets.symmetric(horizontal: AppValues.paddingMedium),

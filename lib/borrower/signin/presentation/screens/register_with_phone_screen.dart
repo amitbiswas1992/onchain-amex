@@ -42,10 +42,12 @@ class _RegisterWithPhoneScreenState
   final _passwordNode = FocusNode();
   final _firstNameNode = FocusNode();
   final _lastNameNode = FocusNode();
+  final _referralNode = FocusNode();
   String _firstName = '';
   String _lastName = '';
   String _password = '';
   String _phone = '';
+  String _referralCode = '';
 
   @override
   void initState() {
@@ -67,6 +69,7 @@ class _RegisterWithPhoneScreenState
     _passwordNode.dispose();
     _firstNameNode.dispose();
     _lastNameNode.dispose();
+    _referralNode.dispose();
   }
 
   @override
@@ -85,8 +88,7 @@ class _RegisterWithPhoneScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const AmexTextAppBar(),
-                  const VerticalSpace(AppValues.paddingMedium),
-                  const VerticalSpace(36),
+                  const VerticalSpace(56),
                   const TitleText(
                     text: letsGetYouRegistered,
                     textAlign: TextAlign.start,
@@ -109,7 +111,7 @@ class _RegisterWithPhoneScreenState
                           CupertinoIcons.device_phone_portrait,
                           size: 20,
                         ),
-                        autoFocus: true,
+                        autoFocus: false,
                         onFieldSubmitted: (val) {
                           _passwordNode.requestFocus();
                         },
@@ -192,6 +194,20 @@ class _RegisterWithPhoneScreenState
                       _lastName = val ?? '';
                     },
                   ),
+                  const VerticalSpace(AppValues.paddingMedium),
+                  AppTextFormField(
+                    focusNode: _referralNode,
+                    hintText: referral,
+                    prefixIcon: const Icon(CupertinoIcons.gift),
+                    keyboardType: TextInputType.name,
+                    textCapitalization: TextCapitalization.words,
+                    onFieldSubmitted: (value) {
+                      _referralNode.unfocus();
+                    },
+                    onSave: (val) {
+                      _referralCode = val ?? '';
+                    },
+                  ),
                   const VerticalSpace(32),
                   Row(
                     children: [
@@ -212,11 +228,13 @@ class _RegisterWithPhoneScreenState
                             final valid = _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
+                              unFocus(context);
                               _controller.register(
                                 email: _phone,
                                 password: _password,
                                 firstName: _firstName,
                                 lastName: _lastName,
+                                referralCode: _referralCode,
                                 isEmail: false,
                                 userType: tabController.index == 0
                                     ? 'BORROWER'
@@ -248,7 +266,7 @@ class _RegisterWithPhoneScreenState
                       ],
                     ),
                   ),
-                  const VerticalSpace(82),
+                  const VerticalSpace(32),
                   const UserConsentText(),
                   const VerticalSpace(40),
                 ],

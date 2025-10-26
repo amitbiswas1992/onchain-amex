@@ -135,6 +135,7 @@ class SignInController {
     required String password,
     required String firstName,
     required String lastName,
+    String? referralCode,
     required bool isEmail,
     required String userType,
   }) async {
@@ -145,6 +146,7 @@ class SignInController {
         password: password,
         firstName: firstName,
         lastName: lastName,
+        referralCode: referralCode,
         isEmail: isEmail,
         userType: userType,
       ),

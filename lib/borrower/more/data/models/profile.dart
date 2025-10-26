@@ -41,7 +41,11 @@ class Profile {
   CreditAccountModel? creditAccount;
   YieldAccountModel? yieldAccount;
   Wallet? wallet;
-
+  String? referralCode;
+  String? referredByCode;
+  String? referredByUserId;
+  int? referralCount;
+  String? referralRewards;
 
   Profile({
     this.id,
@@ -83,6 +87,11 @@ class Profile {
     this.lastLoginAt,
     this.creditAccount,
     this.yieldAccount,
+    this.referralCode,
+    this.referredByCode,
+    this.referredByUserId,
+    this.referralCount,
+    this.referralRewards,
   });
 
   Profile.fromJson(Map<String, dynamic> json) {
@@ -129,7 +138,14 @@ class Profile {
     yieldAccount = json['yieldAccount'] != null
         ? YieldAccountModel.fromJson(json['yieldAccount'])
         : null;
-    wallet = json['wallets'] != null && json['wallets'].isNotEmpty ? Wallet.fromJson(json['wallets'].first) : null;
+    wallet = json['wallets'] != null && json['wallets'].isNotEmpty
+        ? Wallet.fromJson(json['wallets'].first)
+        : null;
+    referralCode = json['referralCode'];
+    referredByCode = json['referredByCode'];
+    referredByUserId = json['referredByUserId'];
+    referralCount = json['referralCount'];
+    referralRewards = json['referralRewards'];
   }
 
   Map<String, dynamic> toJson() {
@@ -180,6 +196,11 @@ class Profile {
     if (wallet != null) {
       data['wallets'] = [wallet!.toJson()];
     }
+    data['referralCode'] = referralCode;
+    data['referredByCode'] = referredByCode;
+    data['referredByUserId'] = referredByUserId;
+    data['referralCount'] = referralCount;
+    data['referralRewards'] = referralRewards;
     return data;
   }
 
@@ -219,7 +240,6 @@ class KycData {
     return data;
   }
 }
-
 
 class CreditAccountModel {
   String? id;
@@ -417,7 +437,6 @@ class YieldAccountModel {
   }
 }
 
-
 class Wallet {
   String? id;
   String? userId;
@@ -428,15 +447,16 @@ class Wallet {
   String? createdAt;
   String? updatedAt;
 
-  Wallet(
-      {this.id,
-        this.userId,
-        this.address,
-        this.network,
-        this.walletType,
-        this.isActive,
-        this.createdAt,
-        this.updatedAt,});
+  Wallet({
+    this.id,
+    this.userId,
+    this.address,
+    this.network,
+    this.walletType,
+    this.isActive,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   Wallet.fromJson(Map<String, dynamic> json) {
     id = json['id'];

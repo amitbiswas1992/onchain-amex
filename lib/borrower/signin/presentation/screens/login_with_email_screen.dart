@@ -71,7 +71,7 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const AmexTextAppBar(),
-                  const VerticalSpace(68),
+                  const VerticalSpace(56),
                   const TitleText(
                     text: letsGetYouSignedIn,
                     textAlign: TextAlign.start,
@@ -86,7 +86,7 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                     hintText: yourEmailAddress,
                     maxLines: 1,
                     keyboardType: TextInputType.emailAddress,
-                    autoFocus: true,
+                    autoFocus: false,
                     validator: (val) {
                       if (val == null || val.isEmpty) {
                         return inputRequired;
@@ -159,7 +159,9 @@ class _LoginWithEmailScreenState extends ConsumerState<LoginWithEmailScreen> {
                           title: continuee,
                           onTap: () async {
                             HapticFeedback.lightImpact();
-                            FocusScope.of(context).unfocus();
+                            unFocus(context);
+                            _emailNode.unfocus();
+                            _passwordNode.unfocus();
                             final valid = _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();

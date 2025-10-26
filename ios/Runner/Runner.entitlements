@@ -7,4 +7,11 @@
 		<string>Default</string>
 	</array>
 </dict>
+<dict>
+	<key>com.apple.developer.nfc.readersession.formats</key>
+	<array>
+	    <string>NDEF</string>
+		<string>TAG</string>
+	</array>
+</dict>
 </plist>

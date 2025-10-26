@@ -4,12 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/resources/app_colors.dart';
+import '../../core/utils/functions.dart';
 
 // Stateful navigation based on:
 // https://github.com/flutter/packages/blob/main/packages/go_router/example/lib/stateful_shell_route.dart
 class ScaffoldWithNestedNavigation extends StatelessWidget {
   const ScaffoldWithNestedNavigation({Key? key, required this.navigationShell})
-    : super(key: key ?? const ValueKey('ScaffoldWithNestedNavigation'));
+      : super(key: key ?? const ValueKey('ScaffoldWithNestedNavigation'));
   final StatefulNavigationShell navigationShell;
 
   void _goBranch(int index) {
@@ -55,59 +56,62 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLightThem = isLightTheme(context);
     return Scaffold(
       body: body,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: onDestinationSelected,
-        backgroundColor: Colors.white,
+        backgroundColor:
+            isLightTheme(context) ? Colors.white : AppColors.backgroundDark,
         type: BottomNavigationBarType.fixed,
         unselectedLabelStyle: const TextStyle(color: AppColors.c757575),
         selectedFontSize: 13,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: AppColors.c757575,
+        selectedItemColor: isLightThem ? Colors.black : Colors.white,
+        unselectedItemColor:
+            isLightThem ? AppColors.c757575 : AppColors.c757575,
         items: [
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/bottom_nav/home.svg',
-              color: AppColors.c757575,
+              color: isLightThem ? AppColors.c757575 : null,
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/bottom_nav/home.svg',
-              color: Colors.black,
+              color: isLightThem ? Colors.black : Colors.white,
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/bottom_nav/wallet.svg',
-              color: AppColors.c757575,
+              color: isLightThem ? AppColors.c757575 : null,
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/bottom_nav/wallet.svg',
-              color: Colors.black,
+              color: isLightThem ? Colors.black : Colors.white,
             ),
             label: 'Payment',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/bottom_nav/transactions.svg',
-              color: AppColors.c757575,
+              color: isLightThem ? AppColors.c757575 : null,
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/bottom_nav/transactions.svg',
-              color: Colors.black,
+              color: isLightThem ? Colors.black : Colors.white,
             ),
             label: 'Transactions',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/bottom_nav/more.svg',
-              color: AppColors.c757575,
+              color: isLightThem ? AppColors.c757575 : null,
             ),
             activeIcon: SvgPicture.asset(
               'assets/icons/bottom_nav/more.svg',
-              color: Colors.black,
+              color: isLightThem ? Colors.black : Colors.white,
             ),
             label: 'More',
           ),

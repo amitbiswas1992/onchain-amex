@@ -1,8 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+    <uses-feature android:name="android.hardware.nfc.hce" android:required="true" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:label="Soho Pay"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -11,6 +18,7 @@
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
+            android:enableOnBackInvokedCallback="true"
             android:windowSoftInputMode="adjustResize">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
@@ -33,6 +41,14 @@
                 <data android:scheme="soho" />
             </intent-filter>
 
+            <intent-filter>
+            <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <data android:mimeType="application/com.nodecard.xyz" />
+            <!-- <data android:scheme="soho" /> -->
+            </intent-filter>
+
+
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
@@ -43,6 +59,21 @@
         <meta-data
             android:name="io.flutter.embedding.android.EnableImpeller"
             android:value="false" />
+
+        <!-- === nfc  start ======= -->
+        <service android:name="com.novice.flutter_nfc_hce.KHostApduService"
+              android:exported="true"
+              android:enabled="true"
+              android:permission="android.permission.BIND_NFC_SERVICE">
+        <intent-filter>
+        <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        </intent-filter>
+        <meta-data android:name="android.nfc.cardemulation.host_apdu_service"
+              android:resource="@xml/apduservice"/>
+        </service>
+
+        å<!-- === nfc  finisth ======= -->
 
     </application>
     <!-- Required to query activities that can process text, see:

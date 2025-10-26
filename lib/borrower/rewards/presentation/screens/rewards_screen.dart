@@ -18,7 +18,8 @@ class RewardsScreen extends ConsumerStatefulWidget {
   ConsumerState createState() => _RewardsScreenState();
 }
 
-class _RewardsScreenState extends ConsumerState<RewardsScreen> with SingleTickerProviderStateMixin{
+class _RewardsScreenState extends ConsumerState<RewardsScreen>
+    with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   late final PageController _pageController;
 
@@ -33,7 +34,12 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> with SingleTicker
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PrimaryAppBar(title: rewards),
+      appBar: PrimaryAppBar(
+        title: rewards,
+        onLeadingPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -49,7 +55,6 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> with SingleTicker
                   height: 36,
                   child: TabBar(
                     controller: _tabController,
-
                     labelStyle: s14W500(context).copyWith(color: Colors.white),
                     labelPadding: const EdgeInsets.only(
                       left: AppValues.paddingMedium,

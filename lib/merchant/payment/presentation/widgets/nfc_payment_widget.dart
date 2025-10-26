@@ -1,23 +1,26 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../borrower/more/presentation/providers/more_providers.dart';
 import '../../../../borrower/spends/presentation/resources/spends_strings.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/animated_ring_loader.dart';
+import '../../../../core/widgets/dialogs.dart';
 
-class NfcPaymentWidget extends StatefulWidget {
+class NfcPaymentWidget extends ConsumerStatefulWidget {
   final String paymentUrl;
 
   const NfcPaymentWidget({super.key, required this.paymentUrl});
 
   @override
-  State<NfcPaymentWidget> createState() => _NfcPaymentWidgetState();
+  ConsumerState<NfcPaymentWidget> createState() => _NfcPaymentWidgetState();
 }
 
-class _NfcPaymentWidgetState extends State<NfcPaymentWidget>
+class _NfcPaymentWidgetState extends ConsumerState<NfcPaymentWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
@@ -28,11 +31,37 @@ class _NfcPaymentWidgetState extends State<NfcPaymentWidget>
       duration: const Duration(seconds: 2),
       vsync: this,
     )..repeat();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startEmulation();
+    });
+  }
+
+  void _startEmulation() async {
+    try {
+      final value = await ref.read(nfcHceProvider).startNfcHce(
+            widget.paymentUrl,
+            mimeType: 'application/com.nodecard.xyz',
+          );
+      print('value $value');
+    } catch (e) {
+      print('NFC HCE start error: $e');
+      showErrorDialog(context: context, message: 'Could not start NFC HCE.');
+    }
+  }
+
+  void _stopEmulation() async {
+    try {
+      await ref.read(nfcHceProvider).stopNfcHce();
+    } catch (e) {
+      print('NFC HCE stop error: $e');
+    }
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _stopEmulation();
     super.dispose();
   }
 

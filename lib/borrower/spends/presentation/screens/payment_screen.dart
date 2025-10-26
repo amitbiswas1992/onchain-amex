@@ -226,17 +226,20 @@ class _SpendAfterScanAmountInputScreenState
                                             );
                                           }
 
-                                          return AppPrimaryButton(
-                                            title: makePayment,
-                                            onTap: () {
-                                              _controller?.doPayment(
-                                                availableCredit:
-                                                    availableCreditLimit,
-                                                scannedData: widget.scannedData,
-                                                amountStr:
-                                                    _inputController.text,
-                                              );
-                                            },
+                                          return SafeArea(
+                                            child: AppPrimaryButton(
+                                              title: makePayment,
+                                              onTap: () {
+                                                _controller?.doPayment(
+                                                  availableCredit:
+                                                      availableCreditLimit,
+                                                  scannedData:
+                                                      widget.scannedData,
+                                                  amountStr:
+                                                      _inputController.text,
+                                                );
+                                              },
+                                            ),
                                           );
                                         },
                                       ),

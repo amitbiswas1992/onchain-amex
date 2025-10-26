@@ -1,4 +1,5 @@
 import 'package:country_picker/country_picker.dart';
+import 'package:flutter_nfc_hce/flutter_nfc_hce.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../infrastructure/di/global_providers.dart';
@@ -15,6 +16,10 @@ final profileProvider = FutureProvider.autoDispose((ref) async {
   final profile = await ref.read(profileRepo).getProfile();
   // Only keep alive if successful
   return profile;
+});
+
+final nfcHceProvider = Provider.autoDispose((ref) {
+  return FlutterNfcHce();
 });
 
 final selectedCountryProvider =

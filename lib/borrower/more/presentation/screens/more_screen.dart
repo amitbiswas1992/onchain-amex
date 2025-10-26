@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/resources/app_colors.dart';
@@ -122,11 +121,6 @@ class MoreBody extends ConsumerWidget {
     required this.merchantMode,
     required this.onMerchantModeChanged,
   });
-  Future<void> _launchUrl(String url, BuildContext context) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      showErrorDialog(context: context, message: 'Could not launch $url');
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -289,7 +283,7 @@ class MoreBody extends ConsumerWidget {
                   title: 'Terms & Conditions',
                   subtitle: 'Read the app terms and conditions',
                   onTap: () async {
-                    await _launchUrl(
+                    await launchLink(
                       termsAndConditionsUrl,
                       context,
                     );
@@ -300,7 +294,7 @@ class MoreBody extends ConsumerWidget {
                   subtitle: 'Read the app privacy policy',
                   title: 'Privacy Policy',
                   onTap: () async {
-                    await _launchUrl(
+                    await launchLink(
                       privacyPolicyUrl,
                       context,
                     );

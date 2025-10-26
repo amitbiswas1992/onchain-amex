@@ -29,6 +29,13 @@ sealed class Result<T> {
 
   /// Creates an error [Result], completed with the specified [error].
   const factory Result.error(AppException error) = Error._;
+  T? get data {
+    if (this is Ok<T>) {
+      return (this as Ok<T>).data;
+    } else {
+      return null;
+    }
+  }
 }
 
 /// A successful [Result] with a returned [data].
@@ -36,6 +43,7 @@ final class Ok<T> extends Result<T> {
   const Ok._(this.data, {required this.message});
 
   /// The returned value of this result.
+  @override
   final T data;
 
   final String message;

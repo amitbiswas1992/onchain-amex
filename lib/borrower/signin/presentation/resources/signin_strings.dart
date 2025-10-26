@@ -15,6 +15,7 @@ const enterYourNameWeWillCompleteKYClater =
     'Enter your name. We’ll complete KYC later';
 const firstName = 'First name';
 const lastName = 'Last name';
+const referral = 'Referral (optional)';
 const inputRequired = 'Input required';
 const invalidEmail = 'Invalid email';
 const password = 'Password';

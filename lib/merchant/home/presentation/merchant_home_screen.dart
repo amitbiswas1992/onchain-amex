@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -61,34 +62,61 @@ class _HomeScreenState extends ConsumerState<MerchantHomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final profileAsync = ref.watch(profileProvider);
     return Scaffold(
       backgroundColor: isLightTheme(context)
           ? const Color(0xFFF5F5F5)
           : const Color(0xFF121212),
-      appBar: HomeAppBar(
-        onGiftTap: () {
-          AppNav.goRouter.push(RtNm.rewardsScreen);
-        },
-        onNotificationTap: () {},
-        onProfileTap: () {},
-        profileName: 'SH',
+      appBar: profileAsync.when(
+        data: (data) => HomeAppBar(
+          onGiftTap: () {
+            AppNav.goRouter.push(RtNm.rewardsScreen);
+          },
+          onNotificationTap: () {},
+          onProfileTap: () {},
+          profileName: data.data?.firstName?.substring(0, 2).toUpperCase() ??
+              'Merchant'.substring(0, 2).toUpperCase(),
+        ),
+        loading: () => HomeAppBar(
+          onGiftTap: () {
+            AppNav.goRouter.push(RtNm.rewardsScreen);
+          },
+          onNotificationTap: () {},
+          onProfileTap: () {},
+          profileName: '',
+        ),
+        error: (_, __) => HomeAppBar(
+          onGiftTap: () {
+            AppNav.goRouter.push(RtNm.rewardsScreen);
+          },
+          onNotificationTap: () {},
+          onProfileTap: () {},
+          profileName: '',
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: _onRefresh,
-        child: const SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: AppValues.paddingMedium,
                 ),
                 child: Column(
                   children: [
-                    VerticalSpace(AppValues.paddingMedium),
-                    BalanceCard(),
-                    VerticalSpace(AppValues.paddingMedium),
-                    InviteFriendsCard(),
+                    const VerticalSpace(AppValues.paddingMedium),
+                    const BalanceCard(),
+                    const VerticalSpace(AppValues.paddingMedium),
+                    InviteFriendsCard(
+                      referralCode: ref
+                              .read(profileProvider)
+                              .valueOrNull
+                              ?.data
+                              ?.referralCode ??
+                          '',
+                    ),
                   ],
                 ),
               ),
@@ -279,7 +307,8 @@ class LockupBonusCard extends StatelessWidget {
 }
 
 class InviteFriendsCard extends StatelessWidget {
-  const InviteFriendsCard({super.key});
+  const InviteFriendsCard({super.key, required this.referralCode});
+  final String referralCode;
 
   @override
   Widget build(BuildContext context) {
@@ -336,7 +365,7 @@ class InviteFriendsCard extends StatelessWidget {
           ),
           const VerticalSpace(16),
           Text(
-            'Invite your friend and get \$5 each',
+            'Invite your friend and get awesome rewards!',
             style: s20W500(context, fontFamily: interFontFamily),
           ),
           const VerticalSpace(12),
@@ -348,25 +377,34 @@ class InviteFriendsCard extends StatelessWidget {
             ).copyWith(color: AppColors.c757575),
           ),
           const VerticalSpace(12),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppColors.jungleGreen.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'SHAK006',
-                  style: s14W600(
-                    context,
-                    fontFamily: interFontFamily,
-                  ).copyWith(color: AppColors.jungleGreen),
-                ),
-                const HorizontalSpace(8),
-                const Icon(Icons.copy, color: AppColors.jungleGreen, size: 16),
-              ],
+          InkWell(
+            onTap: () {
+              Clipboard.setData(ClipboardData(text: referralCode));
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.jungleGreen.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    referralCode,
+                    style: s14W600(
+                      context,
+                      fontFamily: interFontFamily,
+                    ).copyWith(color: AppColors.jungleGreen),
+                  ),
+                  const HorizontalSpace(8),
+                  const Icon(
+                    Icons.copy,
+                    color: AppColors.jungleGreen,
+                    size: 16,
+                  ),
+                ],
+              ),
             ),
           ),
         ],

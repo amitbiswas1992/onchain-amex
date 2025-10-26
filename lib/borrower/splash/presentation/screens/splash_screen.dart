@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/resources/app_colors.dart';
-import '../../../../core/resources/app_strings.dart';
 import '../../../../core/utils/functions.dart';
-import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../controllers/splash_controller.dart';
 
@@ -29,14 +27,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   Widget build(BuildContext context) {
     ref.watch(appkitModalProvider);
     return Scaffold(
-      backgroundColor: isLightTheme(context) ? AppColors.softGreen : null,
+      backgroundColor: isLightTheme(context)
+          ? AppColors.softGreen
+          : AppColors.backgroundDark,
       body: Center(
-        child: Text(
-          appTitle,
-          style: s32W600(context).copyWith(
-            color: AppColors.primaryLight,
-            fontSize: 56,
-          ),
+        child: Image.asset(
+          isLightTheme(context)
+              ? 'assets/app_icons/text-logo-black.png'
+              : 'assets/app_icons/text-logo-white.png',
+          width: 150,
         ),
       ),
     );

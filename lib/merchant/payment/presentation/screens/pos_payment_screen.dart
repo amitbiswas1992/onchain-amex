@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,12 +9,12 @@ import '../../../../borrower/more/presentation/providers/more_providers.dart';
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/decimal_converter.dart';
+import '../../../../core/utils/functions.dart';
 import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
-import '../../../../infrastructure/network/result.dart';
 import '../widgets/pos_numeric_keypad.dart';
 import 'payment_method_screen.dart';
 
@@ -26,7 +27,7 @@ class PosPaymentScreen extends ConsumerStatefulWidget {
 
 class _PosPaymentScreenState extends ConsumerState<PosPaymentScreen> {
   String _amount = '0';
-  final bool _isProcessing = false;
+  bool _isProcessing = false;
 
   void _onKeyTap(String value) {
     setState(() {
@@ -69,23 +70,13 @@ class _PosPaymentScreenState extends ConsumerState<PosPaymentScreen> {
     return double.tryParse(_amount) ?? 0.0;
   }
 
-  String _generatePaymentUrl(double amount) {
+  Future<String> _generatePaymentUrl(double amount) async {
     final data = ref.read(profileProvider).valueOrNull;
-    Profile? profile;
-    switch (data) {
-      case Ok<Profile?>():
-        profile = data.data;
-      case Error<Profile?>():
-      case null:
-    }
-    if (profile == null) {
-      showErrorDialog(
-        context: AppNav.navKey.currentContext!,
-        message: 'Failed to retrieve profile information',
-      );
-      return '';
-    }
-    if (profile.wallet?.address == null) {
+    Profile? profile = data?.data;
+
+    profile ??= (await ref.read(profileProvider.future)).data;
+
+    if (profile?.wallet?.address == null) {
       showErrorDialog(
         context: AppNav.navKey.currentContext!,
         message: 'Please connect your wallet first',
@@ -95,8 +86,8 @@ class _PosPaymentScreenState extends ConsumerState<PosPaymentScreen> {
     // Create payment payload
     final payload = {
       'amount': _numericAmount,
-      'walletAddress': profile.wallet!.address,
-      'merchantName': profile.fullName ?? 'Merchant',
+      'walletAddress': profile?.wallet?.address,
+      'merchantName': profile?.fullName ?? 'Merchant',
     };
 
     // Convert to JSON and base64 encode
@@ -114,23 +105,39 @@ class _PosPaymentScreenState extends ConsumerState<PosPaymentScreen> {
         context: context,
         message: 'Please enter a valid amount greater than zero.',
       );
+
+      return;
+    }
+    setState(() {
+      _isProcessing = true;
+    });
+    // Generate payment URL
+    final paymentUrl = await _generatePaymentUrl(_numericAmount);
+    if (paymentUrl.isEmpty) {
+      setState(() {
+        _isProcessing = false;
+      });
       return;
     }
 
-    // Generate payment URL
-    final paymentUrl = _generatePaymentUrl(_numericAmount);
-    if (paymentUrl.isEmpty) return;
-
     // Record the payment start time
     final paymentStartTime = DateTime.now();
-
+    final isNfcAvailable = Platform.isAndroid &&
+        await ref.read(nfcHceProvider).isNfcEnabled() &&
+        await ref.read(nfcHceProvider).isNfcHceSupported();
+    final amount = _numericAmount;
+    _clearAmount();
+    setState(() {
+      _isProcessing = false;
+    });
     // Navigate to payment method screen
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => PaymentMethodScreen(
           paymentUrl: paymentUrl,
-          amount: _numericAmount,
+          amount: amount,
           paymentStartTime: paymentStartTime,
+          isNfcAvailable: isNfcAvailable,
         ),
       ),
     );
@@ -138,13 +145,14 @@ class _PosPaymentScreenState extends ConsumerState<PosPaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final profileAsync = ref.watch(profileProvider);
     return Scaffold(
-      backgroundColor: AppColors.backgroundLight,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundLight,
         elevation: 0,
         title: Text('POS Payment', style: s18W600(context)),
         centerTitle: true,
+        backgroundColor:
+            isLightTheme(context) ? Colors.white : AppColors.backgroundDark,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh, color: AppColors.c757575),

@@ -1,4 +1,5 @@
 const nfc = 'NFC';
+const pay = 'Pay';
 const scanAndPay = 'Scan & Pay';
 const holdYourPhoneNearThePOS = 'Hold your phone near the POS';
 const enterAmount = 'Enter Amount';

@@ -4,6 +4,7 @@ class RegisterDto {
   final String firstName;
   final String lastName;
   final bool isEmail;
+  final String? referralCode;
   final String userType;
 
   const RegisterDto({
@@ -12,6 +13,7 @@ class RegisterDto {
     required this.firstName,
     required this.lastName,
     required this.isEmail,
+    this.referralCode,
     required this.userType,
   });
 
@@ -23,6 +25,8 @@ class RegisterDto {
       "firstName": firstName,
       "lastName": lastName,
       "userType": userType,
+      if (referralCode != null && referralCode!.isNotEmpty)
+        "referralCode": referralCode,
     };
     return data;
   }

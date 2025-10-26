@@ -73,7 +73,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<LogInWithPhoneScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const AmexTextAppBar(),
-                  const VerticalSpace(68),
+                  const VerticalSpace(56),
                   const TitleText(
                     text: letsGetYouSignedIn,
                     textAlign: TextAlign.start,
@@ -95,7 +95,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<LogInWithPhoneScreen> {
                           CupertinoIcons.device_phone_portrait,
                           size: 20,
                         ),
-                        autoFocus: true,
+                        autoFocus: false,
                         onFieldSubmitted: (val) {
                           _passwordNode.requestFocus();
                         },
@@ -157,6 +157,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<LogInWithPhoneScreen> {
                             final valid = _formKey.currentState!.validate();
                             if (valid) {
                               _formKey.currentState!.save();
+                              unFocus(context);
                               _controller.signIn(
                                 email: _phone,
                                 password: _password,
@@ -187,7 +188,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<LogInWithPhoneScreen> {
                       ],
                     ),
                   ),
-                  const VerticalSpace(82),
+                  const VerticalSpace(32),
                   const UserConsentText(),
                   const VerticalSpace(40),
                 ],
