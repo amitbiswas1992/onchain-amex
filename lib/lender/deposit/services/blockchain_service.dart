@@ -410,7 +410,7 @@ class BlockchainService {
         topic: sessionTopic!,
         chainId: currentChainId,
         deployedContract: _vaultContract!,
-        functionName: 'getMaxWithdrawableAmount',
+        functionName: 'maxWithdraw',
         parameters: [ethereumAddress],
       );
 

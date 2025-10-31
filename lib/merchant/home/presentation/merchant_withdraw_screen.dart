@@ -10,6 +10,7 @@ import '../../../../../core/widgets/texts/text_styles.dart';
 import '../../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../borrower/more/presentation/providers/more_providers.dart';
+import '../../../core/widgets/dialogs.dart';
 import '../../../infrastructure/network/result.dart';
 import '../../../lender/deposit/controllers/blockchain_controller.dart';
 import '../../../lender/deposit/presentation/widgets/withdraw_amount_input_widget.dart';
@@ -38,13 +39,16 @@ class _MerchantWithdrawScreenState
   Future<void> _handleWithdraw() async {
     final amountText = _amountController.text.trim();
     if (amountText.isEmpty) {
-      _showError('Please enter an amount');
+      showErrorDialog(context: context, message: 'Please enter an amount');
       return;
     }
 
     final amount = double.tryParse(amountText);
     if (amount == null || amount <= 0) {
-      _showError('Please enter a valid amount');
+      showErrorDialog(
+        context: context,
+        message: 'Please enter a valid amount',
+      );
       return;
     }
 
@@ -57,7 +61,10 @@ class _MerchantWithdrawScreenState
       case null:
     }
     if (availableBalance == null || amount > availableBalance) {
-      _showError('Insufficient balance');
+      showErrorDialog(
+        context: context,
+        message: 'Insufficient balance for this withdrawal',
+      );
       return;
     }
 
@@ -86,9 +93,12 @@ class _MerchantWithdrawScreenState
       if (!mounted) return;
 
       // Wait for blockchain confirmation
-      _showLoadingMessage('Waiting for blockchain confirmation...');
+      showLoadingDialog(
+        context: context,
+        message: "Completing your transaction...",
+      );
       await Future.delayed(const Duration(seconds: 5));
-
+      hideDialog();
       // Refresh balances
       ref.invalidate(merchantProfileProvider);
       // ref.invalidate(usdcBalanceProvider);
@@ -106,7 +116,7 @@ class _MerchantWithdrawScreenState
     } catch (e) {
       print('Withdraw error: $e');
       if (!mounted) return;
-      _showError('Transaction failed: ${e.toString()}');
+      showErrorDialog(context: context, message: e.toString());
     } finally {
       if (mounted) {
         setState(() {
@@ -114,39 +124,6 @@ class _MerchantWithdrawScreenState
         });
       }
     }
-  }
-
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-        duration: const Duration(seconds: 3),
-      ),
-    );
-  }
-
-  void _showLoadingMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const SizedBox(
-              width: 16,
-              height: 16,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Text(message),
-          ],
-        ),
-        backgroundColor: AppColors.primaryLight,
-        duration: const Duration(seconds: 5),
-      ),
-    );
   }
 
   @override
@@ -204,7 +181,7 @@ class _MerchantWithdrawScreenState
                             case Error<MerchantProfile?>():
                           }
                           return Text(
-                            '${DecimalConverter.formatAmount(balance ?? 0)} USDC',
+                            '${DecimalConverter.toUiAmount(BigInt.from(balance ?? 0))} USDC',
                             style: const TextStyle(
                               color: AppColors.c212121,
                               fontSize: 16,

@@ -175,6 +175,7 @@ class PosPaymentSuccessScreen extends StatelessWidget {
               title: 'Done',
               isExpanded: true,
               onTap: () {
+                context.pop();
                 context.goNamed(RtNm.merchantHomeScreen);
               },
             ),

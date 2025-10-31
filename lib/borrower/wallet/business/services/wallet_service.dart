@@ -235,7 +235,7 @@ class WalletService {
 
   /// Repay USDC into vault
   /// @param amount USDC amount to deposit (in UI format)
-  Future<String> spend({
+  Future<String?> spend({
     required double amount,
     required String merchantPublicAddress,
   }) async {
@@ -255,7 +255,10 @@ class WalletService {
     final contractAmount = DecimalConverter.toContractAmount(amount);
 
     print(
-      'Spending amount in contract format: $contractAmount for merchant: $merchantPublicAddress $ethereumAddress',
+      'Spending amount in contract format: $contractAmount for merchant: $merchantPublicAddress my address: $ethereumAddress',
+    );
+    print(
+      '  - sessionTopic: $sessionTopic, currentChainId: $currentChainId',
     );
     final txHash = await appKitModal.requestWriteContract(
       topic: sessionTopic!,

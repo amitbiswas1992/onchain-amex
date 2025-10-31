@@ -188,23 +188,25 @@ class WithdrawRepo {
 
     final contractAmount = DecimalConverter.toContractAmount(amount);
 
-    try {
-      final txHash = await appKitModal.requestWriteContract(
-        topic: sessionTopic!,
-        chainId: currentChainId,
-        deployedContract: _creditorContract!,
-        functionName: 'merchantWithdraw',
-        parameters: [
-          contractAmount,
-          EthereumAddress.fromHex(ContractConstants.usdcAddress),
-        ],
-        transaction: Transaction(from: ethereumAddress),
-      );
-
-      return txHash;
-    } catch (e) {
-      print('Error withdrawing: $e');
-      throw Exception('Failed to withdraw: ${e.toString()}');
+    final txHash = await appKitModal.requestWriteContract(
+      topic: sessionTopic!,
+      chainId: currentChainId,
+      deployedContract: _creditorContract!,
+      functionName: 'merchantWithdraw',
+      parameters: [
+        contractAmount,
+        // ethereumAddress,
+        EthereumAddress.fromHex(ContractConstants.usdcAddress),
+      ],
+      transaction: Transaction(from: ethereumAddress),
+    );
+    if (txHash == null) {
+      throw Exception('Transaction failed');
     }
+    if (txHash is Map && txHash['code'] == 5000) {
+      throw Exception('User rejected the transaction');
+    }
+
+    return txHash;
   }
 }

@@ -110,12 +110,8 @@ class _HomeScreenState extends ConsumerState<MerchantHomeScreen>
                     const BalanceCard(),
                     const VerticalSpace(AppValues.paddingMedium),
                     InviteFriendsCard(
-                      referralCode: ref
-                              .read(profileProvider)
-                              .valueOrNull
-                              ?.data
-                              ?.referralCode ??
-                          '',
+                      referralCode:
+                          profileAsync.valueOrNull?.data?.referralCode ?? '',
                     ),
                   ],
                 ),
@@ -163,9 +159,9 @@ class BalanceCard extends ConsumerWidget {
                 case Error<MerchantProfile?>():
               }
               return Text(
-                DecimalConverter.toUiAmount(
+                '\$${DecimalConverter.toUiAmount(
                   BigInt.from(double.tryParse(balance ?? '0') ?? 0),
-                ).toStringAsFixed(2),
+                ).toStringAsFixed(2)}',
                 style: s32W600(
                   context,
                   fontFamily: interFontFamily,

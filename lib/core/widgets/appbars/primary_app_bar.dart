@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../infrastructure/navigation/app_nav.dart';
-import '../../../infrastructure/navigation/rt_nm.dart';
 import '../../resources/app_values.dart';
 import '../../utils/sizebox_util.dart';
 import '../texts/text_styles.dart';
@@ -35,7 +34,7 @@ class PrimaryAppBar extends StatelessWidget implements PreferredSizeWidget {
           InkWell(
             onTap: onLeadingPressed ??
                 () {
-                  AppNav.goRouter.go(RtNm.homeScreen);
+                  AppNav.goRouter.pop();
                 },
             child: SizedBox(
               height: double.infinity,

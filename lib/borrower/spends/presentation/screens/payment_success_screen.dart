@@ -25,14 +25,14 @@ class PaymentSuccessScreen extends StatelessWidget {
           child: ImageTitleSubtitleButton(
             assetPath: 'assets/icons/success.svg',
             title: paymentSuccessful,
-            otherWidget: TransactionHashText(text: extra?.transactionHash ?? ''),
+            otherWidget:
+                TransactionHashText(text: extra?.transactionHash ?? ''),
             subTitle:
                 'Amount of ${extra?.amount.toStringAsFixed(2) ?? '0.0'} ${extra?.currency ?? ''} has been paid to ‘’${extra?.paymentTo ?? ''}’’.',
             buttonTitle: returnHome,
             onButtonTap: extra?.onButtonTap ??
                 () {
                   AppNav.goRouter.pop();
-
                 },
           ),
         ),

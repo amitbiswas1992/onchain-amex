@@ -34,7 +34,7 @@ class SignInController {
       case Ok<RegisterModel?>():
         if (result.data!.user.isEmailVerified ||
             result.data!.user.isPhoneVerified) {
-          await ref.read(securedStorageService).saveUserTokens(result.data!);
+          await ref.read(securedStorageService).saveUserModels(result.data!);
           if (result.data!.user.userType == 'LENDER') {
             AppNav.goRouter.go(RtNm.lenderHomeScreen);
           } else if (result.data!.user.userType == 'BORROWER') {
@@ -61,7 +61,7 @@ class SignInController {
             case Ok():
               await ref
                   .read(securedStorageService)
-                  .saveUserTokens(result.data!);
+                  .saveUserModels(result.data!);
 
               if (result.data!.user.userType == 'LENDER') {
                 AppNav.goRouter.go(RtNm.lenderHomeScreen);

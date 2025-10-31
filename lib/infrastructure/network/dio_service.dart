@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
-import '../../borrower/signin/data/models/register_model.dart';
+import '../../borrower/signin/data/models/tokens_model.dart';
 import '../navigation/app_nav.dart';
 import '../navigation/rt_nm.dart';
 import 'api_urls.dart';
@@ -53,6 +53,7 @@ class DioService {
           if (error.response?.statusCode == 401 &&
               !_isRefreshRequest(error.requestOptions)) {
             final success = await _refreshAuthTokens();
+            log('token refresh success: $success');
             if (success) {
               final retryResponse = await _retryRequest(error.requestOptions);
               if (retryResponse.statusCode == 401) {
@@ -133,7 +134,7 @@ class DioService {
       );
 
       if (response.statusCode == 200 && response.data['success'] == true) {
-        final newTokens = RegisterModel.fromJson(response.data);
+        final newTokens = TokensModel.fromJson(response.data['data']);
         await headersService.securedStorageService.saveUserTokens(newTokens);
         return true;
       }

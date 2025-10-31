@@ -33,10 +33,20 @@ class SecuredStorageService {
     return onboarded == 'true';
   }
 
-  Future<void> saveUserTokens(RegisterModel tokenModel) async {
+  Future<void> saveUserModels(RegisterModel tokenModel) async {
     await _storage.write(
       key: 'user_token',
       value: jsonEncode(tokenModel.toJson()),
+    );
+  }
+
+  Future<void> saveUserTokens(TokensModel tokenModel) async {
+    final model = await getUserModel();
+    if (model == null) return;
+    final updatedModel = RegisterModel(user: model.user, tokens: tokenModel);
+    await _storage.write(
+      key: 'user_token',
+      value: jsonEncode(updatedModel.toJson()),
     );
   }
 

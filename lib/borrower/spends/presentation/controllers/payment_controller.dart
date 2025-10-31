@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/widgets/dialogs.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
-import '../../../home/presentation/providers/home_providers.dart';
+import '../../../../lender/home/presentation/providers/home_providers.dart';
 import '../../../more/presentation/providers/more_providers.dart';
 import '../../../wallet/business/services/wallet_service.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
@@ -58,13 +58,21 @@ class PaymentController {
         amount: amount,
         merchantPublicAddress: scannedData.walletAddress!,
       );
+      if (txHash == null) {
+        throw Exception('Transaction failed');
+      }
 
       showLoadingDialog(
         context: context,
         message: "Completing your transaction...",
       );
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 5));
       hideDialog();
+
+      ref.invalidate(bottomNavSelectedIndexProvider);
+      ref.invalidate(profileProvider);
+      ref.invalidate(availableCreditProvider);
+      ref.invalidate(borrowerProfileProvider);
 
       AppNav.goRouter.pushReplacement(
         RtNm.paymentSuccessScreen,
@@ -75,10 +83,6 @@ class PaymentController {
           currency: 'USDC',
           onButtonTap: () {
             AppNav.goRouter.go(RtNm.homeScreen);
-            ref.invalidate(bottomNavSelectedIndexProvider);
-            ref.invalidate(profileProvider);
-            ref.invalidate(availableCreditProvider);
-            ref.invalidate(borrowerProfileProvider);
           },
         ),
       );
