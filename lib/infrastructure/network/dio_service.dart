@@ -202,6 +202,12 @@ class DioService {
         errorMessage = 'No internet connection.';
         break;
       case DioExceptionType.badResponse:
+        print('Bad response: ${e.response}');
+        if (e.response?.data == null ||
+            e.response?.data is! Map<String, dynamic>) {
+          errorMessage = 'Server error. Please try again later.';
+          break;
+        }
         final errors = (e.response?.data['errors'] ?? <String>[]) as List;
         errorMessage = (e.response?.data['message'] ?? 'Server error') +
             (errors.isNotEmpty ? ', ' : '') +

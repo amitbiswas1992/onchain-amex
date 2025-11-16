@@ -3,7 +3,7 @@ import 'dart:core';
 class ApiUrls {
   ApiUrls._();
 
-  static const base = 'https://api.sohopay.xyz/';
+  static const base = 'https://onchain-amex.tanvirmahin.com';
   static const register = '/api/v1/auth/register';
   static const registerWIthPhone = '/api/v1/auth/phone/register';
   static const sendOtpToEmail = '/api/v1/auth/send-email-verification-otp';

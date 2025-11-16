@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reown_appkit/reown_appkit.dart';
 
 import '../../../../../core/resources/app_colors.dart';
 import '../../../../../core/resources/app_values.dart';
@@ -28,7 +29,6 @@ class MerchantWithdrawScreen extends ConsumerStatefulWidget {
 class _MerchantWithdrawScreenState
     extends ConsumerState<MerchantWithdrawScreen> {
   final TextEditingController _amountController = TextEditingController();
-  bool _isProcessing = false;
 
   @override
   void dispose() {
@@ -56,10 +56,15 @@ class _MerchantWithdrawScreenState
     double? availableBalance;
     switch (balance) {
       case Ok<MerchantProfile?>():
-        availableBalance = double.tryParse(balance.data!.balance);
+        // availableBalance = double.tryParse(balance.data!.balance);
+        availableBalance = DecimalConverter.toUiAmount(
+          BigInt.from(double.tryParse(balance.data!.balance) ?? 0),
+        );
+
       case Error<MerchantProfile?>():
       case null:
     }
+    print('Available balance: $availableBalance');
     if (availableBalance == null || amount > availableBalance) {
       showErrorDialog(
         context: context,
@@ -68,12 +73,28 @@ class _MerchantWithdrawScreenState
       return;
     }
 
-    setState(() {
-      _isProcessing = true;
-    });
-
     try {
-      final withdrawRepo = ref.read(withdrawRepoProvider);
+      final walletService = ref.read(withdrawServiceProvider);
+
+      // showLoadingDialog(context: context, message: 'Checking allowance...');
+      // final allowance = await walletService.getUsdcAllowance();
+      // hideDialog();
+      // // dev.log('Allowance: $allowance');
+      // if (allowance < amount) {
+      //   // Need to approve first
+      //   final shouldApprove = await showPermissionDialog(
+      //     context: context,
+      //     message:
+      //         'Are you sure you want to withdraw amount: ${amount.toStringAsFixed(2)}?',
+      //   );
+      //   if (!shouldApprove) {
+      //     return;
+      //   }
+      //   await walletService.approveUsdc(amount);
+      //   showLoadingDialog(context: context, message: 'Waiting for approval...');
+      //   await Future.delayed(const Duration(seconds: 2));
+      //   hideDialog();
+      // }
 
       // // Check max withdrawable amount
       // final maxWithdrawable =
@@ -88,8 +109,9 @@ class _MerchantWithdrawScreenState
       //   return;
       // }
 
-      final txHash = await withdrawRepo.withdrawAmount(amount);
+      final txHash = await walletService.withdrawAmount(amount);
 
+      print(txHash);
       if (!mounted) return;
 
       // Wait for blockchain confirmation
@@ -115,14 +137,15 @@ class _MerchantWithdrawScreenState
       );
     } catch (e) {
       print('Withdraw error: $e');
-      if (!mounted) return;
-      showErrorDialog(context: context, message: e.toString());
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isProcessing = false;
-        });
+      if (e is JsonRpcError) {
+        showErrorDialog(
+          context: context,
+          message: e.message ?? 'An error occurred during withdrawal',
+        );
+        return;
       }
+
+      showErrorDialog(context: context, message: e.toString());
     }
   }
 
@@ -166,7 +189,7 @@ class _MerchantWithdrawScreenState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Total Value:',
+                        'Total Balance:',
                         style: TextStyle(
                           color: AppColors.c757575,
                           fontSize: 14,
@@ -212,9 +235,9 @@ class _MerchantWithdrawScreenState
             const Spacer(),
             SafeArea(
               child: AppPrimaryButton(
-                title: _isProcessing ? 'Processing...' : 'Confirm Withdrawal',
+                title: 'Confirm Withdrawal',
                 isExpanded: true,
-                onTap: _isProcessing ? null : _handleWithdraw,
+                onTap: _handleWithdraw,
               ),
             ),
             const VerticalSpace(10),

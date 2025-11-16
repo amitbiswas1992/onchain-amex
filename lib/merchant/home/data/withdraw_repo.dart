@@ -8,7 +8,7 @@ import '../../../core/utils/decimal_converter.dart';
 
 class WithdrawRepo {
   // Singleton instance
-  static WithdrawRepo? _instance;
+  // static WithdrawRepo? _instance;
 
   final ReownAppKitModal appKitModal;
   DeployedContract? _usdcContract;
@@ -17,18 +17,18 @@ class WithdrawRepo {
   Future<void>? _loadingFuture;
 
   // Private constructor
-  WithdrawRepo._internal(this.appKitModal) {
+  WithdrawRepo(this.appKitModal) {
     _loadingFuture = _loadContracts();
   }
 
-  // Factory constructor to return singleton instance
-  factory WithdrawRepo(ReownAppKitModal appKitModal) {
-    _instance ??= WithdrawRepo._internal(appKitModal);
-    return _instance!;
-  }
+  // // Factory constructor to return singleton instance
+  // factory WithdrawRepo(ReownAppKitModal appKitModal) {
+  //   _instance ??= WithdrawRepo._internal(appKitModal);
+  //   return _instance!;
+  // }
 
   // Optional: Method to get the instance (if already initialized)
-  static WithdrawRepo? get instance => _instance;
+  // static WithdrawRepo? get instance => _instance;
 
   Future<void> _loadContracts() async {
     try {
@@ -60,7 +60,7 @@ class WithdrawRepo {
         ),
         EthereumAddress.fromHex(ContractConstants.creditorAddress),
       );
-      print('Vault contract loaded');
+      print('Creditor contract loaded');
 
       _isInitialized = true;
       print('All contracts loaded successfully');
@@ -188,6 +188,8 @@ class WithdrawRepo {
 
     final contractAmount = DecimalConverter.toContractAmount(amount);
 
+    print('Withdrawing amount: $contractAmount USDC');
+
     final txHash = await appKitModal.requestWriteContract(
       topic: sessionTopic!,
       chainId: currentChainId,
@@ -200,6 +202,7 @@ class WithdrawRepo {
       ],
       transaction: Transaction(from: ethereumAddress),
     );
+    print(txHash);
     if (txHash == null) {
       throw Exception('Transaction failed');
     }

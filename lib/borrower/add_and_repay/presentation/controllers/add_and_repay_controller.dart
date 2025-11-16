@@ -67,7 +67,7 @@ class AddAndRepayController {
         }
         await walletService.approveUsdc(amount);
         showLoadingDialog(context: context, message: 'Waiting for approval...');
-        await Future.delayed(const Duration(seconds: 2));
+        await Future.delayed(const Duration(seconds: 4));
         hideDialog();
       }
 

@@ -9,10 +9,7 @@ import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/decimal_converter.dart';
 import '../../../../core/utils/sizebox_util.dart';
-import '../../../../infrastructure/navigation/app_nav.dart';
-import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../deposit/controllers/blockchain_controller.dart';
-import '../../../home/presentation/widgets/home_app_bar.dart';
 
 class WalletScreen extends ConsumerStatefulWidget {
   const WalletScreen({super.key});
@@ -81,13 +78,9 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.cF5F5F5,
-      appBar: HomeAppBar(
-        onGiftTap: () {
-          AppNav.goRouter.push(RtNm.rewardsScreen);
-        },
-        onNotificationTap: () {},
-        onProfileTap: () {},
-        profileName: 'SH',
+      appBar: AppBar(
+        title: const Text('Wallet'),
+        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppValues.paddingMedium),

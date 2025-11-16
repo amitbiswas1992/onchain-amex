@@ -11,12 +11,12 @@ import '../../../../core/utils/sizebox_util.dart';
 import '../../../../core/widgets/appbars/primary_app_bar.dart';
 import '../../../../core/widgets/buttons/app_primary_button.dart';
 import '../../../../core/widgets/buttons/app_secondary_button.dart';
-import '../../../../core/widgets/dividers/app_divider.dart';
 import '../../../../core/widgets/loaders/when_loading_widget.dart';
 import '../../../../core/widgets/texts/text_styles.dart';
 import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../../lender/wallet/presentation/screens/wallet_screen.dart';
 import '../../../home/presentation/providers/home_providers.dart';
 import '../../../home/presentation/resources/home_strings.dart';
 import '../../../spends/presentation/providers/spend_providers.dart';
@@ -24,8 +24,6 @@ import '../../../spends/presentation/resources/spends_strings.dart';
 import '../../../wallet/business/services/wallet_service.dart';
 import '../../../wallet/data/models/borrower_profile.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
-import '../../../wallet/presentation/widgets/metamask_header_widget.dart';
-import '../../../wallet/presentation/widgets/mint_usdc_button.dart';
 import '../controllers/add_and_repay_controller.dart';
 
 class RepayFoundScreen extends ConsumerStatefulWidget {
@@ -40,6 +38,7 @@ class RepayFoundScreen extends ConsumerStatefulWidget {
 class _ReplayFoundScreenState extends ConsumerState<RepayFoundScreen> {
   AddAndRepayController? _controller;
   final _amountController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -57,8 +56,22 @@ class _ReplayFoundScreenState extends ConsumerState<RepayFoundScreen> {
     return GestureDetector(
       onTap: () => unFocus(context),
       child: Scaffold(
-        appBar: const PrimaryAppBar(
+        appBar: PrimaryAppBar(
           title: repay,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return const WalletScreen();
+                    },
+                  ),
+                );
+              },
+              icon: const Icon(Icons.info_outline),
+            ),
+          ],
         ),
         body: Padding(
           padding: const EdgeInsetsGeometry.all(AppValues.paddingMedium),
@@ -149,18 +162,19 @@ class _ReplayFoundScreenState extends ConsumerState<RepayFoundScreen> {
                               //     const HorizontalSpace(12),
                               //   ],
                               // ),
-                              const MetamaskHeaderWidget(),
+                              // const MetamaskHeaderWidget(),
                               // ConnectWalletButton(profile: widget.profile),
-                              const VerticalSpace(AppValues.paddingMedium),
-                              MintUsdcButton(
-                                walletService: WalletService(appKitModal),
-                              ),
-                              const VerticalSpace(12),
-                              const AppDivider(),
-                              const VerticalSpace(32),
+                              // const VerticalSpace(AppValues.paddingMedium),
+                              // MintUsdcButton(
+                              //   walletService: WalletService(appKitModal),
+                              // ),
+                              // const VerticalSpace(12),
+                              // const AppDivider(),
+                              // const VerticalSpace(32),
                               const SubTitleText(text: enterAmount),
                               const VerticalSpace(AppValues.paddingMedium),
                               TextFormField(
+                                focusNode: _focusNode,
                                 controller: _amountController,
                                 style: s54w600(context),
                                 textAlign: TextAlign.center,
@@ -245,9 +259,10 @@ class _ReplayFoundScreenState extends ConsumerState<RepayFoundScreen> {
 
                             return AppPrimaryButton(
                               title: makePayment,
-                              onTap: () {
+                              onTap: () async {
                                 log('repay');
-                                _controller?.repay(
+                                _focusNode.unfocus();
+                                await _controller?.repay(
                                   _amountController.text.trim(),
                                   widget.borrowerProfile,
                                 );

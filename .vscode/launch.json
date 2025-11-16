@@ -1,0 +1,31 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run on Realme",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "9P4PEMPZUOYT4HBQ" // <-- Get this from 'flutter devices'
+        },
+        {
+            "name": "onchain-amex",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "onchain-amex (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "onchain-amex (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

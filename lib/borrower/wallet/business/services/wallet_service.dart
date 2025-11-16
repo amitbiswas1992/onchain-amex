@@ -279,4 +279,42 @@ class WalletService {
 
     return txHash;
   }
+
+  /// Withdraw USDC from vault by specifying amount
+  /// @param amount USDC amount to withdraw (in UI format)
+  /// Returns transaction hash
+  Future<String> withdrawAmount(double amount) async {
+    // Wait for contracts to load
+    await _ensureInitialized();
+
+    if (!isConnected || _creditorContract == null || sessionTopic == null) {
+      throw Exception('Wallet not connected');
+    }
+
+    final contractAmount = DecimalConverter.toContractAmount(amount);
+
+    print('Withdrawing amount: $contractAmount USDC');
+
+    final txHash = await appKitModal.requestWriteContract(
+      topic: sessionTopic!,
+      chainId: currentChainId,
+      deployedContract: _creditorContract!,
+      functionName: 'merchantWithdraw',
+      parameters: [
+        contractAmount,
+        // ethereumAddress,
+        EthereumAddress.fromHex(ContractConstants.usdcAddress),
+      ],
+      transaction: Transaction(from: ethereumAddress),
+    );
+    print(txHash);
+    if (txHash == null) {
+      throw Exception('Transaction failed');
+    }
+    if (txHash is Map && txHash['code'] == 5000) {
+      throw Exception('User rejected the transaction');
+    }
+
+    return txHash;
+  }
 }
