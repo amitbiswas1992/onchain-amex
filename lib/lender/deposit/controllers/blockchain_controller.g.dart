@@ -6,12 +6,12 @@ part of 'blockchain_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$blockchainServiceHash() => r'0adbf0bae9244eb4658aa994e70b841e1ed100f2';
+String _$blockchainServiceHash() => r'1eae17b4a4c4e073666fa7b9d3d971426b126077';
 
 /// See also [blockchainService].
 @ProviderFor(blockchainService)
 final blockchainServiceProvider =
-    AutoDisposeProvider<BlockchainService>.internal(
+    AutoDisposeProvider<Web3BlockchainService>.internal(
   blockchainService,
   name: r'blockchainServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,8 +23,8 @@ final blockchainServiceProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef BlockchainServiceRef = AutoDisposeProviderRef<BlockchainService>;
-String _$usdcBalanceHash() => r'cec70bb9762dc140985542c573c56fc4b24acb1f';
+typedef BlockchainServiceRef = AutoDisposeProviderRef<Web3BlockchainService>;
+String _$usdcBalanceHash() => r'61743b62c67ab4d80cb75fa033f868de5db4a40d';
 
 /// See also [usdcBalance].
 @ProviderFor(usdcBalance)
@@ -40,7 +40,7 @@ final usdcBalanceProvider = AutoDisposeFutureProvider<double>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UsdcBalanceRef = AutoDisposeFutureProviderRef<double>;
-String _$vaultBalanceHash() => r'1a32d7f5f6a740dd1bc2100d62e8a03520b404e2';
+String _$vaultBalanceHash() => r'e81a127210c9ed10f0148c798628074fc37c2f43';
 
 /// See also [vaultBalance].
 @ProviderFor(vaultBalance)
@@ -56,7 +56,7 @@ final vaultBalanceProvider = AutoDisposeFutureProvider<double>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef VaultBalanceRef = AutoDisposeFutureProviderRef<double>;
-String _$yieldEarnedHash() => r'0fbc127133af3f088142cd2bcf25b5cf7cfb2e3b';
+String _$yieldEarnedHash() => r'73694d2d98a322d907ee68414ae5ddcbec33496b';
 
 /// See also [yieldEarned].
 @ProviderFor(yieldEarned)
@@ -88,7 +88,7 @@ final currentApyProvider = AutoDisposeFutureProvider<double>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CurrentApyRef = AutoDisposeFutureProviderRef<double>;
-String _$usdcAllowanceHash() => r'ceb2f3fd406e0edb3bdb2573f03ce83b3e483e3c';
+String _$usdcAllowanceHash() => r'7934b9541e4b73fb6e49f8e16961c66c49bdb6fc';
 
 /// See also [usdcAllowance].
 @ProviderFor(usdcAllowance)
@@ -106,7 +106,7 @@ final usdcAllowanceProvider = AutoDisposeFutureProvider<double>.internal(
 // ignore: unused_element
 typedef UsdcAllowanceRef = AutoDisposeFutureProviderRef<double>;
 String _$maxWithdrawableAmountHash() =>
-    r'466dfb6ece78b98efbe2a053f98a3209f43d9ad3';
+    r'd748595fc46babcc99e119c9ae718fcc50c9749e';
 
 /// See also [maxWithdrawableAmount].
 @ProviderFor(maxWithdrawableAmount)
@@ -124,7 +124,7 @@ final maxWithdrawableAmountProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef MaxWithdrawableAmountRef = AutoDisposeFutureProviderRef<double>;
-String _$userATokenBalanceHash() => r'34ecc81a78faf661765c30a6d7b885fe72d2dad3';
+String _$userATokenBalanceHash() => r'2347da76d43d5dda8998e33d8b482b53311cea0f';
 
 /// See also [userATokenBalance].
 @ProviderFor(userATokenBalance)
@@ -141,7 +141,7 @@ final userATokenBalanceProvider = AutoDisposeFutureProvider<double>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserATokenBalanceRef = AutoDisposeFutureProviderRef<double>;
-String _$userYieldHash() => r'17b548310fd96d631d914b5cd924a134a26857cc';
+String _$userYieldHash() => r'832b43e251ae4ab329d707cac388f2cb37f4b8e2';
 
 /// See also [userYield].
 @ProviderFor(userYield)
@@ -157,7 +157,7 @@ final userYieldProvider = AutoDisposeFutureProvider<double>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserYieldRef = AutoDisposeFutureProviderRef<double>;
-String _$previewDepositHash() => r'1995e60b1365109b88d568243cd086029a85d79e';
+String _$previewDepositHash() => r'29af2b80380aeefa709fa77887e8a579a7d0d649';
 
 /// See also [previewDeposit].
 @ProviderFor(previewDeposit)
@@ -174,7 +174,7 @@ final previewDepositProvider = AutoDisposeFutureProvider<double?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PreviewDepositRef = AutoDisposeFutureProviderRef<double?>;
-String _$previewWithdrawHash() => r'c89bfa40894dd0e9a97bd88a6288e774ebc8f9b0';
+String _$previewWithdrawHash() => r'd0c0f354447af125c9dcd2a9d647d74b11cad3e1';
 
 /// See also [previewWithdraw].
 @ProviderFor(previewWithdraw)

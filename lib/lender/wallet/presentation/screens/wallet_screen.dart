@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:reown_appkit/reown_appkit.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
-import '../../../../borrower/wallet/presentation/providers/wallet_providers.dart';
+import '../../../../borrower/more/data/models/profile.dart';
+import '../../../../borrower/more/presentation/providers/more_providers.dart';
+import '../../../../borrower/more/presentation/widgets/web3_wallet_button.dart';
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/resources/app_values.dart';
 import '../../../../core/utils/decimal_converter.dart';
 import '../../../../core/utils/sizebox_util.dart';
+import '../../../../infrastructure/network/result.dart';
 import '../../../deposit/controllers/blockchain_controller.dart';
 
 class WalletScreen extends ConsumerStatefulWidget {
@@ -19,59 +20,14 @@ class WalletScreen extends ConsumerStatefulWidget {
 }
 
 class _WalletScreenState extends ConsumerState<WalletScreen> {
-  ReownAppKitModal? appKitModal;
   @override
   void initState() {
     super.initState();
-    // Listen to session changes and rebuild UI
+    // Refresh data when screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      appKitModal = ref.read(appkitModalProvider).valueOrNull;
-      if (appKitModal != null) {
-        // Add listeners for connection state changes
-        appKitModal?.onModalConnect.subscribe(_onModalConnect);
-        appKitModal?.onModalDisconnect.subscribe(_onModalDisconnect);
-        appKitModal?.onModalUpdate.subscribe(_onModalUpdate);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    // Clean up listeners
-    if (appKitModal != null) {
-      appKitModal?.onModalConnect.unsubscribe(_onModalConnect);
-      appKitModal?.onModalDisconnect.unsubscribe(_onModalDisconnect);
-      appKitModal?.onModalUpdate.unsubscribe(_onModalUpdate);
-    }
-    super.dispose();
-  }
-
-  void _onModalConnect(dynamic event) {
-    if (mounted) {
-      setState(() {
-        // Trigger rebuild when connected
-      });
-      // Refresh blockchain data
       ref.invalidate(usdcBalanceProvider);
       ref.invalidate(vaultBalanceProvider);
-      setState(() {});
-    }
-  }
-
-  void _onModalDisconnect(dynamic event) {
-    if (mounted) {
-      setState(() {
-        // Trigger rebuild when disconnected
-      });
-    }
-  }
-
-  void _onModalUpdate(dynamic event) {
-    if (mounted) {
-      setState(() {
-        // Trigger rebuild on any modal update
-      });
-    }
+    });
   }
 
   @override
@@ -96,131 +52,63 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                   BoxShadow(color: Colors.black12, blurRadius: 4),
                 ],
               ),
-              child: ref.watch(appkitModalProvider).when(
-                    data: (appKitModal) {
-                      final isConnected = appKitModal.isConnected;
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const MetamaskHeaderWidget(),
+                  const VerticalSpace(16),
+                  ref.watch(profileProvider).when(
+                      data: (data) {
+                        Profile? profile;
+                        switch (data) {
+                          case Ok<Profile?>():
+                            profile = data.data;
+                          case Error<Profile?>():
+                        }
+                        if (profile != null) {
+                          return Web3WalletButton(profile: profile);
+                        }
+                        return const SizedBox();
+                      },
+                      error: (error, stack) {
+                        print('Profile Error: $error');
+                        print('Stack: $stack');
+                        return const SizedBox();
+                      },
+                      loading: () => const SizedBox()),
 
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const MetamaskHeaderWidget(),
-                          const VerticalSpace(16),
-                          AppKitModalNetworkSelectButton(appKit: appKitModal),
-                          const VerticalSpace(8),
-                          AppKitModalConnectButton(appKit: appKitModal),
-                          const VerticalSpace(8),
-                          if (isConnected) ...[
-                            AppKitModalAccountButton(appKitModal: appKitModal),
-                            const VerticalSpace(24),
-                            // USDC Balance Display
-                            Consumer(
-                              builder: (context, ref, _) {
-                                final usdcBalance = ref.watch(
-                                  usdcBalanceProvider,
-                                );
-                                return usdcBalance.when(
-                                  data: (balance) => _BalanceDisplay(
-                                    label: 'USDC Balance',
-                                    amount: balance,
-                                  ),
-                                  loading: () => const _BalanceDisplay(
-                                    label: 'USDC Balance',
-                                    amount: null,
-                                  ),
-                                  error: (error, stack) {
-                                    print('USDC Balance Error: $error');
-                                    print('Stack: $stack');
-                                    return const _BalanceDisplay(
-                                      label: 'USDC Balance (Error)',
-                                      amount: 0.0,
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            // const VerticalSpace(16),
-                            // // Vault Balance Display
-                            // Consumer(
-                            //   builder: (context, ref, _) {
-                            //     final vaultBalance = ref.watch(
-                            //       vaultBalanceProvider,
-                            //     );
-                            //     return vaultBalance.when(
-                            //       data: (balance) => _BalanceDisplay(
-                            //         label: 'Vault Shares',
-                            //         amount: balance,
-                            //       ),
-                            //       loading: () => const _BalanceDisplay(
-                            //         label: 'Vault Shares',
-                            //         amount: null,
-                            //       ),
-                            //       error: (error, stack) {
-                            //         print('Vault Balance Error: $error');
-                            //         print('Stack: $stack');
-                            //         return const _BalanceDisplay(
-                            //           label: 'Vault Shares (Error)',
-                            //           amount: 0.0,
-                            //         );
-                            //       },
-                            //     );
-                            //   },
-                            // ),
-                            const VerticalSpace(24),
-                            // Mint USDC Button
-                            const _MintUsdcButton(),
-                          ],
-                        ],
+                  const VerticalSpace(24),
+                  // USDC Balance Display
+                  Consumer(
+                    builder: (context, ref, _) {
+                      final usdcBalance = ref.watch(
+                        usdcBalanceProvider,
+                      );
+                      return usdcBalance.when(
+                        data: (balance) => _BalanceDisplay(
+                          label: 'USDC Balance',
+                          amount: balance,
+                        ),
+                        loading: () => const _BalanceDisplay(
+                          label: 'USDC Balance',
+                          amount: null,
+                        ),
+                        error: (error, stack) {
+                          print('USDC Balance Error: $error');
+                          print('Stack: $stack');
+                          return const _BalanceDisplay(
+                            label: 'USDC Balance (Error)',
+                            amount: 0.0,
+                          );
+                        },
                       );
                     },
-                    error: (err, stack) => Center(
-                      child: Column(
-                        children: [
-                          Text('Error: $err'),
-                          const SizedBox(height: 8),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                ref.invalidate(appkitModalProvider);
-                              });
-                            },
-                            child: const Text('Retry'),
-                          ),
-                        ],
-                      ),
-                    ),
-                    loading: () => Center(
-                      child: Skeletonizer(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const MetamaskHeaderWidget(),
-                            const SizedBox(height: 16),
-                            Skeleton.leaf(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade300,
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                                height: 30,
-                                width: 150,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Skeleton.leaf(
-                              child: Container(
-                                height: 40,
-                                width: 250,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(24),
-                                  color: Colors.grey.shade300,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                   ),
+                  const VerticalSpace(24),
+                  // Mint USDC Button
+                  const _MintUsdcButton(),
+                ],
+              ),
             ),
           ],
         ),

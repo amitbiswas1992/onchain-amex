@@ -546,6 +546,21 @@ class AppNav {
                   state,
                 ),
               ),
+              GoRoute(
+                path: RtNm.merchantSuccessScreen,
+                pageBuilder: (context, state) {
+                  final extra = state.extra! as Map<String, dynamic>;
+                  return fadeTransitionPageBuilder(
+                    SuccessScreen(
+                      title: extra['title'] ?? 'Success',
+                      subtitle: extra['subtitle'] ??
+                          'The operation was completed successfully.',
+                      txHash: extra['txHash'],
+                    ),
+                    state,
+                  );
+                },
+              ),
             ],
           ),
         ],

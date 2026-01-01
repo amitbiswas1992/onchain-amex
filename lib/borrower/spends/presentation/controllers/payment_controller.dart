@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/widgets/dialogs.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../../lender/deposit/services/web3_blockchain_service.dart';
 import '../../../../lender/home/presentation/providers/home_providers.dart';
 import '../../../more/presentation/providers/more_providers.dart';
-import '../../../wallet/business/services/wallet_service.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../../data/models/payment_success_extra.dart';
 import '../../data/models/scanned_data.dart';
@@ -14,12 +14,12 @@ import '../../data/models/scanned_data.dart';
 class PaymentController {
   final BuildContext context;
   final WidgetRef ref;
-  final WalletService walletService;
+  final Web3BlockchainService blockchainService;
 
   const PaymentController({
     required this.context,
     required this.ref,
-    required this.walletService,
+    required this.blockchainService,
   });
 
   Future<void> doPayment({
@@ -46,19 +46,19 @@ class PaymentController {
     }
 
     try {
-      // final allowance = await walletService.getUsdcAllowance();
+      // final allowance = await blockchainService.getUsdcAllowance();
       // print('Current allowance: $allowance, required: $amount');
       // if (allowance < amount) {
-      //   await walletService.approveUsdc(amount);
+      //   await blockchainService.approveUsdc(amount);
       //   showLoadingDialog(context: context, message: 'Waiting for approval...');
       //   await Future.delayed(const Duration(seconds: 2));
       //   hideDialog();
       // }
-      final txHash = await walletService.spend(
+      final txHash = await blockchainService.spend(
         amount: amount,
         merchantPublicAddress: scannedData.walletAddress!,
       );
-      if (txHash == null) {
+      if (txHash.isEmpty) {
         throw Exception('Transaction failed');
       }
 

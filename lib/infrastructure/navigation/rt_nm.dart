@@ -63,6 +63,7 @@ class RtNm {
       '/lender-deposit-confirmation-screen';
   static const lenderWithdrawAmountScreen = '/lender-withdraw-amount-screen';
   static const successScreen = '/success-screen';
+  static const merchantSuccessScreen = '/merchant-success-screen';
   static const lenderMoreScreen = '/lender-more-screen';
   static const lenderTransactionScreen = '/lender-transactions-screen';
 

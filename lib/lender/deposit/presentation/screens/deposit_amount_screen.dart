@@ -99,7 +99,7 @@ class _DepositAmountScreenState extends ConsumerState<DepositAmountScreen>
         context: context,
         message: "Completing your transaction...",
       );
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 7));
       hideDialog();
 
       // Refresh balances after waiting

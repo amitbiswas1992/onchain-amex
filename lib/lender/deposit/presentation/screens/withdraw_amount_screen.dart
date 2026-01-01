@@ -173,29 +173,6 @@ class _WithdrawAmountScreenState extends ConsumerState<WithdrawAmountScreen> {
     );
   }
 
-  void _showLoadingMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const SizedBox(
-              width: 16,
-              height: 16,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Text(message),
-          ],
-        ),
-        backgroundColor: AppColors.primaryLight,
-        duration: const Duration(seconds: 5),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final userATokenBalance = ref.watch(userATokenBalanceProvider);

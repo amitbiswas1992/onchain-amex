@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/resources/app_colors.dart';
 import '../../../../core/utils/functions.dart';
-import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../controllers/splash_controller.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -25,7 +24,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(appkitModalProvider);
     return Scaffold(
       backgroundColor: isLightTheme(context)
           ? AppColors.softGreen

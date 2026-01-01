@@ -14,9 +14,9 @@ import '../../../borrower/more/presentation/providers/more_providers.dart';
 import '../../../core/widgets/dialogs.dart';
 import '../../../infrastructure/network/result.dart';
 import '../../../lender/deposit/controllers/blockchain_controller.dart';
+import '../../../lender/deposit/controllers/debouce_query_controller.dart';
 import '../../../lender/deposit/presentation/widgets/withdraw_amount_input_widget.dart';
 import '../model/merchant_profile.dart';
-import 'withdraw_controller.dart';
 
 class MerchantWithdrawScreen extends ConsumerStatefulWidget {
   const MerchantWithdrawScreen({super.key});
@@ -29,7 +29,7 @@ class MerchantWithdrawScreen extends ConsumerStatefulWidget {
 class _MerchantWithdrawScreenState
     extends ConsumerState<MerchantWithdrawScreen> {
   final TextEditingController _amountController = TextEditingController();
-
+  bool isLoading = false;
   @override
   void dispose() {
     _amountController.dispose();
@@ -74,7 +74,10 @@ class _MerchantWithdrawScreenState
     }
 
     try {
-      final walletService = ref.read(withdrawServiceProvider);
+      setState(() {
+        isLoading = true;
+      });
+      final blockchainService = ref.read(blockchainServiceProvider);
 
       // showLoadingDialog(context: context, message: 'Checking allowance...');
       // final allowance = await walletService.getUsdcAllowance();
@@ -109,7 +112,7 @@ class _MerchantWithdrawScreenState
       //   return;
       // }
 
-      final txHash = await walletService.withdrawAmount(amount);
+      final txHash = await blockchainService.merchantWithdraw(amount);
 
       print(txHash);
       if (!mounted) return;
@@ -121,13 +124,15 @@ class _MerchantWithdrawScreenState
       );
       await Future.delayed(const Duration(seconds: 5));
       hideDialog();
+
       // Refresh balances
       ref.invalidate(merchantProfileProvider);
-      // ref.invalidate(usdcBalanceProvider);
+      ref.invalidate(vaultBalanceProvider);
+      ref.invalidate(usdcBalanceProvider);
 
       // Navigate to success screen
-      AppNav.goRouter.push(
-        RtNm.successScreen,
+      AppNav.goRouter.pushNamed(
+        RtNm.merchantSuccessScreen,
         extra: {
           'title': 'Withdrawal Successful',
           'subtitle':
@@ -146,6 +151,10 @@ class _MerchantWithdrawScreenState
       }
 
       showErrorDialog(context: context, message: e.toString());
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -230,14 +239,18 @@ class _MerchantWithdrawScreenState
             const VerticalSpace(20),
             WithdrawAmountInputWidget(
               controller: _amountController,
-              onChanged: (value) {},
+              onChanged: (value) {
+                // ref
+                //     .read(debouceQueryControllerProvider.notifier)
+                //     .onChanged(value);
+              },
             ),
             const Spacer(),
             SafeArea(
               child: AppPrimaryButton(
-                title: 'Confirm Withdrawal',
+                title: isLoading ? 'Processing...' : 'Confirm Withdrawal',
                 isExpanded: true,
-                onTap: _handleWithdraw,
+                onTap: isLoading ? null : _handleWithdraw,
               ),
             ),
             const VerticalSpace(10),

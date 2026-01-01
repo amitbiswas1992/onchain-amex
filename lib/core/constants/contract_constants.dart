@@ -2,9 +2,9 @@ class ContractConstants {
   ContractConstants._();
 
   // Contract Addresses (Sepolia Testnet)
-  static const vaultAddress = '0x38e175Ec2Ea562556F9fD419a05A4c68d56CC62c';
-  static const usdcAddress = '0x015484B89112349a694E65801B102533ED556a50';
-  static const creditorAddress = '0x19fF92707952F374980C4a476a37F4290f160ac9';
+  static const vaultAddress = '0x9cc9c7cd780B1A3D87dd2d4e3E79805105fd3C97';
+  static const usdcAddress = '0x8c86eEB3e5956c492292D00606B37f9a5d8A5c97';
+  static const creditorAddress = '0x0323da7184659214425c2bc7BEDe54bec28C4A6e';
 
   // Network Configuration
   static const String networkName = 'Sepolia';
@@ -12,7 +12,8 @@ class ContractConstants {
 
   // Free Sepolia RPC endpoints (for reading data only)
   // Using public RPC - transactions will be sent via WalletConnect
-  static const String rpcUrl = 'https://ethereum-sepolia-rpc.publicnode.com';
+  static const String rpcUrl =
+      'https://eth-sepolia.g.alchemy.com/v2/KSIGR0DAW8ExaDgRLAdgotLf80P_EyvT';
 
   // Alternatives if the above doesn't work:
   // 'https://rpc.sepolia.org'

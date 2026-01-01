@@ -21,8 +21,8 @@ import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../../infrastructure/network/result.dart';
+import '../../../../lender/deposit/controllers/blockchain_controller.dart';
 import '../../../more/presentation/widgets/connect_wallet_button.dart';
-import '../../../wallet/business/services/wallet_service.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../../data/models/scanned_data.dart';
 import '../controllers/payment_controller.dart';
@@ -71,198 +71,176 @@ class _SpendAfterScanAmountInputScreenState
                   error: 'User information not found. Please login again.',
                 );
               }
-              return ref.watch(appkitModalProvider).when(
-                    data: (appKitModal) {
-                      _controller ??= PaymentController(
-                        context: context,
-                        ref: ref,
-                        walletService: WalletService(appKitModal),
-                      );
 
-                      return ref.watch(availableCreditProvider).when(
-                            data: (result) {
-                              num availableCreditLimit = 0.0;
-                              switch (result) {
-                                case Ok<num?>():
-                                  availableCreditLimit = result.data ?? 0.0;
-                                case Error<num?>():
-                              }
+              final blockchainService = ref.watch(blockchainServiceProvider);
+              _controller ??= PaymentController(
+                context: context,
+                ref: ref,
+                blockchainService: blockchainService,
+              );
 
-                              WidgetsBinding.instance
-                                  .addPostFrameCallback((val) {
-                                ref.read(inputDetectorProvider.notifier).state =
-                                    widget.scannedData.amount
-                                            ?.toStringAsFixed(2) ??
-                                        '';
-                              });
+              return ref.watch(availableCreditProvider).when(
+                    data: (result) {
+                      num availableCreditLimit = 0.0;
+                      switch (result) {
+                        case Ok<num?>():
+                          availableCreditLimit = result.data ?? 0.0;
+                        case Error<num?>():
+                      }
 
-                              return Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                      WidgetsBinding.instance.addPostFrameCallback((val) {
+                        ref.read(inputDetectorProvider.notifier).state =
+                            widget.scannedData.amount?.toStringAsFixed(2) ?? '';
+                      });
+
+                      return Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: SingleChildScrollView(
+                              child: Column(
                                 children: [
-                                  Flexible(
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          DeemCard(
-                                            padding: const EdgeInsets.all(
-                                              AppValues.paddingMedium,
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  to,
-                                                  style: s14W500(context),
-                                                ),
-                                                const HorizontalSpace(12),
-                                                IconOuterCircle(
-                                                  size: 40,
-                                                  icon: SvgPicture.asset(
-                                                    'assets/icons/shopping_bag.svg',
-                                                    height: 24,
-                                                    width: 24,
-                                                  ),
-                                                ),
-                                                const HorizontalSpace(12),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      SubTitleText(
-                                                        text: widget.scannedData
-                                                                .merchantName ??
-                                                            'Unknown Merchant',
-                                                      ),
-                                                      const VerticalSpace(
-                                                        AppValues.paddingSmall,
-                                                      ),
-                                                      Text(
-                                                        widget.scannedData
-                                                            .getAbstractedAddress,
-                                                        style: s11W600(context),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                  DeemCard(
+                                    padding: const EdgeInsets.all(
+                                      AppValues.paddingMedium,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          to,
+                                          style: s14W500(context),
+                                        ),
+                                        const HorizontalSpace(12),
+                                        IconOuterCircle(
+                                          size: 40,
+                                          icon: SvgPicture.asset(
+                                            'assets/icons/shopping_bag.svg',
+                                            height: 24,
+                                            width: 24,
                                           ),
-                                          const VerticalSpace(32),
-                                          if (appKitModal.isConnected ==
-                                                  false &&
-                                              widget.scannedData.profile !=
-                                                  null)
-                                            ConnectWalletButton(
-                                              profile:
-                                                  widget.scannedData.profile!,
-                                            ),
-                                          // const SubTitleText(text: enterAmount),
-                                          const VerticalSpace(24),
-                                          TextFormField(
-                                            controller: _inputController,
-                                            enabled: false,
-                                            style: s54w600(context),
-                                            textAlign: TextAlign.center,
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              hintText: '0.0',
-                                              hintStyle:
-                                                  s54w600(context).copyWith(
-                                                color: AppColors.c757575,
+                                        ),
+                                        const HorizontalSpace(12),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              SubTitleText(
+                                                text: widget.scannedData
+                                                        .merchantName ??
+                                                    'Unknown Merchant',
                                               ),
-                                              border: InputBorder.none,
-                                              errorBorder: InputBorder.none,
-                                              focusedBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                              disabledBorder: InputBorder.none,
-                                              contentPadding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical:
-                                                    AppValues.paddingMedium,
-                                                horizontal:
-                                                    AppValues.paddingMedium,
+                                              const VerticalSpace(
+                                                AppValues.paddingSmall,
                                               ),
-                                            ),
-                                            onChanged: (val) {
-                                              ref
-                                                  .read(
-                                                    inputDetectorProvider
-                                                        .notifier,
-                                                  )
-                                                  .state = val;
-                                            },
+                                              Text(
+                                                widget.scannedData
+                                                    .getAbstractedAddress,
+                                                style: s11W600(context),
+                                              ),
+                                            ],
                                           ),
-                                          const VerticalSpace(12),
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: AppChip(
-                                              text:
-                                                  'Available credit ${(availableCreditLimit / oneMillion)} USDC',
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Column(
-                                    children: [
-                                      Consumer(
-                                        builder: (context, ref, _) {
-                                          final input =
-                                              ref.watch(inputDetectorProvider);
-
-                                          if (input.isEmpty) {
-                                            return const AppSecondaryButton(
-                                              title: makePayment,
-                                              rounded: false,
-                                              showBorder: false,
-                                              deepColor: false,
-                                              titleColor:
-                                                  AppColors.surfaceLight,
-                                              onTap: null,
-                                            );
-                                          }
-
-                                          return SafeArea(
-                                            child: AppPrimaryButton(
-                                              title: makePayment,
-                                              onTap: () {
-                                                _controller?.doPayment(
-                                                  availableCredit:
-                                                      availableCreditLimit,
-                                                  scannedData:
-                                                      widget.scannedData,
-                                                  amountStr:
-                                                      _inputController.text,
-                                                );
-                                              },
-                                            ),
-                                          );
-                                        },
+                                  const VerticalSpace(32),
+                                  // if (appKitModal.isConnected ==
+                                  //         false &&
+                                  //     widget.scannedData.profile !=
+                                  //         null)
+                                  //   ConnectWalletButton(
+                                  //     profile:
+                                  //         widget.scannedData.profile!,
+                                  //   ),
+                                  // const SubTitleText(text: enterAmount),
+                                  const VerticalSpace(24),
+                                  TextFormField(
+                                    controller: _inputController,
+                                    enabled: false,
+                                    style: s54w600(context),
+                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      hintText: '0.0',
+                                      hintStyle: s54w600(context).copyWith(
+                                        color: AppColors.c757575,
                                       ),
-                                      const VerticalSpace(
-                                        AppValues.paddingMedium,
+                                      border: InputBorder.none,
+                                      errorBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      disabledBorder: InputBorder.none,
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                        vertical: AppValues.paddingMedium,
+                                        horizontal: AppValues.paddingMedium,
                                       ),
-                                    ],
+                                    ),
+                                    onChanged: (val) {
+                                      ref
+                                          .read(
+                                            inputDetectorProvider.notifier,
+                                          )
+                                          .state = val;
+                                    },
+                                  ),
+                                  const VerticalSpace(12),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: AppChip(
+                                      text:
+                                          'Available credit ${(availableCreditLimit / oneMillion)} USDC',
+                                    ),
                                   ),
                                 ],
-                              );
-                            },
-                            error: (error, stck) =>
-                                WhenErrorWidget(error: error),
-                            loading: () => const WhenLoadingWidget(
-                              message: 'Getting your available credit...',
+                              ),
                             ),
-                          );
+                          ),
+                          Column(
+                            children: [
+                              Consumer(
+                                builder: (context, ref, _) {
+                                  final input =
+                                      ref.watch(inputDetectorProvider);
+
+                                  if (input.isEmpty) {
+                                    return const AppSecondaryButton(
+                                      title: makePayment,
+                                      rounded: false,
+                                      showBorder: false,
+                                      deepColor: false,
+                                      titleColor: AppColors.surfaceLight,
+                                      onTap: null,
+                                    );
+                                  }
+
+                                  return SafeArea(
+                                    child: AppPrimaryButton(
+                                      title: makePayment,
+                                      onTap: () {
+                                        _controller?.doPayment(
+                                          availableCredit: availableCreditLimit,
+                                          scannedData: widget.scannedData,
+                                          amountStr: _inputController.text,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                              const VerticalSpace(
+                                AppValues.paddingMedium,
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
                     },
-                    error: (error, stackTrace) {
-                      return WhenErrorWidget(error: error);
-                    },
+                    error: (error, stck) => WhenErrorWidget(error: error),
                     loading: () => const WhenLoadingWidget(
-                      message: 'Getting wallet information...',
+                      message: 'Getting your available credit...',
                     ),
                   );
             },

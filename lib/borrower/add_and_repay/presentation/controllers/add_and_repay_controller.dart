@@ -9,20 +9,20 @@ import '../../../../core/widgets/dialogs.dart';
 import '../../../../core/widgets/texts/transaction_hash_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
+import '../../../../lender/deposit/services/web3_blockchain_service.dart';
 import '../../../more/presentation/providers/more_providers.dart';
-import '../../../wallet/business/services/wallet_service.dart';
 import '../../../wallet/data/models/borrower_profile.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 
 class AddAndRepayController {
   final BuildContext context;
   final WidgetRef ref;
-  final WalletService walletService;
+  final Web3BlockchainService blockchainService;
 
   const AddAndRepayController({
     required this.context,
     required this.ref,
-    required this.walletService,
+    required this.blockchainService,
   });
 
   Future<void> repay(String input, BorrowerProfile borrowerProfile) async {
@@ -52,7 +52,7 @@ class AddAndRepayController {
 
     try {
       showLoadingDialog(context: context, message: 'Checking allowance...');
-      final allowance = await walletService.getUsdcAllowance();
+      final allowance = await blockchainService.getUsdcAllowance();
       hideDialog();
       dev.log('Allowance: $allowance');
       if (allowance < amount) {
@@ -65,13 +65,14 @@ class AddAndRepayController {
         if (!shouldApprove) {
           return;
         }
-        await walletService.approveUsdc(amount);
+        await blockchainService.approveUsdc(amount);
         showLoadingDialog(context: context, message: 'Waiting for approval...');
         await Future.delayed(const Duration(seconds: 4));
+        print('approved');
         hideDialog();
       }
 
-      final txHash = await walletService.repay(amount);
+      final txHash = await blockchainService.repay(amount);
 
       showSuccessDialog(
         context: context,
@@ -95,7 +96,7 @@ class AddAndRepayController {
 
   Future<void> mintUsdc(double amount) async {
     try {
-      await walletService.mintUsdc(amount);
+      await blockchainService.mintUsdc(amount);
     } catch (error, stck) {
       debugPrint(error.toString());
       debugPrint(stck.toString());

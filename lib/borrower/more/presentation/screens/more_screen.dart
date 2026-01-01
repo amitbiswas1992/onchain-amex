@@ -19,11 +19,12 @@ import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../../infrastructure/network/result.dart';
 import '../../../home/presentation/providers/home_providers.dart';
 import '../../../signin/presentation/providers/sign_in_providers.dart';
+import '../../../wallet/presentation/controllers/wallet_controller.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../../data/models/profile.dart';
 import '../providers/more_providers.dart';
-import '../widgets/connect_wallet_button.dart';
 import '../widgets/menu_section.dart';
+import '../widgets/web3_wallet_button.dart';
 
 class MoreScreen extends ConsumerStatefulWidget {
   const MoreScreen({super.key});
@@ -339,9 +340,8 @@ class MoreBody extends ConsumerWidget {
                     await ref.read(securedStorageService).deleteUserTokens();
                     await ref.read(securedStorageService).deleteMerchantMode();
                     await ref
-                        .read(appkitModalProvider)
-                        .valueOrNull
-                        ?.disconnect();
+                        .read(walletControllerProvider.notifier)
+                        .deleteWallet();
 
                     AppNav.goRouter.go(RtNm.splashScreen);
                     ref.invalidate(profileProvider);
@@ -459,7 +459,7 @@ class ProfileHeaderSection extends StatelessWidget {
                 ),
               ),
             ),
-          if (profile != null) ConnectWalletButton(profile: profile!),
+          if (profile != null) Web3WalletButton(profile: profile!),
         ],
       ),
     );

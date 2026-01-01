@@ -17,9 +17,9 @@ import '../../../../core/widgets/texts/title_text.dart';
 import '../../../../infrastructure/navigation/app_nav.dart';
 import '../../../../infrastructure/navigation/rt_nm.dart';
 import '../../../../infrastructure/network/result.dart';
+import '../../../../lender/deposit/controllers/blockchain_controller.dart';
 import '../../../more/data/models/profile.dart';
 import '../../../more/presentation/providers/more_providers.dart';
-import '../../../wallet/business/services/wallet_service.dart';
 import '../../../wallet/presentation/providers/wallet_providers.dart';
 import '../../data/models/scanned_data.dart';
 import '../controllers/payment_controller.dart';
@@ -71,275 +71,243 @@ class _ManualPaymentScreenState extends ConsumerState<ManualPaymentScreen> {
                       error: 'User information not found. Please login again.',
                     );
                   }
-                  return ref.watch(appkitModalProvider).when(
-                    data: (appKitModal) {
-                      _controller ??= PaymentController(
-                        context: context,
-                        ref: ref,
-                        walletService: WalletService(appKitModal),
-                      );
 
-                      return ref.watch(profileProvider).when(
-                            data: (profileResult) {
-                              Profile? profile;
-                              switch (profileResult) {
-                                case Ok<Profile?>():
-                                  profile = profileResult.data;
-                                case Error<Profile?>():
-                              }
+                  final blockchainService =
+                      ref.watch(blockchainServiceProvider);
+                  _controller ??= PaymentController(
+                    context: context,
+                    ref: ref,
+                    blockchainService: blockchainService,
+                  );
 
-                              return ref.watch(availableCreditProvider).when(
-                                    data: (result) {
-                                      num availableCreditLimit = 0.0;
-                                      switch (result) {
-                                        case Ok<num?>():
-                                          availableCreditLimit =
-                                              result.data ?? 0.0;
-                                        case Error<num?>():
-                                      }
+                  return ref.watch(profileProvider).when(
+                        data: (profileResult) {
+                          Profile? profile;
+                          switch (profileResult) {
+                            case Ok<Profile?>():
+                              profile = profileResult.data;
+                            case Error<Profile?>():
+                          }
 
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Flexible(
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  if (appKitModal.isConnected ==
-                                                          false &&
-                                                      profile != null)
-                                                    const SubTitleText(
-                                                      text:
-                                                          'Recipient Wallet Address',
-                                                    ),
-                                                  const VerticalSpace(12),
-                                                  TextFormField(
-                                                    controller:
-                                                        _walletAddressController,
-                                                    style: s14W500(context),
-                                                    keyboardType:
-                                                        TextInputType.text,
-                                                    decoration: InputDecoration(
-                                                      hintText: '0x...',
-                                                      hintStyle:
-                                                          s14W500(context)
-                                                              .copyWith(
-                                                        color:
-                                                            AppColors.c757575,
-                                                      ),
-                                                      border:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          12,
-                                                        ),
-                                                        borderSide:
-                                                            const BorderSide(
-                                                          color:
-                                                              AppColors.c757575,
-                                                        ),
-                                                      ),
-                                                      enabledBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          12,
-                                                        ),
-                                                        borderSide:
-                                                            const BorderSide(
-                                                          color:
-                                                              AppColors.c757575,
-                                                        ),
-                                                      ),
-                                                      focusedBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                          12,
-                                                        ),
-                                                        borderSide:
-                                                            const BorderSide(
-                                                          color: AppColors
-                                                              .primaryLight,
-                                                        ),
-                                                      ),
-                                                      contentPadding:
-                                                          const EdgeInsets
-                                                              .symmetric(
-                                                        vertical: AppValues
-                                                            .paddingMedium,
-                                                        horizontal: AppValues
-                                                            .paddingMedium,
-                                                      ),
-                                                    ),
-                                                    onChanged: (val) {
-                                                      ref
-                                                          .read(
-                                                            _manualWalletAddressProvider
-                                                                .notifier,
-                                                          )
-                                                          .state = val;
-                                                    },
-                                                  ),
-                                                  const VerticalSpace(24),
-                                                  TextFormField(
-                                                    controller:
-                                                        _amountController,
-                                                    style: s32W600(context),
-                                                    textAlign: TextAlign.center,
-                                                    keyboardType:
-                                                        const TextInputType
-                                                            .numberWithOptions(
-                                                      decimal: true,
-                                                    ),
-                                                    decoration: InputDecoration(
-                                                      hintText: '0.0',
-                                                      hintStyle:
-                                                          s32W600(context)
-                                                              .copyWith(
-                                                        color:
-                                                            AppColors.c757575,
-                                                      ),
-                                                      border: InputBorder.none,
-                                                      enabledBorder:
-                                                          InputBorder.none,
-                                                      focusedBorder:
-                                                          InputBorder.none,
-                                                      contentPadding:
-                                                          const EdgeInsets
-                                                              .symmetric(
-                                                        vertical: AppValues
-                                                            .paddingMedium,
-                                                        horizontal: AppValues
-                                                            .paddingMedium,
-                                                      ),
-                                                    ),
-                                                    onChanged: (val) {
-                                                      ref
-                                                          .read(
-                                                            _manualAmountDetectorProvider
-                                                                .notifier,
-                                                          )
-                                                          .state = val;
-                                                    },
-                                                  ),
-                                                  const VerticalSpace(12),
-                                                  Align(
-                                                    alignment: Alignment.center,
-                                                    child: AppChip(
-                                                      text:
-                                                          'Available credit ${(availableCreditLimit / oneMillion)} USDC',
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Column(
+                          return ref.watch(availableCreditProvider).when(
+                                data: (result) {
+                                  num availableCreditLimit = 0.0;
+                                  switch (result) {
+                                    case Ok<num?>():
+                                      availableCreditLimit = result.data ?? 0.0;
+                                    case Error<num?>():
+                                  }
+
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Consumer(
-                                                builder: (context, ref, _) {
-                                                  final amount = ref.watch(
-                                                    _manualAmountDetectorProvider,
-                                                  );
-                                                  final walletAddress =
-                                                      ref.watch(
-                                                    _manualWalletAddressProvider,
-                                                  );
-
-                                                  final isValid = amount
-                                                          .isNotEmpty &&
-                                                      walletAddress
-                                                          .isNotEmpty &&
-                                                      _isValidEthereumAddress(
-                                                        walletAddress,
-                                                      );
-
-                                                  if (!isValid) {
-                                                    return const AppSecondaryButton(
-                                                      title: makePayment,
-                                                      rounded: false,
-                                                      showBorder: false,
-                                                      deepColor: false,
-                                                      titleColor: AppColors
-                                                          .surfaceLight,
-                                                      onTap: null,
-                                                    );
-                                                  }
-
-                                                  return AppPrimaryButton(
-                                                    title: makePayment,
-                                                    onTap: () {
-                                                      _controller?.doPayment(
-                                                        availableCredit:
-                                                            availableCreditLimit,
-                                                        scannedData:
-                                                            ScannedData(
-                                                          amount:
-                                                              double.tryParse(
-                                                            _amountController
-                                                                .text,
-                                                          ),
-                                                          walletAddress:
-                                                              _walletAddressController
-                                                                  .text,
-                                                          merchantName:
-                                                              _merchantNameController
-                                                                      .text
-                                                                      .isEmpty
-                                                                  ? 'Manual Payment'
-                                                                  : _merchantNameController
-                                                                      .text,
-                                                          profile: profile,
-                                                        ),
-                                                        amountStr:
-                                                            _amountController
-                                                                .text,
-                                                      );
-                                                    },
-                                                  );
+                                              const SubTitleText(
+                                                text:
+                                                    'Recipient Wallet Address',
+                                              ),
+                                              const VerticalSpace(12),
+                                              TextFormField(
+                                                controller:
+                                                    _walletAddressController,
+                                                style: s14W500(context),
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                decoration: InputDecoration(
+                                                  hintText: '0x...',
+                                                  hintStyle:
+                                                      s14W500(context).copyWith(
+                                                    color: AppColors.c757575,
+                                                  ),
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      12,
+                                                    ),
+                                                    borderSide:
+                                                        const BorderSide(
+                                                      color: AppColors.c757575,
+                                                    ),
+                                                  ),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      12,
+                                                    ),
+                                                    borderSide:
+                                                        const BorderSide(
+                                                      color: AppColors.c757575,
+                                                    ),
+                                                  ),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      12,
+                                                    ),
+                                                    borderSide:
+                                                        const BorderSide(
+                                                      color: AppColors
+                                                          .primaryLight,
+                                                    ),
+                                                  ),
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                    vertical:
+                                                        AppValues.paddingMedium,
+                                                    horizontal:
+                                                        AppValues.paddingMedium,
+                                                  ),
+                                                ),
+                                                onChanged: (val) {
+                                                  ref
+                                                      .read(
+                                                        _manualWalletAddressProvider
+                                                            .notifier,
+                                                      )
+                                                      .state = val;
                                                 },
                                               ),
-                                              const VerticalSpace(
-                                                AppValues.paddingMedium,
+                                              const VerticalSpace(24),
+                                              TextFormField(
+                                                controller: _amountController,
+                                                style: s32W600(context),
+                                                textAlign: TextAlign.center,
+                                                keyboardType:
+                                                    const TextInputType
+                                                        .numberWithOptions(
+                                                  decimal: true,
+                                                ),
+                                                decoration: InputDecoration(
+                                                  hintText: '0.0',
+                                                  hintStyle:
+                                                      s32W600(context).copyWith(
+                                                    color: AppColors.c757575,
+                                                  ),
+                                                  border: InputBorder.none,
+                                                  enabledBorder:
+                                                      InputBorder.none,
+                                                  focusedBorder:
+                                                      InputBorder.none,
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                    vertical:
+                                                        AppValues.paddingMedium,
+                                                    horizontal:
+                                                        AppValues.paddingMedium,
+                                                  ),
+                                                ),
+                                                onChanged: (val) {
+                                                  ref
+                                                      .read(
+                                                        _manualAmountDetectorProvider
+                                                            .notifier,
+                                                      )
+                                                      .state = val;
+                                                },
+                                              ),
+                                              const VerticalSpace(12),
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: AppChip(
+                                                  text:
+                                                      'Available credit ${(availableCreditLimit / oneMillion)} USDC',
+                                                ),
                                               ),
                                             ],
                                           ),
+                                        ),
+                                      ),
+                                      Column(
+                                        children: [
+                                          Consumer(
+                                            builder: (context, ref, _) {
+                                              final amount = ref.watch(
+                                                _manualAmountDetectorProvider,
+                                              );
+                                              final walletAddress = ref.watch(
+                                                _manualWalletAddressProvider,
+                                              );
+
+                                              final isValid = amount
+                                                      .isNotEmpty &&
+                                                  walletAddress.isNotEmpty &&
+                                                  _isValidEthereumAddress(
+                                                    walletAddress,
+                                                  );
+
+                                              if (!isValid) {
+                                                return const AppSecondaryButton(
+                                                  title: makePayment,
+                                                  rounded: false,
+                                                  showBorder: false,
+                                                  deepColor: false,
+                                                  titleColor:
+                                                      AppColors.surfaceLight,
+                                                  onTap: null,
+                                                );
+                                              }
+
+                                              return AppPrimaryButton(
+                                                title: makePayment,
+                                                onTap: () {
+                                                  _controller?.doPayment(
+                                                    availableCredit:
+                                                        availableCreditLimit,
+                                                    scannedData: ScannedData(
+                                                      amount: double.tryParse(
+                                                        _amountController.text,
+                                                      ),
+                                                      walletAddress:
+                                                          _walletAddressController
+                                                              .text,
+                                                      merchantName:
+                                                          _merchantNameController
+                                                                  .text.isEmpty
+                                                              ? 'Manual Payment'
+                                                              : _merchantNameController
+                                                                  .text,
+                                                      profile: profile,
+                                                    ),
+                                                    amountStr:
+                                                        _amountController.text,
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          ),
+                                          const VerticalSpace(
+                                            AppValues.paddingMedium,
+                                          ),
                                         ],
-                                      );
-                                    },
-                                    error: (error, stck) =>
-                                        WhenErrorWidget(error: error),
-                                    loading: () => const WhenLoadingWidget(
-                                      message:
-                                          'Getting your available credit...',
-                                    ),
+                                      ),
+                                    ],
                                   );
-                            },
-                            error: (error, stackTrace) {
-                              return WhenErrorWidget(error: error);
-                            },
-                            loading: () => const WhenLoadingWidget(
-                              message: 'Getting profile information...',
-                            ),
-                          );
-                    },
-                    error: (e, st) {
-                      return WhenErrorWidget(error: e);
-                    },
-                    loading: () {
-                      return const WhenLoadingWidget(
-                        message: 'Getting user information...',
+                                },
+                                error: (error, stck) =>
+                                    WhenErrorWidget(error: error),
+                                loading: () => const WhenLoadingWidget(
+                                  message: 'Getting your available credit...',
+                                ),
+                              );
+                        },
+                        error: (error, stackTrace) {
+                          return WhenErrorWidget(error: error);
+                        },
+                        loading: () => const WhenLoadingWidget(
+                          message: 'Getting profile information...',
+                        ),
                       );
-                    },
-                  );
                 },
                 error: (error, stackTrace) {
                   return WhenErrorWidget(error: error);
